@@ -19,11 +19,11 @@ RUN chmod +x ./scripts*
 
 COPY ./backend /backend
 
-WORKDIR /frontend
-COPY ./frontend/package.json /frontend/
-COPY ./frontend/package-lock.json /frontend/
-RUN npm install
-COPY ./frontend /frontend
-RUN npm run build
+#WORKDIR /frontend
+#COPY ./frontend/package.json /frontend/
+#COPY ./frontend/package-lock.json /frontend/
+#RUN npm install
+#COPY ./frontend /frontend
+#RUN npm run build
 
 WORKDIR /backend
