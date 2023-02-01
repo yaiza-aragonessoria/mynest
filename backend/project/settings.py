@@ -16,6 +16,19 @@ DEBUG = os.environ.get('DJANGO_DEBUG', "True") == "True"
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "http://localhost:3000", "https://mynest.propulsion-learn.ch", "http://localhost:8000"]
+
+CORS_ALLOWED_ORIGINS = ["http://127.0.0.1", "http://localhost:3000", "https://mynest.propulsion-learn.ch", "http://localhost:8000"]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -27,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third-part apps
+    "corsheaders",
     'drf_yasg',
     'rest_framework',
+    'rest_framework.authtoken',
 
     # my apps
     'homes',
@@ -39,9 +54,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -137,8 +153,16 @@ STATIC_URL = "static-files/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static-files') if DEBUG else '/static-files/'
 # STATICFILES_DIRS =
 
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 MEDIA_URL = "media-files/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media-files') if DEBUG else '/media-files/'
 
-CSRF_TRUSTED_ORIGINS = ["https://mynest.propulsion-learn.ch"]
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
