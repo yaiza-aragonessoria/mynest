@@ -4,12 +4,12 @@ from django.db import models
 from project import settings
 
 CATEGORIES = (
-        (1, 'GROCERIES'),
-        (2, 'MAINTENANCE'),
-        (3, 'UTILITIES'),
-        (4, 'HOUSEHOLD_SUPPLIES'),
-        (5, 'OTHER')
-    )
+    (1, 'GROCERIES'),
+    (2, 'MAINTENANCE'),
+    (3, 'UTILITIES'),
+    (4, 'HOUSEHOLD_SUPPLIES'),
+    (5, 'OTHER')
+)
 
 
 class Expense(models.Model):
@@ -22,6 +22,7 @@ class Expense(models.Model):
     creator = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='created_expenses')
     payer = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='payed_expenses')
     shared_with = models.ManyToManyField(to=settings.AUTH_USER_MODEL, related_name='expenses')
+
     # home = models.ForeignKey(to=Home, on_delete=models.PROTECT, related_name='expenses')
 
     def __str__(self):
