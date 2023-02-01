@@ -18,9 +18,8 @@ class ListUserView(ListAPIView):
 
     def get_queryset(self):
         query = self.request.GET.get('search', '')  # search is the params and '' the default value
-        queryset = User.objects.filter(Q(email__contains=query) |
-                                       Q(first_name__contains=query) |
-                                       Q(last_name__contains=query))
+        queryset = User.objects.filter(
+            Q(email__contains=query) | Q(first_name__contains=query) | Q(last_name__contains=query))
         return queryset
 
 
