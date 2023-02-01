@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # my apps
-    'home',
+    'homes',
     'expenses',
     'products',
     'tasks',
