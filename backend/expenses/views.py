@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView, ListAPIView
 from expenses.models import Expense
 from expenses.serializers import ExpenseSerializer
 
@@ -40,3 +40,21 @@ class RetrieveUpdateDeleteExpenseView(RetrieveUpdateDestroyAPIView):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     # permission_classes = [IsAuthenticated, IsInvolvedInFriendship | IsAdminUser]
+
+
+class ListHomeExpensesView(ListAPIView):
+    """
+        get:
+        Lists all Expenses of the Home of the logged-in User ordered by date.
+    """
+
+    serializer_class = ExpenseSerializer
+
+    def get_queryset(self):
+        id_home = self.request.user.home
+        if id_home:
+            query = self.request.GET.get('search', '')  # search is the params and '' the default value
+            queryset = Expense.objects.filter(creator_id__home=id_home, name__contains=query).order_by('-created')
+        else:
+            queryset=[]
+        return queryset
