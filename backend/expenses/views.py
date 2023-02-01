@@ -56,5 +56,5 @@ class ListHomeExpensesView(ListAPIView):
             query = self.request.GET.get('search', '')  # search is the params and '' the default value
             queryset = Expense.objects.filter(creator_id__home=id_home, name__contains=query).order_by('-created')
         else:
-            queryset=[]
+            queryset = []
         return queryset
