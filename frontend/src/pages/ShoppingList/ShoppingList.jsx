@@ -4,8 +4,7 @@ import ShoppingList_item from "../../components/ShoppingList_item/ShoppingList_i
 import { PageWrapper, MainWrapper } from "./ShoppingList.styled";
 
 const Shoppinglist = () => {
-
-    // TO BUY LIST
+  // TO BUY LIST
   const [inputText, setInputText] = useState("");
 
   const handleInputText = (e) => {
@@ -16,14 +15,16 @@ const Shoppinglist = () => {
 
   const handleSubmitItem = (e) => {
     e.preventDefault();
-    setTobuyItem([...tobuyItem, {id: Math.random () * 1000, name: inputText, in_cart: false}])
-    setInputText('');
-  }
+    setTobuyItem([
+      ...tobuyItem,
+      { id: Math.random() * 1000, name: inputText, in_cart: false },
+    ]);
+    setInputText("");
+  };
 
+  const [enableSort, setEnableSort] = useState(false);
 
-
-      // IN CART LIST
-
+  // IN CART LIST
 
   return (
     <PageWrapper>
@@ -36,11 +37,13 @@ const Shoppinglist = () => {
               onChange={handleInputText}
               value={inputText}
             />
-            <button 
-                type="submit"
-                onClick={handleSubmitItem}
-                disabled={inputText.length < 1}
-                >Add to list</button>
+            <button
+              type="submit"
+              onClick={handleSubmitItem}
+              disabled={inputText.length < 1}
+            >
+              Add to list
+            </button>
           </form>
         </div>
 
@@ -48,15 +51,22 @@ const Shoppinglist = () => {
           <div className="left_main_container">
             <div className="to_buy_wrapper">
               <h2>Things to Buy</h2>
-              <button>Sort</button>
+              <button
+                onClick={() => {
+                  setEnableSort(!enableSort);
+                }}
+              >
+                Sort
+              </button>
               <div className="to_buy_list">
                 {/* RENDER TO BUY ITEMS HERE */}
-                <ShoppingList_item 
-                    tobuyItem={tobuyItem}
-                    setTobuyItem={setTobuyItem}/>
+                <ShoppingList_item
+                  tobuyItem={tobuyItem}
+                  setTobuyItem={setTobuyItem}
+                  enableSort={enableSort}
+                />
               </div>
             </div>
-
 
             <div className="in_cart_wrapper">
               <h2>Already in my cart</h2>
