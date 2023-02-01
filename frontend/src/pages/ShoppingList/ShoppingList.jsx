@@ -4,6 +4,8 @@ import ShoppingList_item from "../../components/ShoppingList_item/ShoppingList_i
 import { PageWrapper, MainWrapper } from "./ShoppingList.styled";
 
 const Shoppinglist = () => {
+
+    // TO BUY LIST
   const [inputText, setInputText] = useState("");
 
   const handleInputText = (e) => {
@@ -14,9 +16,13 @@ const Shoppinglist = () => {
 
   const handleSubmitItem = (e) => {
     e.preventDefault();
-    setTobuyItem([...tobuyItem, {id: Math.random () * 1000, name: inputText, completed: false}]);
+    setTobuyItem([...tobuyItem, {id: Math.random () * 1000, name: inputText, in_cart: false}])
     setInputText('');
   }
+
+
+
+      // IN CART LIST
 
 
   return (
@@ -31,8 +37,10 @@ const Shoppinglist = () => {
               value={inputText}
             />
             <button 
-            type="submit"
-            onClick={handleSubmitItem}>Add to list</button>
+                type="submit"
+                onClick={handleSubmitItem}
+                disabled={inputText.length < 1}
+                >Add to list</button>
           </form>
         </div>
 
@@ -40,16 +48,18 @@ const Shoppinglist = () => {
           <div className="left_main_container">
             <div className="to_buy_wrapper">
               <h2>Things to Buy</h2>
-              <button>Sort alphabetically</button>
+              <button>Sort</button>
               <div className="to_buy_list">
                 {/* RENDER TO BUY ITEMS HERE */}
-                <ShoppingList_item tobuyItem={tobuyItem}/>
+                <ShoppingList_item 
+                    tobuyItem={tobuyItem}
+                    setTobuyItem={setTobuyItem}/>
               </div>
             </div>
 
 
             <div className="in_cart_wrapper">
-              <h2>Already in your cart</h2>
+              <h2>Already in my cart</h2>
               <div className="in_cart_list">
                 {/* RENDER ITEMS ALREADY IN CART */}
               </div>
