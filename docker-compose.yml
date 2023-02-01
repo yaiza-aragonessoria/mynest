@@ -11,7 +11,7 @@ services:
       - postgres:/var/lib/postgresql/data
 
   backend:
-    image: registry.gitlab.propulsion-home.ch/full-stack/batch-22-nov-2022/personal-projects/flat-sharing-project:master
+    image: registry.gitlab.propulsion-home.ch/full-stack/batch-22-nov-2022/personal-projects/flat-sharing-project:latest
     command: "sh ../scripts/dev.sh"
     ports:
       - '8000:8000'

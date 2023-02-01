@@ -22,8 +22,6 @@ build:
 
 lint:
   stage: lint
-  only:
-    - master
   script:
     - export CI_PIPELINE_ID=$CI_PIPELINE_ID
     - export CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME
@@ -56,4 +54,5 @@ deploy:
   script:
     - docker-compose -f docker-compose.deploy.yml pull
     - docker-compose -f docker-compose.deploy.yml down --remove-orphans
+    - docker volume rm flatsharingproject_build
     - docker-compose -f docker-compose.deploy.yml up -d
