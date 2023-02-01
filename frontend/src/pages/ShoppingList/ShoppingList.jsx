@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import InCart from "../../components/InCart/InCart";
 import ShoppingList_item from "../../components/ShoppingList_item/ShoppingList_item";
 
 import { PageWrapper, MainWrapper } from "./ShoppingList.styled";
@@ -17,14 +18,33 @@ const Shoppinglist = () => {
     e.preventDefault();
     setTobuyItem([
       ...tobuyItem,
-      { id: Math.random() * 1000, name: inputText, in_cart: false },
+      {
+        id: Math.random() * 10000,
+        name: inputText,
+        in_cart: false,
+        favorite: false,
+        purchased: false,
+      },
     ]);
     setInputText("");
   };
 
   const [enableSort, setEnableSort] = useState(false);
 
-  // IN CART LIST
+  const updateCartStatus = (curItemId) => {
+    const updatedItems = tobuyItem.map((item) => {
+      if (item.id !== curItemId) {
+        return item;
+      }
+      return {
+        // id: item.id,
+        // name: item.name,
+        ...item,
+        in_cart: !item.in_cart,
+      };
+    });
+    setTobuyItem(updatedItems);
+  };
 
   return (
     <PageWrapper>
@@ -64,6 +84,7 @@ const Shoppinglist = () => {
                   tobuyItem={tobuyItem}
                   setTobuyItem={setTobuyItem}
                   enableSort={enableSort}
+                  updateCartStatus={updateCartStatus}
                 />
               </div>
             </div>
@@ -72,6 +93,10 @@ const Shoppinglist = () => {
               <h2>Already in my cart</h2>
               <div className="in_cart_list">
                 {/* RENDER ITEMS ALREADY IN CART */}
+                <InCart
+                  tobuyItem={tobuyItem}
+                  updateCartStatus={updateCartStatus}
+                />
               </div>
             </div>
 
