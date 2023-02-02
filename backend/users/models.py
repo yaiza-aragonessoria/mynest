@@ -52,7 +52,7 @@ class User(AbstractUser):
 
     objects = UserManager()
 
-    # balance, task_count to be added in the serializer
+    # home_balance, task_count to be added in the serializer
 
     def __str__(self):
         return self.email

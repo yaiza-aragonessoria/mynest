@@ -38,13 +38,16 @@ def compute_member_balance(id_member, id_home):
     return member_balance
 
 
-
 class UserSerializer(serializers.ModelSerializer):
-    balance = serializers.SerializerMethodField()
+    home_balance = serializers.SerializerMethodField()
 
-    def get_balance(self, user):
+    def get_home_balance(self, user):
         # user=logged-in user, memeber=users sharing logged-in-user (including logged-in user)
         id_home = user.home
+
+        if not id_home:
+            return 'No home associated'
+
         home_members = User.objects.filter(home=id_home)
 
         # compute balance of all members
@@ -67,4 +70,4 @@ class UserSerializer(serializers.ModelSerializer):
                   'created_expenses',
                   'expenses',
                   'payed_expenses',
-                  'balance']
+                  'home_balance']
