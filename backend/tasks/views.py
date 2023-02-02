@@ -27,7 +27,7 @@ class ListCreateTaskView(ListCreateAPIView):
         frequency = req_serializer.validated_data["frequency"]
         results = []
         for i in range(frequency):
-            new_name = name + " #{}".format(i+1)
+            new_name = name + " #{}".format(i + 1)
             serializer = TaskSerializer(data={'name': new_name})
             serializer.is_valid(raise_exception=True)
             task = serializer.save(creator=request.user)

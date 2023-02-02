@@ -1,6 +1,5 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 
-from homes.models import Home
 from products.models import Product
 from products.serializers import ProductSerializer
 from products.permissions import HasHome, IsMemberOfHomeForProduct
