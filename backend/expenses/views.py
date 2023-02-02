@@ -97,23 +97,52 @@ class ExpenseResetView(GenericAPIView):
 
             i = 0
             j = 0
+            created_expenses = []
             while i < len(owing_members) and j < len(lending_members):
-                [owing_member, owed_amount] = owing_members[i]
-                [lending_member, lent_amount] = lending_members[j]
+                [owing_member_id, owed_amount] = owing_members[i]
+                [lending_member_id, lent_amount] = lending_members[j]
+                owing_member = User.objects.get(id=owing_member_id)
+                lending_member = User.objects.get(id=lending_member_id)
                 rest = owed_amount + lent_amount
                 if rest == 0:
                     if lent_amount > 0.01:
-                        print(f'{owing_member} gives {round(lent_amount, 2)} to {lending_member}')
+                        payer = owing_member.first_name if owing_member.first_name else owing_member.email.split("@")[0]
+                        receiver = lending_member.first_name if lending_member.first_name else lending_member.email.split("@")[0]
+                        print(f'{payer} pays {round(lent_amount, 2)} CHF to {receiver}')
+                        expense, created = Expense.objects.get_or_create(
+                            name=f'{payer} pays {round(lent_amount, 2)} CHF to {receiver}',
+                            category=5,
+                            amount=round(lent_amount, 2),
+                            payer=owing_member_id,
+                            shared_with=[lending_member_id]
+                        )
+                        if created:
+                            created_expenses.append(expense)
                     i += 1
                     j += 1
                 elif rest > 0:  # lent_amount is bigger
                     if -owed_amount > 0.01:
-                        print(f'{owing_member} gives {round(-owed_amount, 2)} to {lending_member}')
+                        payer = owing_member.first_name if owing_member.first_name else owing_member.email.split("@")[0]
+                        receiver = lending_member.first_name if lending_member.first_name else lending_member.email.split("@")[0]
+                        print(f'{payer} pays {round(-owed_amount, 2)} CHF to {receiver}')
+
+                        expense, created = Expense.objects.get_or_create(
+                            name=f'{payer} pays {round(lent_amount, 2)} CHF to {receiver}',
+                            category=5,
+                            amount=round(lent_amount, 2),
+                            payer=owing_member_id,
+                            shared_with=[lending_member_id]
+                        )
+                        if created:
+                            created_expenses.append(expense)
+
                     lending_members[j][1] = owed_amount + lent_amount
                     i += 1
                 else:  # owed_amount is bigger
                     if lent_amount > 0.01:
-                        print(f'{owing_member} gives {round(lent_amount, 2)} to {lending_member}')
+                        payer = owing_member.first_name if owing_member.first_name else owing_member.email.split("@")[0]
+                        receiver = lending_member.first_name if lending_member.first_name else lending_member.email.split("@")[0]
+                        print(f'{payer} pays {round(lent_amount, 2)} CHF to {receiver}')
                     owing_members[i][1] = owed_amount + lent_amount
                     j += 1
 
@@ -125,7 +154,7 @@ class ExpenseResetView(GenericAPIView):
             #     return HttpResponse(friendship, status=201)
             # else:
             #     return HttpResponse("Friendship already exists", status=400)
-            return HttpResponse("", status=204)
+            return HttpResponse(created_expenses, status=204)
         except (IntegrityError, User.DoesNotExist) as e:
             if 'UNIQUE constraint failed' in e.args[0]:
                 return HttpResponse("Friendship already exists", status=400)
