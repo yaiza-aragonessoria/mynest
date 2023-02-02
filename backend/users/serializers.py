@@ -38,26 +38,46 @@ def compute_member_balance(id_member, id_home):
     return member_balance
 
 
+def compute_home_balance(id_home):
+    home_members = User.objects.filter(home=id_home)
+
+    # compute balance of all members
+    member_balances = []
+    for member in home_members:
+        id_member = member.id
+        member_balance = compute_member_balance(id_member, id_home)
+        member_balances.append([member.id, round(member_balance, 2)])
+
+    # check the one cent problem
+    check = 0
+    for [member, amount] in member_balances:
+        check = check + amount
+
+    if check > 0:
+        for member_balance in member_balances:
+            if member_balance[1] <= 0:
+                member_balance[1] = member_balance[1] - 0.01
+                break
+    elif check > 0:
+        for member_balance in member_balances:
+            if member_balance[1] <= 0:
+                member_balance[1] = member_balance[1] + 0.01
+                break
+
+    return member_balances
+
+
 class UserSerializer(serializers.ModelSerializer):
     home_balance = serializers.SerializerMethodField()
 
     def get_home_balance(self, user):
-        # user=logged-in user, memeber=users sharing logged-in-user (including logged-in user)
+        # user=logged-in user, member=users sharing logged-in-user (including logged-in user)
         id_home = user.home
 
         if not id_home:
-            return 'No home associated'
+            return 'User has no home'
 
-        home_members = User.objects.filter(home=id_home)
-
-        # compute balance of all members
-        member_balances = []
-        for member in home_members:
-            id_member = member.id
-            member_balance = compute_member_balance(id_member, id_home)
-            member_balances.append([member.id, member_balance])
-
-        return member_balances
+        return compute_home_balance(id_home)
 
     class Meta:
         model = User
