@@ -46,4 +46,5 @@ urlpatterns = [
     path('backend/api/expenses/', include('expenses.urls')),
     path('backend/api/products/', include('products.urls')),
     path('backend/api/users/', include('users.urls')),
+    path('backend/api/tasks/', include('tasks.urls')),
 ]
