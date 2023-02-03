@@ -1,5 +1,3 @@
-import json
-
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
 from django.http import HttpResponse
@@ -7,7 +5,6 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIV
 from expenses.models import Expense
 from expenses.serializers import ExpenseSerializer
 from users.serializers import compute_home_balance
-from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -109,8 +106,7 @@ class ExpenseResetView(GenericAPIView):
                 if rest == 0:
                     if lent_amount > 0.01:
                         payer = owing_member.first_name if owing_member.first_name else owing_member.email.split("@")[0]
-                        receiver = lending_member.first_name if lending_member.first_name else \
-                        lending_member.email.split("@")[0]
+                        receiver = lending_member.first_name if lending_member.first_name else lending_member.email.split("@")[0]
 
                         print(f'{payer} pays {round(lent_amount, 2)} CHF to {receiver}')
 
@@ -131,8 +127,7 @@ class ExpenseResetView(GenericAPIView):
                 elif rest > 0:  # lent_amount is bigger
                     if -owed_amount > 0.01:
                         payer = owing_member.first_name if owing_member.first_name else owing_member.email.split("@")[0]
-                        receiver = lending_member.first_name if lending_member.first_name else \
-                        lending_member.email.split("@")[0]
+                        receiver = lending_member.first_name if lending_member.first_name else lending_member.email.split("@")[0]
                         print(f'{payer} pays {round(-owed_amount, 2)} CHF to {receiver}')
 
                         expense, created = Expense.objects.get_or_create(
@@ -152,8 +147,7 @@ class ExpenseResetView(GenericAPIView):
                 else:  # owed_amount is bigger
                     if lent_amount > 0.01:
                         payer = owing_member.first_name if owing_member.first_name else owing_member.email.split("@")[0]
-                        receiver = lending_member.first_name if lending_member.first_name else \
-                        lending_member.email.split("@")[0]
+                        receiver = lending_member.first_name if lending_member.first_name else lending_member.email.split("@")[0]
                         print(f'{payer} pays {round(lent_amount, 2)} CHF to {receiver}')
 
                         expense, created = Expense.objects.get_or_create(
