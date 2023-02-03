@@ -2,7 +2,7 @@ from rest_framework.permissions import BasePermission
 
 
 class HasHome(BasePermission):
-    def has_object_permission(self, request, view, obj):
+    def has_permission(self, request, view):
         return request.user.home is not None
 
 

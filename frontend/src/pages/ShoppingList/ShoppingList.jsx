@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Cards from "../../components/Cards/Cards";
+import FavouriteItems from "../../components/FavouriteItems/FavouriteItems";
 import InCart from "../../components/InCart/InCart";
 import ShoppingList_item from "../../components/ShoppingList_item/ShoppingList_item";
 
@@ -13,6 +15,7 @@ const Shoppinglist = () => {
   };
 
   const [tobuyItem, setTobuyItem] = useState([]);
+  const [purchasedItems, setPurchasedItems] = useState([]);
 
   const handleSubmitItem = (e) => {
     e.preventDefault();
@@ -44,6 +47,19 @@ const Shoppinglist = () => {
       };
     });
     setTobuyItem(updatedItems);
+  };
+
+  const addToPurchased = (e) => {
+    e.preventDefault();
+    const updatedItems = tobuyItem.map((item) => {
+      return {
+        ...item,
+        in_cart: false,
+        purchased: true,
+      };
+    });
+    setPurchasedItems(updatedItems);
+    setTobuyItem([]);
   };
 
   return (
@@ -100,7 +116,7 @@ const Shoppinglist = () => {
               </div>
             </div>
 
-            <button>Done with shopping</button>
+            <button onClick={addToPurchased}>Done with shopping</button>
 
             <div className="send_email">
               <input type="email" placeholder="Enter email" />
@@ -111,15 +127,20 @@ const Shoppinglist = () => {
           <div className="right_main_container">
             <div className="favourites_wraper">
               <h2>Favourites</h2>
-              <p>item 1</p>
-              <p>item 2</p>
-              <p>item 3</p>
+              <FavouriteItems
+                purchasedItems={purchasedItems}
+                setPurchasedItems={setPurchasedItems}
+                tobuyItem={tobuyItem}
+                setTobuyItem={setTobuyItem}
+              />
+
               <button>Edit Favourites</button>
             </div>
 
             <div className="cards_wraper">
               <h2>Seasonal picks</h2>
-              <div className="card">
+              <Cards tobuyItem={tobuyItem} setTobuyItem={setTobuyItem} />
+              {/* <div className="card">
                 <img />
                 <h3>Item name</h3>
                 <span>Description</span>
@@ -136,7 +157,7 @@ const Shoppinglist = () => {
                 <h3>Item name</h3>
                 <span>Description</span>
                 <button>Add to my list</button>
-              </div>
+              </div> */}
             </div>
           </div>
         </MainWrapper>
