@@ -7,6 +7,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIV
 from expenses.models import Expense
 from expenses.serializers import ExpenseSerializer
 from users.serializers import compute_home_balance
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -169,8 +170,10 @@ class ExpenseResetView(GenericAPIView):
 
                     owing_members[i][1] = owed_amount + lent_amount
                     j += 1
-            # return JsonResponse(Book.objects.values('id', 'title', 'description').get(id=book.id))
-            return HttpResponse(created_expenses, status=204)
+            if created_expenses:
+                return HttpResponse(created_expenses, status=201)
+            else:
+                return HttpResponse(status=204)
 
         except (IntegrityError, User.DoesNotExist) as e:
             if 'UNIQUE constraint failed' in e.args[0]:
