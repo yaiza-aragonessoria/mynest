@@ -1,5 +1,7 @@
 import React from "react";
 
+import {CardLayout} from "./Card.styled"
+
 const Card = ({ foodDataItem, tobuyItem, setTobuyItem }) => {
   const handleAddItem = (curFoodDataItemId, curFoodDataItemName) => {
     const found = tobuyItem.filter((item) => {
@@ -26,6 +28,7 @@ const Card = ({ foodDataItem, tobuyItem, setTobuyItem }) => {
 
   return (
     <>
+    <CardLayout>
       <h3>{foodDataItem.name}</h3>
       <span>{foodDataItem.description}</span>
       <button
@@ -36,6 +39,9 @@ const Card = ({ foodDataItem, tobuyItem, setTobuyItem }) => {
       >
         Add
       </button>
+      <div className="card_image">{foodDataItem.image}</div>
+      </CardLayout>
+      
     </>
   );
 };
