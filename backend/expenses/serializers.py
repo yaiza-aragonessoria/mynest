@@ -10,5 +10,5 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Expense
-        fields = '__all__'
+        fields = ['shared_with', 'name', 'amount', 'category', 'payer']
         read_only_fields = ['creator']
