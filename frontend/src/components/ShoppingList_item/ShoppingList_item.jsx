@@ -39,20 +39,20 @@ const ShoppingList_item = ({
     <div className="to_buy_item">
       {(enableSort ? tobuyItem.slice().sort(sortFunction) : tobuyItem)
         .filter((item) => {
-          return item.in_cart === false;
+          return item.status === "TB";
         })
         .map((item, index) => {
           return (
             <>
               <span
                 onClick={() => {
-                  updateCartStatus(item.id);
+                  updateCartStatus(item.id, "IP");
                 }}
                 key={item.id}
               >
                 {item.name}
               </span>
-              <button onClick={() => handleDeleteItem(item.id)}>
+              <button onClick={() => updateCartStatus(item.id, "BO")}>
                 Delete item
               </button>
             </>

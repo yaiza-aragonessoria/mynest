@@ -5,6 +5,7 @@ const FavouriteItems = ({
   setPurchasedItems,
   tobuyItem,
   setTobuyItem,
+  updateCartStatus,
 }) => {
   const handlePurchasedToBuy = (curItemId, curItemName) => {
     const found = tobuyItem.filter((item) => {
@@ -30,16 +31,16 @@ const FavouriteItems = ({
 
   return (
     <div>
-      {purchasedItems
+      {tobuyItem
         .filter((item) => {
-          return item.purchased === true;
+          return item.status === "BO";
         })
         .map((item, index) => {
           return (
             <>
               <span
                 onClick={() => {
-                  handlePurchasedToBuy(item.id, item.name);
+                  updateCartStatus(item.id, "TB");
                 }}
                 key={item.id}
               >

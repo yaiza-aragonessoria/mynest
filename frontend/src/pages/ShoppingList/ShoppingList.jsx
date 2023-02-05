@@ -16,7 +16,7 @@ const Shoppinglist = () => {
 
   const [tobuyItem, setTobuyItem] = useState([]);
   const [purchasedItems, setPurchasedItems] = useState([]);
-
+  console.log(tobuyItem);
   const handleSubmitItem = (e) => {
     e.preventDefault();
     setTobuyItem([
@@ -27,6 +27,7 @@ const Shoppinglist = () => {
         in_cart: false,
         favorite: false,
         purchased: false,
+        status: "TB",
       },
     ]);
     setInputText("");
@@ -34,7 +35,7 @@ const Shoppinglist = () => {
 
   const [enableSort, setEnableSort] = useState(false);
 
-  const updateCartStatus = (curItemId) => {
+  const updateCartStatus = (curItemId, newStatus) => {
     const updatedItems = tobuyItem.map((item) => {
       if (item.id !== curItemId) {
         return item;
@@ -43,7 +44,7 @@ const Shoppinglist = () => {
         // id: item.id,
         // name: item.name,
         ...item,
-        in_cart: !item.in_cart,
+        status: newStatus,
       };
     });
     setTobuyItem(updatedItems);
@@ -132,6 +133,7 @@ const Shoppinglist = () => {
                 setPurchasedItems={setPurchasedItems}
                 tobuyItem={tobuyItem}
                 setTobuyItem={setTobuyItem}
+                updateCartStatus={updateCartStatus}
               />
 
               <button>Edit Favourites</button>
