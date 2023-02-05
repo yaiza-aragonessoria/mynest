@@ -41,7 +41,13 @@ const Shoppinglist = () => {
       return item.name.toLowerCase() === inputText.toLowerCase();
     });
     if (found.length > 0) {
-      return;
+      if (found[0].status === "TB" || found[0].status === "IP") {
+        return;
+      } else if (found[0].status === "BO") {
+        updateCartStatus(found[0].id, "TB");
+        setInputText("");
+        return;
+      }
     }
     axios
       .post(
@@ -174,10 +180,11 @@ const Shoppinglist = () => {
 
             <div className="cards_wraper">
               <h2>Seasonal picks</h2>
-              <Cards 
-              tobuyItem={tobuyItem} 
-              setTobuyItem={setTobuyItem}
-              updateCartStatus={updateCartStatus} />
+              <Cards
+                tobuyItem={tobuyItem}
+                setTobuyItem={setTobuyItem}
+                updateCartStatus={updateCartStatus}
+              />
             </div>
           </div>
         </MainWrapper>
