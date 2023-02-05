@@ -1,34 +1,6 @@
 import React from "react";
 
-const FavouriteItems = ({
-  purchasedItems,
-  setPurchasedItems,
-  tobuyItem,
-  setTobuyItem,
-  updateCartStatus,
-}) => {
-  const handlePurchasedToBuy = (curItemId, curItemName) => {
-    const found = tobuyItem.filter((item) => {
-      return (
-        item.id === curItemId ||
-        item.name.toLowerCase() === curItemName.toLowerCase()
-      );
-    });
-    if (found.length > 0) {
-      return;
-    }
-    const updatedItems = [...tobuyItem];
-    purchasedItems.map((item) => {
-      if (item.id === curItemId) {
-        console.log("hi");
-        updatedItems.push({ ...item, in_cart: false });
-      }
-    });
-
-    setTobuyItem(updatedItems);
-    console.log(tobuyItem);
-  };
-
+const FavouriteItems = ({ tobuyItem, updateCartStatus }) => {
   return (
     <div>
       {tobuyItem

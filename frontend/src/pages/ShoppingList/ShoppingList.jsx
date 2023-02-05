@@ -99,7 +99,6 @@ const Shoppinglist = () => {
                 {/* RENDER TO BUY ITEMS HERE */}
                 <ShoppingList_item
                   tobuyItem={tobuyItem}
-                  setTobuyItem={setTobuyItem}
                   enableSort={enableSort}
                   updateCartStatus={updateCartStatus}
                 />
@@ -129,10 +128,7 @@ const Shoppinglist = () => {
             <div className="favourites_wraper">
               <h2>Favourites</h2>
               <FavouriteItems
-                purchasedItems={purchasedItems}
-                setPurchasedItems={setPurchasedItems}
                 tobuyItem={tobuyItem}
-                setTobuyItem={setTobuyItem}
                 updateCartStatus={updateCartStatus}
               />
 
