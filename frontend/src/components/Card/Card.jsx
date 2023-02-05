@@ -1,6 +1,6 @@
 import React from "react";
 
-import {CardLayout} from "./Card.styled"
+import { CardLayout } from "./Card.styled";
 
 const Card = ({ foodDataItem, tobuyItem, setTobuyItem }) => {
   const handleAddItem = (curFoodDataItemId, curFoodDataItemName) => {
@@ -11,37 +11,42 @@ const Card = ({ foodDataItem, tobuyItem, setTobuyItem }) => {
       );
     });
     if (found.length > 0) {
-      return;
+      if (found[0].status === "TB") {
+        return;
+      }
     }
 
+    const updatedItems =
+      found.length > 0
+        ? tobuyItem.filter((item) => item.id !== found[0].id)
+        : tobuyItem.slice();
+
     setTobuyItem([
-      ...tobuyItem,
+      ...updatedItems,
       {
-        id: Math.random() * 10000,
+        id: found.length > 0 ? found[0].id : Math.random() * 10000,
         name: curFoodDataItemName,
-        in_cart: false,
         favorite: false,
-        purchased: false,
+        status: "TB",
       },
     ]);
   };
 
   return (
     <>
-    <CardLayout>
-      <h3>{foodDataItem.name}</h3>
-      <span>{foodDataItem.description}</span>
-      <button
-        onClick={() => {
-          handleAddItem(foodDataItem.id, foodDataItem.name);
-          console.log(tobuyItem);
-        }}
-      >
-        Add
-      </button>
-      <div className="card_image">{foodDataItem.image}</div>
+      <CardLayout>
+        <h3>{foodDataItem.name}</h3>
+        <span>{foodDataItem.description}</span>
+        <button
+          onClick={() => {
+            handleAddItem(foodDataItem.id, foodDataItem.name);
+            console.log(tobuyItem);
+          }}
+        >
+          Add
+        </button>
+        <div className="card_image">{foodDataItem.image}</div>
       </CardLayout>
-      
     </>
   );
 };

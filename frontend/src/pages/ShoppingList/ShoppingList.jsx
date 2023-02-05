@@ -15,7 +15,7 @@ const Shoppinglist = () => {
   };
 
   const [tobuyItem, setTobuyItem] = useState([]);
-  const [purchasedItems, setPurchasedItems] = useState([]);
+
   console.log(tobuyItem);
   const handleSubmitItem = (e) => {
     e.preventDefault();
@@ -24,9 +24,7 @@ const Shoppinglist = () => {
       {
         id: Math.random() * 10000,
         name: inputText,
-        in_cart: false,
         favorite: false,
-        purchased: false,
         status: "TB",
       },
     ]);
@@ -41,8 +39,6 @@ const Shoppinglist = () => {
         return item;
       }
       return {
-        // id: item.id,
-        // name: item.name,
         ...item,
         status: newStatus,
       };
@@ -55,12 +51,10 @@ const Shoppinglist = () => {
     const updatedItems = tobuyItem.map((item) => {
       return {
         ...item,
-        in_cart: false,
-        purchased: true,
+        status: "BO",
       };
     });
-    setPurchasedItems(updatedItems);
-    setTobuyItem([]);
+    setTobuyItem(updatedItems);
   };
 
   return (
@@ -116,7 +110,7 @@ const Shoppinglist = () => {
               </div>
             </div>
 
-            <button onClick={addToPurchased}>Done with shopping</button>
+            <button onClick={addToPurchased}>Empty the list</button>
 
             <div className="send_email">
               <input type="email" placeholder="Enter email" />
@@ -126,13 +120,13 @@ const Shoppinglist = () => {
 
           <div className="right_main_container">
             <div className="favourites_wraper">
-              <h2>Favourites</h2>
+              <h2>Recently purchased</h2>
               <FavouriteItems
                 tobuyItem={tobuyItem}
                 updateCartStatus={updateCartStatus}
               />
 
-              <button>Edit Favourites</button>
+              <button>Edit</button>
             </div>
 
             <div className="cards_wraper">
