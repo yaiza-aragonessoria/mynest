@@ -13,7 +13,7 @@ class Task(models.Model):
         (STATUS_DONE, 'done'),
     ]
 
-    name = models.CharField(max_length=50, blank=False, unique=True)
+    name = models.CharField(max_length=50, blank=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=STATUS_TODO)
