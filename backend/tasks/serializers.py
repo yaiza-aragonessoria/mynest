@@ -14,6 +14,7 @@ class TaskCreationSerializer(serializers.Serializer):
 
     name = serializers.CharField(required=True)
     frequency = serializers.IntegerField(required=True)
+    planned_for = serializers.DateField(required=False)
 
     def validate_frequency(self, value):
         if value < 1:
