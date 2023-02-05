@@ -1,5 +1,5 @@
+from datetime import date
 from django.db import models
-
 from users.models import User
 
 
@@ -20,6 +20,8 @@ class Task(models.Model):
     active = models.BooleanField(default=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_tasks')
     assignee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks', blank=True, null=True)
+    # By default set to today's date, but we can change it on creation or edit it with PATCH.
+    planned_for = models.DateField(default=date.today)
 
     def __str__(self):
         return f'Task {self.id}: {self.name}'

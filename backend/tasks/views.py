@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.response import Response
@@ -25,14 +27,31 @@ class ListCreateTaskView(ListCreateAPIView):
         req_serializer.is_valid(raise_exception=True)
         name = req_serializer.validated_data["name"]
         frequency = req_serializer.validated_data["frequency"]
+        # Must use "get" because the field is not required
+        planned_for = req_serializer.validated_data.get("planned_for", False)
         results = []
         for i in range(frequency):
-            new_name = name + " #{}".format(i + 1)
-            serializer = TaskSerializer(data={'name': new_name})
+            data = {'name': name + " #{}".format(i + 1)}
+            if planned_for:
+                data['planned_for'] = planned_for
+            serializer = TaskSerializer(data=data)
             serializer.is_valid(raise_exception=True)
             task = serializer.save(creator=request.user)
             results.append(task)
         return Response(TaskSerializer(results, many=True).data, status=status.HTTP_201_CREATED)
+
+
+class ListMonthTaskView(ListAPIView):
+    """
+    get: Lists all tasks of the logged-in User's Home for this month in inverted chronological order.
+    """
+    serializer_class = TaskSerializer
+    permission_classes = [HasHome]
+
+    def get_queryset(self):
+        return Task.objects.filter(
+            planned_for__year=datetime.now().year, planned_for__month=datetime.now().month,
+            creator__home=self.request.user.home).order_by("-updated")
 
 
 class RetrieveUpdateDeleteTaskView(RetrieveUpdateDestroyAPIView):
