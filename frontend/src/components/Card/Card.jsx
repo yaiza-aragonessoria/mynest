@@ -1,35 +1,43 @@
 import React from "react";
+import axios from "axios";
 
 import { CardLayout } from "./Card.styled";
 
-const Card = ({ foodDataItem, tobuyItem, setTobuyItem }) => {
+const Card = ({ foodDataItem, tobuyItem, setTobuyItem, updateCartStatus }) => {
+
+  const token = localStorage.getItem("access");
+
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
   const handleAddItem = (curFoodDataItemId, curFoodDataItemName) => {
     const found = tobuyItem.filter((item) => {
       return (
-        item.id === curFoodDataItemId ||
         item.name.toLowerCase() === curFoodDataItemName.toLowerCase()
       );
     });
     if (found.length > 0) {
-      if (found[0].status === "TB") {
+      if (found[0].status === "TB" || found[0].status === "IP") {
         return;
       }
-    }
+     
+      if (found[0].status === "BO") {
+        updateCartStatus(found[0].id, "TB")
+      }
 
-    const updatedItems =
-      found.length > 0
-        ? tobuyItem.filter((item) => item.id !== found[0].id)
-        : tobuyItem.slice();
-
-    setTobuyItem([
-      ...updatedItems,
-      {
-        id: found.length > 0 ? found[0].id : Math.random() * 10000,
-        name: curFoodDataItemName,
-        favorite: false,
-        status: "TB",
-      },
-    ]);
+    } else {
+      
+    axios
+    .post(
+      "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+      { name: curFoodDataItemName, favorite: false, status: "TB" },
+      config
+    )
+    .then((result) => {
+      setTobuyItem([...tobuyItem, result.data]);
+    })
+    .catch(() => {}); }
   };
 
   return (
@@ -40,7 +48,6 @@ const Card = ({ foodDataItem, tobuyItem, setTobuyItem }) => {
         <button
           onClick={() => {
             handleAddItem(foodDataItem.id, foodDataItem.name);
-            console.log(tobuyItem);
           }}
         >
           Add

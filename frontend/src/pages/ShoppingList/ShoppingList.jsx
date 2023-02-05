@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cards from "../../components/Cards/Cards";
 import FavouriteItems from "../../components/FavouriteItems/FavouriteItems";
 import InCart from "../../components/InCart/InCart";
 import ShoppingList_item from "../../components/ShoppingList_item/ShoppingList_item";
+import axios from "axios";
 
 import { PageWrapper, MainWrapper } from "./ShoppingList.styled";
 
 const Shoppinglist = () => {
+  const token = localStorage.getItem("access");
+
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
   // TO BUY LIST
   const [inputText, setInputText] = useState("");
 
@@ -16,24 +22,50 @@ const Shoppinglist = () => {
 
   const [tobuyItem, setTobuyItem] = useState([]);
 
-  console.log(tobuyItem);
+  useEffect(() => {
+    const fetchData = async () => {
+      const backendData = await axios.get(
+        "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+        config
+      );
+
+      setTobuyItem(backendData.data);
+    };
+    fetchData();
+  }, []);
+
   const handleSubmitItem = (e) => {
     e.preventDefault();
-    setTobuyItem([
-      ...tobuyItem,
-      {
-        id: Math.random() * 10000,
-        name: inputText,
-        favorite: false,
-        status: "TB",
-      },
-    ]);
+
+    const found = tobuyItem.filter((item) => {
+      return item.name.toLowerCase() === inputText.toLowerCase();
+    });
+    if (found.length > 0) {
+      return;
+    }
+    axios
+      .post(
+        "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+        { name: inputText, favorite: false, status: "TB" },
+        config
+      )
+      .then((result) => {
+        setTobuyItem([...tobuyItem, result.data]);
+      })
+      .catch(() => {});
+
     setInputText("");
   };
 
   const [enableSort, setEnableSort] = useState(false);
 
   const updateCartStatus = (curItemId, newStatus) => {
+    axios.patch(
+      `https://mynest.propulsion-learn.ch/backend/api/products/${curItemId}/`,
+      { status: newStatus },
+      config
+    );
+
     const updatedItems = tobuyItem.map((item) => {
       if (item.id !== curItemId) {
         return item;
@@ -48,6 +80,17 @@ const Shoppinglist = () => {
 
   const addToPurchased = (e) => {
     e.preventDefault();
+
+    tobuyItem.map((item) => {
+      if (item.status !== "BO") {
+        axios.patch(
+          `https://mynest.propulsion-learn.ch/backend/api/products/${item.id}/`,
+          { status: "BO" },
+          config
+        );
+      }
+    });
+
     const updatedItems = tobuyItem.map((item) => {
       return {
         ...item,
@@ -131,25 +174,10 @@ const Shoppinglist = () => {
 
             <div className="cards_wraper">
               <h2>Seasonal picks</h2>
-              <Cards tobuyItem={tobuyItem} setTobuyItem={setTobuyItem} />
-              {/* <div className="card">
-                <img />
-                <h3>Item name</h3>
-                <span>Description</span>
-                <button>Add to my list</button>
-              </div>
-              <div className="card">
-                <img />
-                <h3>Item name</h3>
-                <span>Description</span>
-                <button>Add to my list</button>
-              </div>
-              <div className="card">
-                <img />
-                <h3>Item name</h3>
-                <span>Description</span>
-                <button>Add to my list</button>
-              </div> */}
+              <Cards 
+              tobuyItem={tobuyItem} 
+              setTobuyItem={setTobuyItem}
+              updateCartStatus={updateCartStatus} />
             </div>
           </div>
         </MainWrapper>

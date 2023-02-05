@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { food_data } from "../../constants/food_data";
 import Card from "../Card/Card";
 
-const Cards = ({ tobuyItem, setTobuyItem }) => {
+const Cards = ({ tobuyItem, setTobuyItem, updateCartStatus }) => {
 
   const [indexes, setIndexes] = useState(() => {
     const indexesPrep = [];
@@ -21,16 +21,19 @@ const Cards = ({ tobuyItem, setTobuyItem }) => {
         foodDataItem={food_data[indexes[0]]}
         tobuyItem={tobuyItem}
         setTobuyItem={setTobuyItem}
+        updateCartStatus={updateCartStatus}
       />
       <Card
         foodDataItem={food_data[indexes[1]]}
         tobuyItem={tobuyItem}
         setTobuyItem={setTobuyItem}
+        updateCartStatus={updateCartStatus}
       />
       <Card
         foodDataItem={food_data[indexes[2]]}
         tobuyItem={tobuyItem}
         setTobuyItem={setTobuyItem}
+        updateCartStatus={updateCartStatus}
       />
     </div>
   );

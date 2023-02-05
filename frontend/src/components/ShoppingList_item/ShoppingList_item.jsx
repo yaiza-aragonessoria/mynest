@@ -18,19 +18,18 @@ const ShoppingList_item = ({ tobuyItem, enableSort, updateCartStatus }) => {
         })
         .map((item, index) => {
           return (
-            <>
+            <div key={item.id}>
               <span
                 onClick={() => {
                   updateCartStatus(item.id, "IP");
                 }}
-                key={item.id}
               >
                 {item.name}
               </span>
               <button onClick={() => updateCartStatus(item.id, "BO")}>
                 Delete item
               </button>
-            </>
+            </div>
           );
         })}
     </div>
