@@ -172,10 +172,10 @@ const Shoppinglist = () => {
               <h2>Recently purchased</h2>
               <FavouriteItems
                 tobuyItem={tobuyItem}
+                setTobuyItem={setTobuyItem}
                 updateCartStatus={updateCartStatus}
               />
 
-              <button>Edit</button>
             </div>
 
             <div className="cards_wraper">
