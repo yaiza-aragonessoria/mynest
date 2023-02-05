@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3a1b971a-7124-49d6-98eb-1c099d9b51b1",
+		"_postman_id": "62f2db5b-34a1-4d82-b97e-c7234c27d10b",
 		"name": "MyNestDroplet",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -342,6 +342,31 @@
 			"response": []
 		},
 		{
+			"name": "Get All Tasks For this Month",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/tasks/home/month/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"tasks",
+						"home",
+						"month",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create Task",
 			"request": {
 				"method": "POST",
@@ -349,6 +374,39 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"name\": \"Clean the kitchen\",\n  \"frequency\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/tasks/home/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"tasks",
+						"home",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task with a Date",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Sweep the floor\",\n  \"frequency\": 4,\n  \"planned_for\": \"2023-03-01\"\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
