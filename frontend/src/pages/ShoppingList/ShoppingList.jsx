@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cards from "../../components/Cards/Cards";
 import FavouriteItems from "../../components/FavouriteItems/FavouriteItems";
 import InCart from "../../components/InCart/InCart";
 import ShoppingList_item from "../../components/ShoppingList_item/ShoppingList_item";
+import axios from "axios";
 
 import { PageWrapper, MainWrapper } from "./ShoppingList.styled";
 
 const Shoppinglist = () => {
+  const token = localStorage.getItem("access");
+
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
   // TO BUY LIST
   const [inputText, setInputText] = useState("");
 
@@ -15,35 +21,58 @@ const Shoppinglist = () => {
   };
 
   const [tobuyItem, setTobuyItem] = useState([]);
-  const [purchasedItems, setPurchasedItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const backendData = await axios.get(
+        "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+        config
+      );
+
+      setTobuyItem(backendData.data);
+    };
+    fetchData();
+  }, []);
 
   const handleSubmitItem = (e) => {
     e.preventDefault();
-    setTobuyItem([
-      ...tobuyItem,
-      {
-        id: Math.random() * 10000,
-        name: inputText,
-        in_cart: false,
-        favorite: false,
-        purchased: false,
-      },
-    ]);
+
+    const found = tobuyItem.filter((item) => {
+      return item.name.toLowerCase() === inputText.toLowerCase();
+    });
+    if (found.length > 0) {
+      return;
+    }
+    axios
+      .post(
+        "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+        { name: inputText, favorite: false, status: "TB" },
+        config
+      )
+      .then((result) => {
+        setTobuyItem([...tobuyItem, result.data]);
+      })
+      .catch(() => {});
+
     setInputText("");
   };
 
   const [enableSort, setEnableSort] = useState(false);
 
-  const updateCartStatus = (curItemId) => {
+  const updateCartStatus = (curItemId, newStatus) => {
+    axios.patch(
+      `https://mynest.propulsion-learn.ch/backend/api/products/${curItemId}/`,
+      { status: newStatus },
+      config
+    );
+
     const updatedItems = tobuyItem.map((item) => {
       if (item.id !== curItemId) {
         return item;
       }
       return {
-        // id: item.id,
-        // name: item.name,
         ...item,
-        in_cart: !item.in_cart,
+        status: newStatus,
       };
     });
     setTobuyItem(updatedItems);
@@ -51,15 +80,24 @@ const Shoppinglist = () => {
 
   const addToPurchased = (e) => {
     e.preventDefault();
+
+    tobuyItem.map((item) => {
+      if (item.status !== "BO") {
+        axios.patch(
+          `https://mynest.propulsion-learn.ch/backend/api/products/${item.id}/`,
+          { status: "BO" },
+          config
+        );
+      }
+    });
+
     const updatedItems = tobuyItem.map((item) => {
       return {
         ...item,
-        in_cart: false,
-        purchased: true,
+        status: "BO",
       };
     });
-    setPurchasedItems(updatedItems);
-    setTobuyItem([]);
+    setTobuyItem(updatedItems);
   };
 
   return (
@@ -98,7 +136,6 @@ const Shoppinglist = () => {
                 {/* RENDER TO BUY ITEMS HERE */}
                 <ShoppingList_item
                   tobuyItem={tobuyItem}
-                  setTobuyItem={setTobuyItem}
                   enableSort={enableSort}
                   updateCartStatus={updateCartStatus}
                 />
@@ -116,7 +153,7 @@ const Shoppinglist = () => {
               </div>
             </div>
 
-            <button onClick={addToPurchased}>Done with shopping</button>
+            <button onClick={addToPurchased}>Empty the list</button>
 
             <div className="send_email">
               <input type="email" placeholder="Enter email" />
@@ -126,38 +163,21 @@ const Shoppinglist = () => {
 
           <div className="right_main_container">
             <div className="favourites_wraper">
-              <h2>Favourites</h2>
+              <h2>Recently purchased</h2>
               <FavouriteItems
-                purchasedItems={purchasedItems}
-                setPurchasedItems={setPurchasedItems}
                 tobuyItem={tobuyItem}
-                setTobuyItem={setTobuyItem}
+                updateCartStatus={updateCartStatus}
               />
 
-              <button>Edit Favourites</button>
+              <button>Edit</button>
             </div>
 
             <div className="cards_wraper">
               <h2>Seasonal picks</h2>
-              <Cards tobuyItem={tobuyItem} setTobuyItem={setTobuyItem} />
-              {/* <div className="card">
-                <img />
-                <h3>Item name</h3>
-                <span>Description</span>
-                <button>Add to my list</button>
-              </div>
-              <div className="card">
-                <img />
-                <h3>Item name</h3>
-                <span>Description</span>
-                <button>Add to my list</button>
-              </div>
-              <div className="card">
-                <img />
-                <h3>Item name</h3>
-                <span>Description</span>
-                <button>Add to my list</button>
-              </div> */}
+              <Cards 
+              tobuyItem={tobuyItem} 
+              setTobuyItem={setTobuyItem}
+              updateCartStatus={updateCartStatus} />
             </div>
           </div>
         </MainWrapper>

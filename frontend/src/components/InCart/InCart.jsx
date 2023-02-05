@@ -5,20 +5,22 @@ const InCart = ({ tobuyItem, updateCartStatus }) => {
     <div>
       {tobuyItem
         .filter((item) => {
-          return item.in_cart === true;
+          return item.status === "IP";
         })
         .map((item, index) => {
           return (
-            <>
+            <div key={item.id}>
               <span
                 onClick={() => {
-                  updateCartStatus(item.id);
+                  updateCartStatus(item.id, "TB");
                 }}
-                key={item.id}
               >
                 {item.name}
               </span>
-            </>
+              <button onClick={() => updateCartStatus(item.id, "BO")}>
+                Delete
+              </button>
+            </div>
           );
         })}
     </div>
