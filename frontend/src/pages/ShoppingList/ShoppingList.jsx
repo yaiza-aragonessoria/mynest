@@ -10,10 +10,11 @@ import {
   MainWrapper,
   InputContainer,
   ItemsContainer,
+  FavoritesContainer
 } from "./ShoppingList.styled";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSort } from '@fortawesome/free-solid-svg-icons'
+import { faGears, faSort } from '@fortawesome/free-solid-svg-icons'
 
 
 
@@ -119,6 +120,12 @@ const Shoppinglist = () => {
     setTobuyItem(updatedItems);
   };
 
+// HANDLING POPUP FOR RECENTLY PURCHASED
+  const [showPopup, setShowPopup] = useState(false);
+  const handlePopup = (e) => {
+    setShowPopup(true);
+  };
+
   return (
     <MainWrapper>
       <div className="left_main_container">
@@ -177,14 +184,21 @@ const Shoppinglist = () => {
       </div>
 
       <div className="right_main_container">
-        <div className="favourites_wraper">
-          <h2>Recently purchased</h2>
+        <FavoritesContainer>
+          <div className="header_wrapper">
+            <h2 className="header">Recently purchased</h2>
+            <i onClick={handlePopup}
+            >{<FontAwesomeIcon icon={faGears} />}</i>
+          </div>
+
           <FavouriteItems
             tobuyItem={tobuyItem}
             setTobuyItem={setTobuyItem}
             updateCartStatus={updateCartStatus}
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
           />
-        </div>
+        </FavoritesContainer>
 
         <div className="cards_wraper">
           <h2>Seasonal picks</h2>
