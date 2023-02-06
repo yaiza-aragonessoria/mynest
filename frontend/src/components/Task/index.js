@@ -11,18 +11,17 @@ const Task = ({ name, status, assignee, id }) => {
     headers: {
       Authorization: `Bearer ${access}`,
     },
-    data: {
-      status: currentStatus === 'TO DO' ? 'TD' : currentStatus === 'IN PROGRESS' ? 'IP' : 'DO',
-    },
   };
-
+  const data =  {
+      status: currentStatus === 'TO DO' ? 'TD' : currentStatus === 'IN PROGRESS' ? 'IP' : 'DO',
+  };
   const handleClick = async () => {
     if (currentStatus === "TO DO") {
       setCurrentStatus("IN PROGRESS");
-      await api.patch(`/tasks/${id}`, config);
+      await api.patch(`/tasks/${id}/`, data, config);
     } else if (currentStatus === "IN PROGRESS") {
       setCurrentStatus("DONE");
-      await api.patch(`/tasks/${id}`, config);
+      await api.patch(`/tasks/${id}/`, data, config);
     }
   };
 
