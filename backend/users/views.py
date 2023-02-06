@@ -70,10 +70,10 @@ class HomeMembersView(ListAPIView):
     Lists all Users sharing the Home with id_home.
     """
     serializer_class = UserSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        query = self.request.parser_context.get('kwargs').get('id_home', 0)
+        query = self.request.user.home.id if self.request.user.home else 0
 
         home_exists = Home.objects.filter(id=query).exists()
 
