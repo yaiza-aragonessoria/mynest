@@ -31,6 +31,7 @@ const Header = () => {
             <NavLink to="/shared-expenses">Shared Expenses</NavLink>
             <NavLink to="/shoppinglist">Shopping List</NavLink>
             <NavLink to="/to-do">To Do</NavLink>
+            <NavLink to="/calendar">Calendar</NavLink>
             <NavLink to="/profile">Profile</NavLink>
           <div>
             <button type="button" id="signup" onClick={() => navigate("/sign-up")}>SIGNUP</button>
