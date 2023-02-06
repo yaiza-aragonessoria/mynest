@@ -5,7 +5,12 @@ import InCart from "../../components/InCart/InCart";
 import ShoppingList_item from "../../components/ShoppingList_item/ShoppingList_item";
 import axios from "axios";
 
-import { PageWrapper, MainWrapper } from "./ShoppingList.styled";
+// STYLING
+import {
+  MainWrapper,
+  InputContainer,
+  ItemsContainer,
+} from "./ShoppingList.styled";
 
 const Shoppinglist = () => {
   const token = localStorage.getItem("access");
@@ -107,17 +112,19 @@ const Shoppinglist = () => {
   };
 
   return (
-    <PageWrapper>
-      <div className="page_container">
-        <div className="input_container">
+    <MainWrapper>
+      <div className="left_main_container">
+        <InputContainer>
           <form>
             <input
+              className="text"
               type="text"
               placeholder="What do you need to buy?"
               onChange={handleInputText}
               value={inputText}
             />
             <button
+              className="btn_purple"
               type="submit"
               onClick={handleSubmitItem}
               disabled={inputText.length < 1}
@@ -125,11 +132,11 @@ const Shoppinglist = () => {
               Add to list
             </button>
           </form>
-        </div>
+        </InputContainer>
 
-        <MainWrapper>
-          <div className="left_main_container">
-            <div className="to_buy_wrapper">
+        <ItemsContainer>
+          <div className="to_buy_wrapper">
+            <div className="to_buy_header">
               <h2>Things to Buy</h2>
               <button
                 onClick={() => {
@@ -138,58 +145,57 @@ const Shoppinglist = () => {
               >
                 Sort
               </button>
-              <div className="to_buy_list">
-                {/* RENDER TO BUY ITEMS HERE */}
-                <ShoppingList_item
-                  tobuyItem={tobuyItem}
-                  enableSort={enableSort}
-                  updateCartStatus={updateCartStatus}
-                />
-              </div>
             </div>
-
-            <div className="in_cart_wrapper">
-              <h2>Already in my cart</h2>
-              <div className="in_cart_list">
-                {/* RENDER ITEMS ALREADY IN CART */}
-                <InCart
-                  tobuyItem={tobuyItem}
-                  updateCartStatus={updateCartStatus}
-                />
-              </div>
-            </div>
-
-            <button onClick={addToPurchased}>Empty the list</button>
-
-            <div className="send_email">
-              <input type="email" placeholder="Enter email" />
-              <button>Send list by email</button>
-            </div>
-          </div>
-
-          <div className="right_main_container">
-            <div className="favourites_wraper">
-              <h2>Recently purchased</h2>
-              <FavouriteItems
+            <div className="to_buy_list">
+              {/* RENDER TO BUY ITEMS HERE */}
+              <ShoppingList_item
                 tobuyItem={tobuyItem}
-                setTobuyItem={setTobuyItem}
-                updateCartStatus={updateCartStatus}
-              />
-
-            </div>
-
-            <div className="cards_wraper">
-              <h2>Seasonal picks</h2>
-              <Cards
-                tobuyItem={tobuyItem}
-                setTobuyItem={setTobuyItem}
+                enableSort={enableSort}
                 updateCartStatus={updateCartStatus}
               />
             </div>
           </div>
-        </MainWrapper>
+
+          <div className="in_cart_wrapper">
+            <h2>Already in my cart</h2>
+            <div className="in_cart_list">
+              {/* RENDER ITEMS ALREADY IN CART */}
+              <InCart
+                tobuyItem={tobuyItem}
+                updateCartStatus={updateCartStatus}
+              />
+            </div>
+          </div>
+        </ItemsContainer>
+
+        <button onClick={addToPurchased}>Empty the list</button>
+
+        {/* <div className="send_email">
+          <input type="email" placeholder="Enter email" />
+          <button>Send list by email</button>
+        </div> */}
       </div>
-    </PageWrapper>
+
+      <div className="right_main_container">
+        <div className="favourites_wraper">
+          <h2>Recently purchased</h2>
+          <FavouriteItems
+            tobuyItem={tobuyItem}
+            setTobuyItem={setTobuyItem}
+            updateCartStatus={updateCartStatus}
+          />
+        </div>
+
+        <div className="cards_wraper">
+          <h2>Seasonal picks</h2>
+          <Cards
+            tobuyItem={tobuyItem}
+            setTobuyItem={setTobuyItem}
+            updateCartStatus={updateCartStatus}
+          />
+        </div>
+      </div>
+    </MainWrapper>
   );
 };
 
