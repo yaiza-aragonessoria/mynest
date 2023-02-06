@@ -12,7 +12,15 @@ import {
   ItemsContainer,
 } from "./ShoppingList.styled";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSort } from '@fortawesome/free-solid-svg-icons'
+
+
+
+
 const Shoppinglist = () => {
+ 
+
   const token = localStorage.getItem("access");
 
   const config = {
@@ -137,38 +145,30 @@ const Shoppinglist = () => {
         <ItemsContainer>
           <div className="to_buy_wrapper">
             <div className="to_buy_header">
-              <h2>Things to Buy</h2>
+              <h2 className="header">Things to Buy</h2>
               <button
+                className="sort"
                 onClick={() => {
                   setEnableSort(!enableSort);
                 }}
               >
-                Sort
+                <i>{<FontAwesomeIcon icon={faSort} />}</i>
               </button>
             </div>
-            <div className="to_buy_list">
-              {/* RENDER TO BUY ITEMS HERE */}
-              <ShoppingList_item
-                tobuyItem={tobuyItem}
-                enableSort={enableSort}
-                updateCartStatus={updateCartStatus}
-              />
-            </div>
+
+            <ShoppingList_item
+              tobuyItem={tobuyItem}
+              enableSort={enableSort}
+              updateCartStatus={updateCartStatus}
+            />
           </div>
 
-          <div className="in_cart_wrapper">
-            <h2>Already in my cart</h2>
-            <div className="in_cart_list">
-              {/* RENDER ITEMS ALREADY IN CART */}
-              <InCart
-                tobuyItem={tobuyItem}
-                updateCartStatus={updateCartStatus}
-              />
-            </div>
-          </div>
+          <InCart tobuyItem={tobuyItem} updateCartStatus={updateCartStatus} />
         </ItemsContainer>
 
-        <button onClick={addToPurchased}>Empty the list</button>
+        <button className="btn_grey empty_list_btn" onClick={addToPurchased}>
+          Empty the list
+        </button>
 
         {/* <div className="send_email">
           <input type="email" placeholder="Enter email" />

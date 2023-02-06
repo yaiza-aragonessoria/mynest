@@ -38,16 +38,19 @@ code {
   color: #181C32;
 }
 
+/* PURPLE BUTTON */
 .btn_purple {
   background-color: #7239EA;
   color: #fff;
-  height: 40px;
+  min-height: 40px;
   border-radius: 8px;  
   padding: 7px 25px;
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
   border: none;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+
 }
 
 .btn_purple:hover {
@@ -57,6 +60,32 @@ code {
 }
 
 .btn_purple:active {
+  background-color: #7239EA;
+  color: #fff;
+}
+
+/* GREY BUTTON */
+.btn_grey {
+  background-color: #A1A5B7;
+  color: #fff;
+  min-height: 40px;
+  border-radius: 8px;  
+  padding: 7px 25px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  border: none;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+
+}
+
+.btn_grey:hover {
+  background-color: #F8F5FF;
+  color: #7239EA;
+  border: 1px solid #7239EA;
+}
+
+.btn_grey:active {
   background-color: #7239EA;
   color: #fff;
 }
