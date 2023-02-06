@@ -44,6 +44,8 @@ const Login = () => {
 
       dispatch(setAuth(authData));
 
+      navigate("/");
+
     }).catch(error => {
       setNewWarning(error.message);
     });
@@ -52,8 +54,9 @@ const Login = () => {
   useEffect(() => {
     if(auth) {
       navigate("/");
-    }
+    }}, []);
 
+  useEffect(() => {
     const authData = {
       email: localStorage.getItem('email'),
       access: localStorage.getItem('access'),
@@ -64,7 +67,7 @@ const Login = () => {
       dispatch(setAuth(authData));
     }
 
-  });
+  }, []);
 
   return (
     <>

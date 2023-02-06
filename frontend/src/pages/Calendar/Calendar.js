@@ -9,21 +9,40 @@ import './Calendar.css'
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
 const HomeCalendar = (props) => {
+    const access = localStorage.getItem("access");
+    const headers = {
+                headers: {
+                    Authorization: `Bearer ${access}`,
+                },}
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [homeMembers, setHomeMembers] = useState([]);
+    const [checked, setChecked] = useState([]);
+
+    const getHomeMembers = async() => {
+        try {
+            setHomeMembers([])
+            const res = await axios.get("https://mynest.propulsion-learn.ch/backend/api/users/home/", headers);
+            setHomeMembers(res.data);
+            console.log("homeMembers =", homeMembers);
+        }
+        catch(e) {
+            setErrorMessage(e.message);
+            }
+    }
+
+    useEffect(() => {
+        if(access) setIsLoggedIn(true);
+        else setIsLoggedIn(false)
+    },[access])
+
     const [errorMessage, setErrorMessage] = useState('');
     const [myEventsList, setMyEventsList] = useState([]);
-    const [newEvent, setNewEvent] = useState({title: '',
-                                                        start: '',
-                                                        end: '',
-                                                        guests: [],
-                                                        all_day: false,
-                                                        notes: ''})
+    const [newEvent, setNewEvent] = useState({})
 
-    const handleGetEvents = async() => {
-        setNewEvent({...newEvent})
-
+    const getEvents = async() => {
         try {
             setMyEventsList([]);
-            const res = await axios.get("http://127.0.0.1:8000/backend/api/events/");
+            const res = await axios.get("https://mynest.propulsion-learn.ch/backend/api/events/home/", headers);
             setMyEventsList(res.data);
             console.log("myEventsList =", myEventsList);
         }
@@ -33,7 +52,8 @@ const HomeCalendar = (props) => {
     }
 
     useEffect(()=>{
-        handleGetEvents()
+        getEvents()
+        getHomeMembers()
         },[])
 
     const handleChange = (e) => {
@@ -41,13 +61,25 @@ const HomeCalendar = (props) => {
         console.log(newEvent)
     }
 
+    // Add/Remove checked item from list
+    const handleCheck = (event) => {
+      let updatedList = [...checked];
+      if (event.target.checked) {
+        updatedList = [...checked, event.target.value];
+      } else {
+        updatedList.splice(checked.indexOf(event.target.value), 1);
+      }
+      setChecked(updatedList);
+      setNewEvent({...newEvent, participants: updatedList})
+      console.log("checked =", checked)
+    };
+
     const handleAddEvent = async (e) => {
         e.preventDefault();
 
         try {
-            setMyEventsList([]);
-            const res = await axios.post("http://127.0.0.1:8000/backend/api/events/", newEvent);
-            setMyEventsList(res.data);
+            const res = await axios.post("https://mynest.propulsion-learn.ch/backend/api/events/", newEvent, headers);
+            getEvents();
             console.log("myEventsList =", myEventsList);
         } catch (e) {
             setErrorMessage(e.message);
@@ -57,7 +89,9 @@ const HomeCalendar = (props) => {
 
     return (
         <>
-            <form>
+            {isLoggedIn ?
+                <>
+                <form>
                 <input type={"text"}
                        placeholder={"Add title"}
                        name={'title'}
@@ -74,21 +108,46 @@ const HomeCalendar = (props) => {
                        value={newEvent.end}
                        onChange={handleChange}
                 />
+                {homeMembers.length !== 0 && homeMembers.map( (member, index) => {
+                    let memberName = member.first_name ? member.first_name : member.email;
+                    return(
+                        <>
+                            <label id={index} htmlFor={memberName}>
+                            <input type={"checkbox"}
+                                    name={'participants'}
+                                    value={member.id}
+                                    onChange={handleCheck}
+                                                />
+                                {memberName}
+                            </label>
+                        </>
+                    )
+                    })
+                }
+                <input type={"text"}
+                       name={'notes'}
+                       value={newEvent.notes}
+                       onChange={handleChange}
+                />
                 <button type={'submit'}
                         onClick={handleAddEvent}>
-
+                Add Event
                 </button>
-
             </form>
-            <div className="myCustomHeight">
+                <div className="myCustomHeight">
                 <Calendar
-                    localizer={localizer}
-                    events={myEventsList}
-                    startAccessor="start"
-                    endAccessor="end"
-                    style={{height: 500, margin: '50px'}}
+                localizer={localizer}
+                events={myEventsList}
+                startAccessor="start"
+                endAccessor="end"
+                style={{height: 500, margin: '50px'}}
                 />
-            </div>
+                </div>
+                </>:
+                <div>
+                    You must be log in first
+                </div>
+            }
         </>
     )
 }
