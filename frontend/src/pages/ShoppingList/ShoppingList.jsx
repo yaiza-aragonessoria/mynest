@@ -201,7 +201,7 @@ const Shoppinglist = () => {
         </FavoritesContainer>
 
         <div className="cards_wraper">
-          <h2>Seasonal picks</h2>
+          <h2 className="header">Seasonal picks</h2>
           <Cards
             tobuyItem={tobuyItem}
             setTobuyItem={setTobuyItem}

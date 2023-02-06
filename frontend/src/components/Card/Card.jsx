@@ -43,15 +43,18 @@ const Card = ({ foodDataItem, tobuyItem, setTobuyItem, updateCartStatus }) => {
   return (
     <>
       <CardLayout>
-        <h3>{foodDataItem.name}</h3>
-        <span>{foodDataItem.description}</span>
-        <button
-          onClick={() => {
-            handleAddItem(foodDataItem.id, foodDataItem.name);
-          }}
-        >
-          Add
-        </button>
+        <div className="card_info">
+          <h3 className="subheader">{foodDataItem.name}</h3>
+          <p className="text">{foodDataItem.description}</p>
+          <button
+          className="btn_grey"
+            onClick={() => {
+              handleAddItem(foodDataItem.id, foodDataItem.name);
+            }}
+          >
+            Add to my list
+          </button>
+        </div>
         <div className="card_image">{foodDataItem.image}</div>
       </CardLayout>
     </>

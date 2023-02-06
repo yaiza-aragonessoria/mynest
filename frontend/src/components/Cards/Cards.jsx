@@ -16,26 +16,29 @@ const Cards = ({ tobuyItem, setTobuyItem, updateCartStatus }) => {
   });
 
   return (
-    <div>
-      <Card
+
+    <Card
         foodDataItem={food_data[indexes[0]]}
         tobuyItem={tobuyItem}
         setTobuyItem={setTobuyItem}
         updateCartStatus={updateCartStatus}
       />
-      <Card
-        foodDataItem={food_data[indexes[1]]}
-        tobuyItem={tobuyItem}
-        setTobuyItem={setTobuyItem}
-        updateCartStatus={updateCartStatus}
-      />
-      <Card
-        foodDataItem={food_data[indexes[2]]}
-        tobuyItem={tobuyItem}
-        setTobuyItem={setTobuyItem}
-        updateCartStatus={updateCartStatus}
-      />
-    </div>
+
+    // <div>
+      
+    //   <Card
+    //     foodDataItem={food_data[indexes[1]]}
+    //     tobuyItem={tobuyItem}
+    //     setTobuyItem={setTobuyItem}
+    //     updateCartStatus={updateCartStatus}
+    //   />
+    //   <Card
+    //     foodDataItem={food_data[indexes[2]]}
+    //     tobuyItem={tobuyItem}
+    //     setTobuyItem={setTobuyItem}
+    //     updateCartStatus={updateCartStatus}
+    //   />
+    // </div>
   );
 };
 
