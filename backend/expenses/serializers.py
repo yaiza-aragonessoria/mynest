@@ -19,4 +19,3 @@ class ExpenseSerializer(serializers.ModelSerializer):
         shared_with_queryset = User.objects.filter(id__in=representation['shared_with'])
         representation['shared_with'] = UserSerializer(shared_with_queryset, many=True).data
         return representation
-
