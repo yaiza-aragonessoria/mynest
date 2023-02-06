@@ -47,6 +47,7 @@ urlpatterns = [
     path('backend/api/events/', include('events.urls')),
     path('backend/api/home/', include('homes.urls')),
     path('backend/api/products/', include('products.urls')),
-    path('backend/api/users/', include('users.urls')),
+    path('backend/api/stickers/', include('stickers.urls')),
     path('backend/api/tasks/', include('tasks.urls')),
+    path('backend/api/users/', include('users.urls')),
 ]
