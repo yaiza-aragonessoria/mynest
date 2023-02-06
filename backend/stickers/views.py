@@ -16,7 +16,7 @@ class ListCreateStickerView(ListCreateAPIView):
     permission_classes = [HasHome]
 
     def get_queryset(self):
-        return Sticker.objects.filter(home=self.request.user.home).order_by("-updated")
+        return Sticker.objects.filter(author=self.request.user).order_by("-updated")
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
