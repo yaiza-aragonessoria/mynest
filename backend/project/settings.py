@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'products',
     'tasks',
     'users',
+    'events',
 ]
 
 MIDDLEWARE = [
