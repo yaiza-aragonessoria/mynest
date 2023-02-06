@@ -1,4 +1,5 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from products.models import Product
 from products.serializers import ProductSerializer
@@ -12,7 +13,7 @@ class ListCreateProductView(ListCreateAPIView):
     post: Creates a new Product.
     """
     serializer_class = ProductSerializer
-    permission_classes = [HasHome]
+    permission_classes = [IsAuthenticated, HasHome]
 
     def get_queryset(self):
         return Product.objects.filter(home=self.request.user.home).order_by("-updated")
@@ -29,7 +30,7 @@ class RetrieveUpdateDeleteProductView(RetrieveUpdateDestroyAPIView):
     """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsMemberOfHomeForProduct]
+    permission_classes = [IsAuthenticated, IsMemberOfHomeForProduct]
     lookup_field = 'id'  # field in the database
     lookup_url_kwarg = 'id_product'  # field in the request
     http_method_names = ['get', 'patch', 'delete']  # disallow put as we don't use it
@@ -41,7 +42,7 @@ class ListStatusView(ListAPIView):
          Set status in the parameter "q". Valid statuses are: TB, IP, BO.
     """
     serializer_class = ProductSerializer
-    permission_classes = [HasHome]
+    permission_classes = [IsAuthenticated, HasHome]
 
     def get_queryset(self):
         return Product.objects.filter(
@@ -54,7 +55,7 @@ class ListSearchView(ListAPIView):
           inverted chronological order.
      """
     serializer_class = ProductSerializer
-    permission_classes = [HasHome]
+    permission_classes = [IsAuthenticated, HasHome]
 
     def get_queryset(self):
         return Product.objects.filter(
