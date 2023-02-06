@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from events.models import Event
 from events.serializers import EventSerializer
 
@@ -6,7 +6,7 @@ from events.serializers import EventSerializer
 class ListCreateEventView(ListCreateAPIView):
     """
         get:
-        Lists all Events.
+        Lists all Events ordered by starting date.
 
         post:
         Creates an Event.
@@ -18,7 +18,7 @@ class ListCreateEventView(ListCreateAPIView):
 
     def get_queryset(self):
         query = self.request.GET.get('search', '')  # search is the params and '' the default value
-        queryset = Event.objects.filter(title__contains=query).order_by('-start')
+        queryset = Event.objects.filter(title__icontains=query).order_by('-start')
         return queryset
 
 
@@ -40,3 +40,21 @@ class RetrieveUpdateDeleteEventView(RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     # permission_classes = [IsAuthenticated, IsInvolvedInFriendship | IsAdminUser]
+
+
+class ListHomeEventsView(ListAPIView):
+    """
+        get:
+        Lists all Events of the Home of the logged-in User ordered by starting date.
+    """
+
+    serializer_class = EventSerializer
+
+    def get_queryset(self):
+        id_home = self.request.user.home
+        if id_home:
+            query = self.request.GET.get('search', '')  # search is the params and '' the default value
+            queryset = Event.objects.filter(creator_id__home=id_home, title__contains=query).order_by('-start')
+        else:
+            queryset = []
+        return queryset
