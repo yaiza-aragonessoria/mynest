@@ -3,7 +3,7 @@ import { useState } from "react";
 import api from "../../api/myNest";
 
 
-const Task = ({ name, status, assignee, id }) => {
+const Task = ({ name, status, assignee, id, onTaskDelete }) => {
   const [currentStatus, setCurrentStatus] = useState(status);
   const access = localStorage.getItem("access");
   const config = {
@@ -25,6 +25,18 @@ const Task = ({ name, status, assignee, id }) => {
     }
   };
 
+  const configDelete = {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  };
+
+  const handleDelete = async () => {
+    await api.delete(`/tasks/${id}`, configDelete);
+    onTaskDelete(id);
+  };
+
 
 
   return (
@@ -39,6 +51,7 @@ const Task = ({ name, status, assignee, id }) => {
           </button>
         )}
         <button type="submit">EDIT</button>
+        <button type="submit" onClick={handleDelete}>delete</button>
       </Button>
     </TaskContainer>
   );

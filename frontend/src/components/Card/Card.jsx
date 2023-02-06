@@ -1,41 +1,59 @@
 import React from "react";
+import axios from "axios";
 
-const Card = ({ foodDataItem, tobuyItem, setTobuyItem }) => {
+import { CardLayout } from "./Card.styled";
+
+const Card = ({ foodDataItem, tobuyItem, setTobuyItem, updateCartStatus }) => {
+
+  const token = localStorage.getItem("access");
+
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
   const handleAddItem = (curFoodDataItemId, curFoodDataItemName) => {
     const found = tobuyItem.filter((item) => {
       return (
-        item.id === curFoodDataItemId ||
         item.name.toLowerCase() === curFoodDataItemName.toLowerCase()
       );
     });
     if (found.length > 0) {
-      return;
-    }
+      if (found[0].status === "TB" || found[0].status === "IP") {
+        return;
+      }
+     
+      if (found[0].status === "BO") {
+        updateCartStatus(found[0].id, "TB")
+      }
 
-    setTobuyItem([
-      ...tobuyItem,
-      {
-        id: Math.random() * 10000,
-        name: curFoodDataItemName,
-        in_cart: false,
-        favorite: false,
-        purchased: false,
-      },
-    ]);
+    } else {
+      
+    axios
+    .post(
+      "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+      { name: curFoodDataItemName, favorite: false, status: "TB" },
+      config
+    )
+    .then((result) => {
+      setTobuyItem([...tobuyItem, result.data]);
+    })
+    .catch(() => {}); }
   };
 
   return (
     <>
-      <h3>{foodDataItem.name}</h3>
-      <span>{foodDataItem.description}</span>
-      <button
-        onClick={() => {
-          handleAddItem(foodDataItem.id, foodDataItem.name);
-          console.log(tobuyItem);
-        }}
-      >
-        Add
-      </button>
+      <CardLayout>
+        <h3>{foodDataItem.name}</h3>
+        <span>{foodDataItem.description}</span>
+        <button
+          onClick={() => {
+            handleAddItem(foodDataItem.id, foodDataItem.name);
+          }}
+        >
+          Add
+        </button>
+        <div className="card_image">{foodDataItem.image}</div>
+      </CardLayout>
     </>
   );
 };
