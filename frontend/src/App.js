@@ -5,6 +5,8 @@ import Shoppinglist from './pages/ShoppingList/ShoppingList';
 import Login from "./pages/Login/Login";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home/Home";
+import CreateTask from './components/CreateTask';
+import Tasks from './pages/Tasks';
 
 
 function App() {
@@ -15,6 +17,9 @@ function App() {
                 <Route path='/' element={<Home/>}/>
                 <Route path="/shoppinglist" element={<Shoppinglist/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/to-do" element={<Tasks/>}/>
+                <Route path="/add-task" element={<CreateTask/>}/>
+                
             </Routes>
 
         </div>);
