@@ -12,5 +12,3 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = '__all__'
         read_only_fields = ['creator']
-
-

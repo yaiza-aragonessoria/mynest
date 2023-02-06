@@ -1,5 +1,5 @@
 from datetime import date
-from django.db import modelscreated
+from django.db import models
 # from homes.models import Home
 from project import settings
 
