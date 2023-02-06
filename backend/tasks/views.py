@@ -2,6 +2,7 @@ from datetime import datetime
 
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from products.permissions import HasHome
@@ -17,7 +18,7 @@ class ListCreateTaskView(ListCreateAPIView):
     post: Creates a new Task.
     """
     serializer_class = TaskSerializer
-    permission_classes = [HasHome]
+    permission_classes = [IsAuthenticated, HasHome]
 
     def get_queryset(self):
         return Task.objects.filter(creator__home=self.request.user.home).order_by("-updated")
@@ -46,7 +47,7 @@ class ListMonthTaskView(ListAPIView):
     get: Lists all tasks of the logged-in User's Home for this month in inverted chronological order.
     """
     serializer_class = TaskSerializer
-    permission_classes = [HasHome]
+    permission_classes = [IsAuthenticated, HasHome]
 
     def get_queryset(self):
         return Task.objects.filter(
@@ -62,7 +63,7 @@ class RetrieveUpdateDeleteTaskView(RetrieveUpdateDestroyAPIView):
     """
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    permission_classes = [IsMemberOfHomeForTask]
+    permission_classes = [IsAuthenticated, IsMemberOfHomeForTask]
     lookup_field = 'id'  # field in the database
     lookup_url_kwarg = 'id_task'  # field in the request
     http_method_names = ['get', 'patch', 'delete']  # disallow put as we don't use it
@@ -73,7 +74,7 @@ class ListSearchView(ListAPIView):
      get: Lists all tasks of the logged-in User's Home with a name containing the parameter "q" in inverted chronological order.
      """
     serializer_class = TaskSerializer
-    permission_classes = [HasHome]
+    permission_classes = [IsAuthenticated, HasHome]
 
     def get_queryset(self):
         return Task.objects.filter(

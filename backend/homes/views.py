@@ -1,4 +1,5 @@
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from homes.models import Home
 from homes.serializers import HomeSerializer
@@ -12,7 +13,7 @@ class RetrieveUpdateDeleteHomeView(RetrieveUpdateDestroyAPIView):
         delete: Deletes a Home.
     """
     serializer_class = HomeSerializer
-    permission_classes = [HasHome]
+    permission_classes = [IsAuthenticated, HasHome]
     http_method_names = ['get', 'patch', 'delete']  # disallow put as we don't use it
 
     def get_object(self):
