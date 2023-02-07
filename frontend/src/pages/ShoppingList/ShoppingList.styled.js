@@ -4,9 +4,10 @@ export const MainWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   gap: 4rem;
   margin-top: 4rem;
+  
 
 
   .left_main_container {
@@ -43,6 +44,8 @@ export const MainWrapper = styled.div`
     align-items: flex-start;
     justify-content: center;
   }
+
+  
 
 `;
 

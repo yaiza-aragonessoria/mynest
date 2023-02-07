@@ -60,12 +60,12 @@ const FavouriteItems = ({
             );
           })}
       </ItemWrapper>
-      <FavouriteItems_popup
+      {/* <FavouriteItems_popup
         showPopup={showPopup}
         setShowPopup={setShowPopup}
         tobuyItem={tobuyItem}
         setTobuyItem={setTobuyItem}
-      />
+      /> */}
     </div>
   );
 };

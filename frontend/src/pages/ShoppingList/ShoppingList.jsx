@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cards from "../../components/Cards/Cards";
 import FavouriteItems from "../../components/FavouriteItems/FavouriteItems";
+import FavouriteItems_popup from "../../components/FavouriteItems/FavouriteItems_popup";
 import InCart from "../../components/InCart/InCart";
 import ShoppingList_item from "../../components/ShoppingList_item/ShoppingList_item";
 import axios from "axios";
@@ -128,6 +129,13 @@ const Shoppinglist = () => {
 
   return (
     <MainWrapper>
+        <FavouriteItems_popup
+          showPopup={showPopup}
+          setShowPopup={setShowPopup}
+          tobuyItem={tobuyItem}
+          setTobuyItem={setTobuyItem}
+        />
+
       <div className="left_main_container">
         <InputContainer>
           <form>
@@ -187,8 +195,7 @@ const Shoppinglist = () => {
         <FavoritesContainer>
           <div className="header_wrapper">
             <h2 className="header">Recently purchased</h2>
-            <i onClick={handlePopup}
-            >{<FontAwesomeIcon icon={faGears} />}</i>
+            <i onClick={handlePopup}>{<FontAwesomeIcon icon={faGears} />}</i>
           </div>
 
           <FavouriteItems
