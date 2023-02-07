@@ -1,5 +1,19 @@
 import styled from "styled-components";
 
+export const PopupBg = styled.div`
+width: 100%;
+height: 100%;
+z-index: 3;
+position: fixed;
+background: rgb(248,245,255);
+background: linear-gradient(328deg, rgba(248,245,255,0.6208858543417367) 0%, rgba(114,57,234,0.36318277310924374) 59%);
+display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+`
+
 export const PopupWrapper = styled.div`
   z-index: 3;
   position: fixed;
@@ -13,7 +27,6 @@ export const PopupWrapper = styled.div`
   align-items: center;
   padding: 1rem;
   box-shadow: 0 3px 7px rgb(0 0 0 / 0.15);
-  margin-top: 3rem;
 
   .purchased_items_container {
     margin: 1rem;
@@ -49,6 +62,10 @@ export const PopupWrapper = styled.div`
   .delete_item:active {
    color: #7e8299;
    font-size: 14px;
+  }
+
+  .favorite_item {
+    color: orange;
   }
 
   button {

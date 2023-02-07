@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 // STYLES
-import { PopupWrapper } from "./FavouriteItems_popup.styled";
+import { PopupBg, PopupWrapper } from "./FavouriteItems_popup.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -60,6 +60,7 @@ const FavouriteItems_popup = ({
   };
 
   return showPopup ? (
+    <PopupBg>
     <PopupWrapper>
       <h3 className="header">Edit recently purchased items</h3>
       <div className="purchased_items_container">
@@ -71,7 +72,7 @@ const FavouriteItems_popup = ({
             return (
               <div className="purchased_item text" key={item.id}>
                 <i
-                  className="add_to_fav"
+                  className={item.favorite ? "favorite_item": "add_to_fav"}
                   onClick={() => {
                     handleLike(item.id, item.favorite);
                   }}
@@ -97,6 +98,7 @@ const FavouriteItems_popup = ({
         Close
       </button>
     </PopupWrapper>
+  </PopupBg>
   ) : (
     ""
   );

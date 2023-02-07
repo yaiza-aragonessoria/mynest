@@ -2,21 +2,21 @@ import styled from "styled-components";
 
 export const MainWrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 95%;
   display: flex;
   justify-content: center;
   gap: 4rem;
-  margin-top: 4rem;
   
 
 
   .left_main_container {
     width: 50%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-left: 3rem;
+    margin-top: 2rem;
+
   }
 
   .empty_list_btn {
@@ -25,19 +25,17 @@ export const MainWrapper = styled.div`
 
   .right_main_container {
     width: 50%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     padding-left: 2rem;
     margin-right: 2rem;
     border-left: 1px dashed #E1E3EA;
-    justify-content: space-between;
+    margin-top: 2rem;
+
   }
 
   .cards_wraper {
-    height: 100%;
     margin-top: 3rem;
-
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -58,6 +56,7 @@ export const InputContainer = styled.div`
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    margin-top: 1rem;
   }
 
   input {
