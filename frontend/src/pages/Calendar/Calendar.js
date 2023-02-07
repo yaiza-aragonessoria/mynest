@@ -2,7 +2,22 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import React, { useState, useEffect } from "react"
 import axios from "axios";
-import './Calendar.css'
+import './Calendar.css';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// import CustomToolbar from './toolbar';
+import Popup from 'react-popup';
+import './popup.css';
+
+// import Input from './input';
+// import moment from 'moment';
+
+
+
+/* sources:
+https://www.youtube.com/watch?v=lyRP_D0qCfk
+https://codesandbox.io/s/sksajureact-redux-event-calendar-n5her?file=/src/components/calender.js:665-980
+ */
 
 // Setup the localizer by providing the moment (or globalize, or Luxon) Object
 // to the correct localizer.
@@ -87,6 +102,111 @@ const HomeCalendar = (props) => {
 
     }
 
+    // DELETE EVENT
+    const handleDeleteEvent = () => {
+        return false;
+    }
+
+    // DELETE EVENT
+    const handleUpdateEvent = () => {
+        return false;
+    }
+
+    //RENDER SINGLE EVENT POPUP CONTENT
+    const renderEventContent = (slotInfo) => {
+        const date = moment(slotInfo.start).format('MMMM D, YYYY');
+        return (
+            <div>
+                <p>Date: <strong>{date}</strong></p>
+                {/*<p>Location: {slotInfo.participants}</p>*/}
+            </div>
+        );
+    }
+
+    //POPUP-FORM FUNCTION FOR CREATE AND EDIT EVENT
+    const openPopupForm = (slotInfo) => {
+        console.log('openPopupForm')
+        let newEvent = false;
+        let popupTitle = "Update Event";
+        if(!slotInfo.hasOwnProperty('id')) {
+            slotInfo.id = moment().format('x');  //Generate id with Unix Millisecond Timestamp
+            slotInfo.title = null;
+            slotInfo.location = null;
+            popupTitle = "Create Event";
+            newEvent = true;
+        }
+        // Maybe make a global change function?
+        let titleChange = function (value) {
+            slotInfo.title = value;
+        };
+        // let locationChange = function (value) {
+        //     slotInfo.location = value;
+        // };
+
+        Popup.create({
+            title: popupTitle,
+            content: <div> holi
+                        {/*<input onChange={titleChange} placeholder="Event Title" value={slotInfo.title} />*/}
+                        {/*<Input onChange={locationChange} placeholder="Event Location" defaultValue={slotInfo.location} />*/}
+                    </div>,
+            buttons: {
+                left: ['cancel'],
+                right: [{
+                    text: 'Save',
+                    className: 'success',
+                    action: function () { console.log('action button')
+                        //CHECK THE ID PROPERTY FOR CREATE/UPDATE
+                        // if(newEvent) {
+                        //     handleAddEvent(slotInfo); //EVENT CREATE ACTION
+                        // } else {
+                        //     handleUpdateEvent(slotInfo); //EVENT UPDATE ACTION
+                        // }
+                        Popup.close();
+                    }
+                }]
+            }
+        });
+    }
+
+    //ON SELECT EVENT HANDLER FUNCTION
+    const onSelectEventHandler = (slotInfo) => {
+        console.log('onSelectEventHandler')
+        Popup.create({
+            title: slotInfo.title,
+            content: renderEventContent(slotInfo),
+            buttons: {
+                right: [{
+                    text: 'Edit',
+                    className: 'info',
+                    action: function () {
+                        Popup.close(); //CLOSE PREVIOUS POPUP
+                        openPopupForm(slotInfo); //OPEN NEW EDIT POPUP
+                    }.bind(this)
+                }, {
+                    text: 'Delete',
+                    className: 'danger',
+                    action: function () {
+                        //CALL EVENT DELETE ACTION
+                        handleDeleteEvent();
+                        Popup.close();
+                    }.bind(this)
+                }]
+            }
+        });
+    }
+
+    //EVENT STYLE GETTER FOR SLYLING AN EVENT ITEM
+    const eventStyleGetter = (event, start, end, isSelected) => {
+        let current_time = moment().format('YYYY MM DD');
+        let event_time = moment(event.start).format('YYYY MM DD');
+        let background = (current_time>event_time) ? '#DE6987' : '#8CBD4C';
+        return {
+            style: {
+                backgroundColor: background
+            }
+        };
+    }
+
     return (
         <>
             {isLoggedIn ?
@@ -135,14 +255,19 @@ const HomeCalendar = (props) => {
                 </button>
             </form>
                 <div className="myCustomHeight">
-                <Calendar
-                localizer={localizer}
-                events={myEventsList}
-                startAccessor="start"
-                endAccessor="end"
-                style={{height: 500, margin: '50px'}}
-                />
+                    <Calendar
+                        popup
+                        selectable
+                        localizer={localizer}
+                        events={myEventsList}
+                        startAccessor="start"
+                        endAccessor="end"
+                        eventPropGetter={(eventStyleGetter)}
+                        onSelectEvent={(slotInfo) => onSelectEventHandler(slotInfo)}
+                        style={{height: 500, margin: '50px'}}
+                    />
                 </div>
+                <Popup />
                 </>:
                 <div>
                     You must be log in first
