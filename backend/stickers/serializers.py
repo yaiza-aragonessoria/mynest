@@ -2,14 +2,14 @@ from rest_framework import serializers
 from .models import Sticker
 
 
-class UserSerializer(serializers.Serializer):
+class UserStickerSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
 
 
 class StickerSerializer(serializers.ModelSerializer):
 
-    author = UserSerializer()
+    author = UserStickerSerializer()
 
     class Meta:
         model = Sticker
