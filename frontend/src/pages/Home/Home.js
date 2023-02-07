@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import Sticker from "../../components/Sticker/Sticker";
 const Home = () => {
     const token = localStorage.getItem("access");
 
@@ -11,6 +12,27 @@ const Home = () => {
     const [homeAddress, setHomeAddress] = useState("");
     const [homeUsers, setHomeUsers] = useState([]);
     const [homeStickers, setHomeStickers] = useState([]);
+
+    const toggleSticker = id => {
+        let newStickers = homeStickers.map(s => s.id == id ? {...s, pinned: !s.pinned} : s);
+        setHomeStickers(newStickers);
+    }
+    const deleteSticker = id => {
+        setHomeStickers(homeStickers.filter(s => s.id != id));
+    }
+
+    const compareStickers = (a, b) => {
+        console.log(a);
+        if (a.pinned && b.pinned) {
+            return b.id - a.id;
+        } else if (a.pinned) {
+            return -1;
+        } else if (b.pinned) {
+            return 1;
+        } else {
+            return b.id - a.id;
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,9 +63,13 @@ const Home = () => {
             <ul>
                 {homeUsers.map(u => <li key={u.id}>{u.first_name} {u.last_name}</li>)}
             </ul>
-            <ul>
-                {homeStickers.map(s => <li key={s.id}>{s.content} {s.author.first_name}</li>)}
-            </ul>
+            <form>
+                <input style={{width: "80%", margin: "20px"}} type="text" placeholder="new sticker..." />
+
+            </form>
+            <div>
+                {homeStickers.sort(compareStickers).map(s => <Sticker key={s.id} sticker={s} toggleSticker={toggleSticker} deleteSticker={deleteSticker} />)}
+            </div>
         </div>
     );
 };
