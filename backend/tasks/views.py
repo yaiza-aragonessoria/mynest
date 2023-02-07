@@ -71,7 +71,8 @@ class RetrieveUpdateDeleteTaskView(RetrieveUpdateDestroyAPIView):
 
 class ListSearchView(ListAPIView):
     """
-     get: Lists all tasks of the current month and of the logged-in User's Home with a name containing the parameter "q" in inverted chronological order.
+     get: Lists all tasks of the current month and of the logged-in User's Home
+     with a name containing the parameter "q" in inverted chronological order.
      """
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated, HasHome]
