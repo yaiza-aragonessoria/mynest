@@ -71,11 +71,12 @@ class RetrieveUpdateDeleteTaskView(RetrieveUpdateDestroyAPIView):
 
 class ListSearchView(ListAPIView):
     """
-     get: Lists all tasks of the logged-in User's Home with a name containing the parameter "q" in inverted chronological order.
+     get: Lists all tasks of the current month and of the logged-in User's Home with a name containing the parameter "q" in inverted chronological order.
      """
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated, HasHome]
 
     def get_queryset(self):
         return Task.objects.filter(
-            creator__home=self.request.user.home, name__contains=self.request.GET.get('q', '')).order_by("-updated")
+            creator__home=self.request.user.home, name__contains=self.request.GET.get('q', ''),
+            planned_for__year=datetime.now().year, planned_for__month=datetime.now().month).order_by("-updated")
