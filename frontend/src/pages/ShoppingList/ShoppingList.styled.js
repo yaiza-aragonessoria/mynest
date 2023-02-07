@@ -2,10 +2,12 @@ import styled from "styled-components";
 
 export const MainWrapper = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   /* justify-content: center; */
   gap: 4rem;
-  margin-top: 3rem;
+  margin-top: 4rem;
+
 
   .left_main_container {
     width: 50%;
@@ -17,10 +19,31 @@ export const MainWrapper = styled.div`
   }
 
   .empty_list_btn {
-    /* position: absolute;
-  bottom: 3rem; */
-  margin-top: 2rem;
+    margin-top: 2rem;
   }
+
+  .right_main_container {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 2rem;
+    margin-right: 2rem;
+    border-left: 1px dashed #E1E3EA;
+    justify-content: space-between;
+  }
+
+  .cards_wraper {
+    height: 100%;
+    margin-top: 3rem;
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
 `;
 
 export const InputContainer = styled.div`
@@ -67,17 +90,37 @@ export const ItemsContainer = styled.div`
     height: 25px;
     border-radius: 50%;
     text-align: center;
+    cursor: pointer;
   }
 
   .sort:hover {
     background-color: #a1a5b7;
   }
-  
+
   i {
     font-size: 14px;
     color: #fff;
     padding: 2px;
   }
+`;
 
- 
+export const FavoritesContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .header_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+  }
+
+  i {
+    font-size: 23px;
+    color: #b5b5c3;
+    cursor: pointer;
+  }
 `;

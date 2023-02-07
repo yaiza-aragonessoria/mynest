@@ -3,6 +3,9 @@ body {
   padding: 0;
   box-sizing: border-box;
 
+  width: 100%;
+  height: 100vh;
+
   font-family: 'Inter', sans-serif;
   background-color: #fff;
   -webkit-font-smoothing: antialiased;
@@ -17,15 +20,18 @@ code {
 .header {
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 22px;
   color: #181C32;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #c1a5ff;
+
 }
 
 .subheader {
   font-style: normal;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 21px;
   color: #181C32;
 }
@@ -50,6 +56,10 @@ code {
   line-height: 20px;
   border: none;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, #7239EA 0%, #c1a5ff  100%);
 
 }
 
@@ -57,6 +67,7 @@ code {
   background-color: #F8F5FF;
   color: #7239EA;
   border: 1px solid #7239EA;
+  background-image: none;
 }
 
 .btn_purple:active {
@@ -76,6 +87,10 @@ code {
   line-height: 20px;
   border: none;
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, #A1A5B7 0%, #c9cee3  100%);
 
 }
 
@@ -83,9 +98,13 @@ code {
   background-color: #F8F5FF;
   color: #7239EA;
   border: 1px solid #7239EA;
+  background-image: none;
 }
 
 .btn_grey:active {
   background-color: #7239EA;
   color: #fff;
 }
+
+
+

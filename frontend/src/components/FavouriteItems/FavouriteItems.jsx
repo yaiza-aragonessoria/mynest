@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import FavouriteItems_popup from "./FavouriteItems_popup";
 
-const FavouriteItems = ({ tobuyItem, updateCartStatus, setTobuyItem }) => {
-  const [showPopup, setShowPopup] = useState(false);
+// STYLING
+import { ItemWrapper } from "./FavouriteItems.styled";
 
-  const handlePopup = (e) => {
-    setShowPopup(true);
-  };
-
+const FavouriteItems = ({
+  tobuyItem,
+  updateCartStatus,
+  setTobuyItem,
+  showPopup,
+  setShowPopup,
+}) => {
   const sortFunction = (a, b) => {
     if ((a.favorite && b.favorite) || (!a.favorite && !b.favorite)) {
       // sorting by oldest (among favorites or among non-favorites)
@@ -35,7 +38,7 @@ const FavouriteItems = ({ tobuyItem, updateCartStatus, setTobuyItem }) => {
 
   return (
     <div>
-      <div>
+      <ItemWrapper>
         {tobuyItem
           .filter((item) => {
             return item.status === "BO";
@@ -44,20 +47,19 @@ const FavouriteItems = ({ tobuyItem, updateCartStatus, setTobuyItem }) => {
           .sort(sortFunction)
           .map((item, index) => {
             return (
-              <div key={item.id}>
-                <span
+              <div className="purchased_items"
+              key={item.id}>
+                <p className="text"
                   onClick={() => {
                     updateCartStatus(item.id, "TB");
                   }}
                 >
                   {item.name}
-                </span>
-                <br />
+                </p>
               </div>
             );
           })}
-      </div>
-      <button onClick={handlePopup}>Edit</button>
+      </ItemWrapper>
       <FavouriteItems_popup
         showPopup={showPopup}
         setShowPopup={setShowPopup}
