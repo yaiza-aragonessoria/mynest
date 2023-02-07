@@ -1,8 +1,13 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 100vh;
+
+  font-family: 'Inter', sans-serif;
+  background-color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -11,3 +16,95 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.header {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 22px;
+  color: #181C32;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #c1a5ff;
+
+}
+
+.subheader {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 21px;
+  color: #181C32;
+}
+
+.text {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #181C32;
+}
+
+/* PURPLE BUTTON */
+.btn_purple {
+  background-color: #7239EA;
+  color: #fff;
+  min-height: 40px;
+  border-radius: 8px;  
+  padding: 7px 25px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  border: none;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, #7239EA 0%, #c1a5ff  100%);
+
+}
+
+.btn_purple:hover {
+  background-color: #F8F5FF;
+  color: #7239EA;
+  border: 1px solid #7239EA;
+  background-image: none;
+}
+
+.btn_purple:active {
+  background-color: #7239EA;
+  color: #fff;
+}
+
+/* GREY BUTTON */
+.btn_grey {
+  background-color: #A1A5B7;
+  color: #fff;
+  min-height: 40px;
+  border-radius: 8px;  
+  padding: 7px 25px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  border: none;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, #A1A5B7 0%, #c9cee3  100%);
+
+}
+
+.btn_grey:hover {
+  background-color: #F8F5FF;
+  color: #7239EA;
+  border: 1px solid #7239EA;
+  background-image: none;
+}
+
+.btn_grey:active {
+  background-color: #7239EA;
+  color: #fff;
+}
+
+
+

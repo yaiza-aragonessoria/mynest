@@ -1,10 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Cards from "../../components/Cards/Cards";
+import FavouriteItems from "../../components/FavouriteItems/FavouriteItems";
 import InCart from "../../components/InCart/InCart";
 import ShoppingList_item from "../../components/ShoppingList_item/ShoppingList_item";
+import axios from "axios";
 
-import { PageWrapper, MainWrapper } from "./ShoppingList.styled";
+// STYLING
+import {
+  MainWrapper,
+  InputContainer,
+  ItemsContainer,
+  FavoritesContainer
+} from "./ShoppingList.styled";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGears, faSort } from '@fortawesome/free-solid-svg-icons'
+
+
+
 
 const Shoppinglist = () => {
+ 
+
+  const token = localStorage.getItem("access");
+
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
   // TO BUY LIST
   const [inputText, setInputText] = useState("");
 
@@ -14,50 +36,110 @@ const Shoppinglist = () => {
 
   const [tobuyItem, setTobuyItem] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const backendData = await axios.get(
+        "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+        config
+      );
+
+      setTobuyItem(backendData.data);
+    };
+    fetchData();
+  }, []);
+
   const handleSubmitItem = (e) => {
     e.preventDefault();
-    setTobuyItem([
-      ...tobuyItem,
-      {
-        id: Math.random() * 10000,
-        name: inputText,
-        in_cart: false,
-        favorite: false,
-        purchased: false,
-      },
-    ]);
+
+    const found = tobuyItem.filter((item) => {
+      return item.name.toLowerCase() === inputText.toLowerCase();
+    });
+    if (found.length > 0) {
+      if (found[0].status === "TB" || found[0].status === "IP") {
+        return;
+      } else if (found[0].status === "BO") {
+        updateCartStatus(found[0].id, "TB");
+        setInputText("");
+        return;
+      }
+    }
+    axios
+      .post(
+        "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+        { name: inputText, favorite: false, status: "TB" },
+        config
+      )
+      .then((result) => {
+        setTobuyItem([...tobuyItem, result.data]);
+      })
+      .catch(() => {});
+
     setInputText("");
   };
 
   const [enableSort, setEnableSort] = useState(false);
 
-  const updateCartStatus = (curItemId) => {
+  const updateCartStatus = (curItemId, newStatus) => {
+    axios.patch(
+      `https://mynest.propulsion-learn.ch/backend/api/products/${curItemId}/`,
+      { status: newStatus },
+      config
+    );
+
     const updatedItems = tobuyItem.map((item) => {
       if (item.id !== curItemId) {
         return item;
       }
       return {
-        // id: item.id,
-        // name: item.name,
         ...item,
-        in_cart: !item.in_cart,
+        status: newStatus,
       };
     });
     setTobuyItem(updatedItems);
   };
 
+  const addToPurchased = (e) => {
+    e.preventDefault();
+
+    tobuyItem.map((item) => {
+      if (item.status !== "BO") {
+        axios.patch(
+          `https://mynest.propulsion-learn.ch/backend/api/products/${item.id}/`,
+          { status: "BO" },
+          config
+        );
+      }
+    });
+
+    const updatedItems = tobuyItem.map((item) => {
+      return {
+        ...item,
+        status: "BO",
+      };
+    });
+    setTobuyItem(updatedItems);
+  };
+
+// HANDLING POPUP FOR RECENTLY PURCHASED
+  const [showPopup, setShowPopup] = useState(false);
+  const handlePopup = (e) => {
+    setShowPopup(true);
+  };
+
   return (
-    <PageWrapper>
-      <div className="page_container">
-        <div className="input_container">
+    <MainWrapper>
+      <div className="left_main_container">
+        <InputContainer>
           <form>
             <input
+              className="text"
               type="text"
               placeholder="What do you need to buy?"
               onChange={handleInputText}
               value={inputText}
             />
             <button
+              className="btn_purple"
               type="submit"
               onClick={handleSubmitItem}
               disabled={inputText.length < 1}
@@ -65,83 +147,69 @@ const Shoppinglist = () => {
               Add to list
             </button>
           </form>
-        </div>
+        </InputContainer>
 
-        <MainWrapper>
-          <div className="left_main_container">
-            <div className="to_buy_wrapper">
-              <h2>Things to Buy</h2>
+        <ItemsContainer>
+          <div className="to_buy_wrapper">
+            <div className="to_buy_header">
+              <h2 className="header">Things to Buy</h2>
               <button
+                className="sort"
                 onClick={() => {
                   setEnableSort(!enableSort);
                 }}
               >
-                Sort
+                <i>{<FontAwesomeIcon icon={faSort} />}</i>
               </button>
-              <div className="to_buy_list">
-                {/* RENDER TO BUY ITEMS HERE */}
-                <ShoppingList_item
-                  tobuyItem={tobuyItem}
-                  setTobuyItem={setTobuyItem}
-                  enableSort={enableSort}
-                  updateCartStatus={updateCartStatus}
-                />
-              </div>
             </div>
 
-            <div className="in_cart_wrapper">
-              <h2>Already in my cart</h2>
-              <div className="in_cart_list">
-                {/* RENDER ITEMS ALREADY IN CART */}
-                <InCart
-                  tobuyItem={tobuyItem}
-                  updateCartStatus={updateCartStatus}
-                />
-              </div>
-            </div>
-
-            <button>Done with shopping</button>
-
-            <div className="send_email">
-              <input type="email" placeholder="Enter email" />
-              <button>Send list by email</button>
-            </div>
+            <ShoppingList_item
+              tobuyItem={tobuyItem}
+              enableSort={enableSort}
+              updateCartStatus={updateCartStatus}
+            />
           </div>
 
-          <div className="right_main_container">
-            <div className="favourites_wraper">
-              <h2>Favourites</h2>
-              <p>item 1</p>
-              <p>item 2</p>
-              <p>item 3</p>
-              <button>Edit Favourites</button>
-            </div>
+          <InCart tobuyItem={tobuyItem} updateCartStatus={updateCartStatus} />
+        </ItemsContainer>
 
-            <div className="cards_wraper">
-              <h2>Seasonal picks</h2>
-              <div className="card">
-                <img />
-                <h3>Item name</h3>
-                <span>Description</span>
-                <button>Add to my list</button>
-              </div>
-              <div className="card">
-                <img />
-                <h3>Item name</h3>
-                <span>Description</span>
-                <button>Add to my list</button>
-              </div>
-              <div className="card">
-                <img />
-                <h3>Item name</h3>
-                <span>Description</span>
-                <button>Add to my list</button>
-              </div>
-            </div>
-          </div>
-        </MainWrapper>
+        <button className="btn_grey empty_list_btn" onClick={addToPurchased}>
+          Empty the list
+        </button>
+
+        {/* <div className="send_email">
+          <input type="email" placeholder="Enter email" />
+          <button>Send list by email</button>
+        </div> */}
       </div>
-    </PageWrapper>
+
+      <div className="right_main_container">
+        <FavoritesContainer>
+          <div className="header_wrapper">
+            <h2 className="header">Recently purchased</h2>
+            <i onClick={handlePopup}
+            >{<FontAwesomeIcon icon={faGears} />}</i>
+          </div>
+
+          <FavouriteItems
+            tobuyItem={tobuyItem}
+            setTobuyItem={setTobuyItem}
+            updateCartStatus={updateCartStatus}
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
+          />
+        </FavoritesContainer>
+
+        <div className="cards_wraper">
+          <h2 className="header">Seasonal picks</h2>
+          <Cards
+            tobuyItem={tobuyItem}
+            setTobuyItem={setTobuyItem}
+            updateCartStatus={updateCartStatus}
+          />
+        </div>
+      </div>
+    </MainWrapper>
   );
 };
 

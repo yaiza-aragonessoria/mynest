@@ -1,0 +1,617 @@
+{
+	"info": {
+		"_postman_id": "62f2db5b-34a1-4d82-b97e-c7234c27d10b",
+		"name": "MyNestDroplet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Home from User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/home/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"home",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Home from User",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"address\": \"Musterstrasse 24, 8001 Zurich\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/home/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"home",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"apple\",\n  \"quantity\": 12,\n  \"status\": \"TB\",\n  \"favorite\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"products",
+						"home",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Products",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/products/home/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"products",
+						"home",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product By ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/products/2/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"products",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product By ID",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"quantity\": 99\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/products/9/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"products",
+						"9",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product By ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/products/8/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"products",
+						"8",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Products By Status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/products/home/status/?q=TB",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"products",
+						"home",
+						"status",
+						""
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "TB"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Products By Name Search",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/products/home/search/?q=app",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"products",
+						"home",
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "app"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/tasks/home/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"tasks",
+						"home",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Tasks For this Month",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/tasks/home/month/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"tasks",
+						"home",
+						"month",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Clean the kitchen\",\n  \"frequency\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/tasks/home/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"tasks",
+						"home",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task with a Date",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Sweep the floor\",\n  \"frequency\": 4,\n  \"planned_for\": \"2023-03-01\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/tasks/home/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"tasks",
+						"home",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Task By ID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/tasks/11/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"tasks",
+						"11",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Task By ID",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"assignee\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/tasks/11/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"tasks",
+						"11",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Tasks By Name Search",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/tasks/home/search/?q=mo",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"tasks",
+						"home",
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "mo"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Home from User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://mynest.propulsion-learn.ch/backend/api/home/",
+					"protocol": "https",
+					"host": [
+						"mynest",
+						"propulsion-learn",
+						"ch"
+					],
+					"path": [
+						"backend",
+						"api",
+						"home",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.sendRequest({",
+					"    url: 'https://mynest.propulsion-learn.ch/backend/api/auth/token/',",
+					"    method: 'POST',",
+					"    header: {",
+					"        'content-type': 'application/json'",
+					"    },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: JSON.stringify({\"email\": \"admin@mynest.com\", \"password\": \"mynest\"})",
+					"    }",
+					"}, (err, res) => pm.collectionVariables.set(\"TOKEN\", res.json().access));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TOKEN",
+			"value": ""
+		}
+	]
+}

@@ -1,16 +1,11 @@
 import React from "react";
 
-const ShoppingList_item = ({
-  tobuyItem,
-  setTobuyItem,
-  enableSort,
-  updateCartStatus,
-}) => {
-  const handleDeleteItem = (id) => {
-    const newItems = tobuyItem.filter((l) => l.id !== id);
-    setTobuyItem(newItems);
-  };
+// STYLING
+import { ItemWrapper } from "./ShoppingList_item.styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
+const ShoppingList_item = ({ tobuyItem, enableSort, updateCartStatus }) => {
   const sortFunction = (a, b) => {
     if (a.name.toLowerCase() < b.name.toLowerCase()) {
       return -1;
@@ -20,45 +15,42 @@ const ShoppingList_item = ({
     return 0;
   };
 
-  // const updateCartStatus = (curItemId) => {
-  //   const updatedItems = tobuyItem.map((item) => {
-  //     if (item.id !== curItemId) {
-  //       return item;
-  //     }
-  //     return {
-  //       // id: item.id,
-  //       // name: item.name,
-  //       ...item,
-  //       in_cart: !item.in_cart,
-  //     };
-  //   });
-  //   setTobuyItem(updatedItems);
-  // };
-
   return (
-    <div className="to_buy_item">
+    <ItemWrapper>
       {(enableSort ? tobuyItem.slice().sort(sortFunction) : tobuyItem)
         .filter((item) => {
-          return item.in_cart === false;
+          return item.status === "TB";
         })
         .map((item, index) => {
           return (
-            <>
-              <span
+            <div className="to_buy_item text" key={item.id}>
+              <i
+                className="check"
                 onClick={() => {
-                  updateCartStatus(item.id);
+                  updateCartStatus(item.id, "IP");
                 }}
-                key={item.id}
+              >
+                {<FontAwesomeIcon icon={faCheck} />}
+              </i>
+              
+              <p
+                onClick={() => {
+                  updateCartStatus(item.id, "IP");
+                }}
               >
                 {item.name}
-              </span>
-              <button onClick={() => handleDeleteItem(item.id)}>
-                Delete item
-              </button>
-            </>
+              </p>
+
+              <i
+                className="delete_from_list"
+                onClick={() => updateCartStatus(item.id, "BO")}
+              >
+                {<FontAwesomeIcon icon={faXmark} />}
+              </i>
+            </div>
           );
         })}
-    </div>
+    </ItemWrapper>
   );
 };
 

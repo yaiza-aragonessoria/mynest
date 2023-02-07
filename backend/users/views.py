@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
+
+from homes.models import Home
 from users.serializers import UserSerializer
 
 
@@ -55,9 +57,28 @@ class RetrieveUserView(RetrieveAPIView):
         Deletes a User by ID.
 
     """
-    http_method_names = ['get', 'patch', 'delete']  # disallow put as we don't use it
     lookup_field = 'id'
     lookup_url_kwarg = 'id_user'
     queryset = User.objects.all()
     serializer_class = UserSerializer
     # permission_classes = [IsAuthenticated]
+
+
+class HomeMembersView(ListAPIView):
+    """
+    get:
+    Lists all Users sharing the Home with id_home.
+    """
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        query = self.request.user.home.id if self.request.user.home else 0
+
+        home_exists = Home.objects.filter(id=query).exists()
+
+        if home_exists:
+            queryset = User.objects.filter(home=query)
+            return queryset
+        else:
+            return []

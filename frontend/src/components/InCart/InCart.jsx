@@ -1,27 +1,47 @@
 import React from "react";
 
+// STYLING
+import { InCartWrapper } from "./InCart.styled";
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+
+
 const InCart = ({ tobuyItem, updateCartStatus }) => {
   return (
-    <div>
+    <InCartWrapper>
       {tobuyItem
         .filter((item) => {
-          return item.in_cart === true;
+          return item.status === "IP";
         })
         .map((item, index) => {
           return (
-            <>
-              <span
+            <div className="in_cart_item text" key={item.id}>
+              <i
+                className="check"
                 onClick={() => {
-                  updateCartStatus(item.id);
+                  updateCartStatus(item.id, "TB");
                 }}
-                key={item.id}
+              >
+                {<FontAwesomeIcon icon={faCheck} />}
+              </i>
+              <p
+                onClick={() => {
+                  updateCartStatus(item.id, "TB");
+                }}
               >
                 {item.name}
-              </span>
-            </>
+              </p>
+              <i
+                className="delete_from_list"
+                onClick={() => updateCartStatus(item.id, "BO")}
+              >
+                {<FontAwesomeIcon icon={faXmark} />}
+              </i>
+            </div>
           );
         })}
-    </div>
+    </InCartWrapper>
   );
 };
 
