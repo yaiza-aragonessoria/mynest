@@ -32,6 +32,7 @@ const HomeCalendar = (props) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [homeMembers, setHomeMembers] = useState([]);
     const [checked, setChecked] = useState([]);
+    const [updatedChecked, setUpdatedChecked] = useState([]);
 
     const getHomeMembers = async() => {
         try {
@@ -103,8 +104,16 @@ const HomeCalendar = (props) => {
     }
 
     // DELETE EVENT
-    const handleDeleteEvent = () => {
-        return false;
+    const handleDeleteEvent = async (slotInfo) => {
+        console.log(slotInfo)
+
+        try {
+            const res = await axios.delete(`https://mynest.propulsion-learn.ch/backend/api/events/${slotInfo.id}`, headers);
+            getEvents();
+            console.log("myEventsList =", myEventsList);
+        } catch (e) {
+            setErrorMessage(e.message);
+        }
     }
 
     // DELETE EVENT
@@ -112,21 +121,39 @@ const HomeCalendar = (props) => {
         return false;
     }
 
+    const makeParticipantsString = (participantsArray) => {
+            const participantNames = [];
+
+            participantsArray.map((participant, index) => {
+                let name = participant.first_name ? participant.first_name : participant.email;
+                participantNames.push(name);
+            });
+            return participantNames.join(', ')
+        }
+
     //RENDER SINGLE EVENT POPUP CONTENT
     const renderEventContent = (slotInfo) => {
-        const date = moment(slotInfo.start).format('MMMM D, YYYY');
+        const start = moment(slotInfo.start).format('MMMM D, YYYY');
+        const end = moment(slotInfo.end).format('MMMM D, YYYY');
+        const participants = makeParticipantsString(slotInfo.participants)
+
+        // console.log(slotInfo)
+
         return (
             <div>
-                <p>Date: <strong>{date}</strong></p>
-                {/*<p>Location: {slotInfo.participants}</p>*/}
+                {start === end ? <p>Date: {start} </p> :
+                    <p>Date: {start} - {end}</p>}
+                Participants: {participants}
+                {slotInfo.notes.length !== 0 ? <p>Notes: {slotInfo.notes}</p> : null}
             </div>
         );
-    }
+        }
 
     //POPUP-FORM FUNCTION FOR CREATE AND EDIT EVENT
     const openPopupForm = (slotInfo) => {
         console.log('openPopupForm')
-        let newEvent = false;
+        console.log("slotInfo =", slotInfo)
+        // let newEvent = false;
         let popupTitle = "Update Event";
         if(!slotInfo.hasOwnProperty('id')) {
             slotInfo.id = moment().format('x');  //Generate id with Unix Millisecond Timestamp
@@ -135,19 +162,90 @@ const HomeCalendar = (props) => {
             popupTitle = "Create Event";
             newEvent = true;
         }
-        // Maybe make a global change function?
-        let titleChange = function (value) {
-            slotInfo.title = value;
+
+        const handleUpdate = (e) => {
+            slotInfo = {...slotInfo, [e.target.name]: e.target.value}
+            console.log(slotInfo)
+        }
+
+
+        const handleUpdateCheck = (event) => {
+            console.log("event", event.target.checked)
+
+            const participantsList = [];
+            for (const participant of slotInfo.participants) {
+                console.log("participant =", participant)
+                participantsList.push(participant.id.toString())
+            };
+
+            setUpdatedChecked(participantsList);
+            console.log("updatedChecked =", updatedChecked)
+            console.log("participantsList =", participantsList)
+
+            let updatedList = [...updatedChecked];
+            if (event.target.checked) {
+                updatedList = [...updatedChecked, event.target.value];
+            } else {
+                updatedList.splice(updatedChecked.indexOf(event.target.value), 1);
+            }
+            setUpdatedChecked(updatedList);
+            slotInfo.participants = updatedList
+            console.log("updatedchecked =", updatedChecked)
+            console.log("slotInfo.participants =", slotInfo.participants)
         };
-        // let locationChange = function (value) {
-        //     slotInfo.location = value;
-        // };
 
         Popup.create({
             title: popupTitle,
-            content: <div> holi
-                        {/*<input onChange={titleChange} placeholder="Event Title" value={slotInfo.title} />*/}
-                        {/*<Input onChange={locationChange} placeholder="Event Location" defaultValue={slotInfo.location} />*/}
+            content: <div>
+                        <input type={"text"}
+                               placeholder={"Add title"}
+                               name={'title'}
+                               // value={slotInfo.title}
+                               defaultValue={slotInfo.title}
+                               onChange={handleUpdate}
+                        />
+                        <input type={"date"}
+                               name={'start'}
+                               defaultValue={slotInfo.start}
+                               onChange={handleUpdate}
+                        />
+                        <input type={"date"}
+                               name={'end'}
+                               defaultValue={slotInfo.end}
+                               onChange={handleUpdate}
+                        />
+                        {homeMembers.length !== 0 && homeMembers.map( (member, index) => {
+                            let memberName = member.first_name ? member.first_name : member.email;
+                            let isChecked = false;
+
+                            for (const participant of slotInfo.participants) {
+                                if (participant.id === member.id) {
+                                    isChecked = true;
+                                    break;
+                                };
+                            }
+
+                            return(
+                                <>
+                                    <label id={index} htmlFor={memberName}>
+                                    <input type={"checkbox"}
+                                            name={'participants'}
+                                            checked={isChecked}
+                                            defaultValue={member.id}
+                                            onChange={handleUpdateCheck}
+                                                        />
+                                        {memberName}
+                                    </label>
+                                </>
+                            )
+                            })
+                        }
+                        <input type={"text"}
+                               placeholder={"Add a description"}
+                               name={'notes'}
+                               defaultValue={slotInfo.notes}
+                               onChange={handleUpdate}
+                        />
                     </div>,
             buttons: {
                 left: ['cancel'],
@@ -187,7 +285,7 @@ const HomeCalendar = (props) => {
                     className: 'danger',
                     action: function () {
                         //CALL EVENT DELETE ACTION
-                        handleDeleteEvent();
+                        handleDeleteEvent(slotInfo);
                         Popup.close();
                     }.bind(this)
                 }]
@@ -246,6 +344,7 @@ const HomeCalendar = (props) => {
                 }
                 <input type={"text"}
                        name={'notes'}
+                       placeholder={"Add a description"}
                        value={newEvent.notes}
                        onChange={handleChange}
                 />
