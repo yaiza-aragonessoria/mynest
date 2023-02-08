@@ -38,7 +38,12 @@ const Sticker = ({sticker, toggleSticker, deleteSticker}) => {
 
     return (
         <div style={{width: "80%", margin: "20px"}}>
-            <div>{sticker.content} {sticker.author.first_name} {sticker.created}</div>
+            <div>
+                {sticker.content}
+                {sticker.author.first_name}
+                <img src={sticker.author.avatar}/>
+                {sticker.created}
+            </div>
             <button onClick={handlePinToggle}>{sticker.pinned ? "unpin" : "pin"}</button>
             <button onClick={handleDelete}>X</button>
         </div>
