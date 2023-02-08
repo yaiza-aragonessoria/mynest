@@ -23,7 +23,6 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/to-do" element={<Tasks/>}/>
                 <Route path="/add-task" element={<CreateTask/>}/>
-                
             </Routes>
 
         </div>);
