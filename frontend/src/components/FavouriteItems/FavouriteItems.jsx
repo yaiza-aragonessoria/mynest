@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import FavouriteItems_popup from "./FavouriteItems_popup";
+// import FavouriteItems_popup from "./FavouriteItems_popup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 // STYLING
 import { ItemWrapper } from "./FavouriteItems.styled";
@@ -49,6 +51,13 @@ const FavouriteItems = ({
             return (
               <div className="purchased_items"
               key={item.id}>
+                {item.favorite ? 
+                <i id="favorited_item"
+                onClick={() => {
+                  updateCartStatus(item.id, "TB");
+                }}
+                >
+                  {<FontAwesomeIcon icon={faStar} />}</i> : null}
                 <p className="text"
                   onClick={() => {
                     updateCartStatus(item.id, "TB");
@@ -60,12 +69,12 @@ const FavouriteItems = ({
             );
           })}
       </ItemWrapper>
-      <FavouriteItems_popup
+      {/* <FavouriteItems_popup
         showPopup={showPopup}
         setShowPopup={setShowPopup}
         tobuyItem={tobuyItem}
         setTobuyItem={setTobuyItem}
-      />
+      /> */}
     </div>
   );
 };

@@ -44,8 +44,8 @@ const Card = ({ foodDataItem, tobuyItem, setTobuyItem, updateCartStatus }) => {
     <>
       <CardLayout>
         <div className="card_info">
-          <h3 className="subheader">{foodDataItem.name}</h3>
-          <p className="text">{foodDataItem.description}</p>
+          <h3 className="subheader" id="card_text">{foodDataItem.name}</h3>
+          <p className="text" id="card_text">{foodDataItem.description}</p>
           <button
           className="btn_grey"
             onClick={() => {
