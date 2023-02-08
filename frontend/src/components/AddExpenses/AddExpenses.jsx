@@ -1,16 +1,11 @@
 import React, {useEffect, useState} from "react";
 import api from '../../api/myNest';
-import {useNavigate} from "react-router-dom";
 import {ExpensesComponentStyled} from "./AddExpense.styled";
 import axios from "axios";
 
 const AddExpenses = () => {
-    const navigate = useNavigate();
-
     const [homeMembers, setHomeMembers] = useState([]);
-
     const access = localStorage.getItem("access");
-    console.log("localStorage", localStorage)
 
     const headers = {
         headers: {
@@ -22,7 +17,6 @@ const AddExpenses = () => {
             setHomeMembers([])
             const res = await axios.get("https://mynest.propulsion-learn.ch/backend/api/users/home/", headers);
             setHomeMembers(res.data);
-            console.log("homeMembers =", homeMembers);
 
         } catch (e) {
             setErrorMessage(e.message);
@@ -39,7 +33,9 @@ const AddExpenses = () => {
         shared_with: [],
         date: ''
     });
-
+    const goToHomePage = () => {
+        window.location.reload();
+    };
 
     const handleChange = event => {
         setFormData({...formData, [event.target.name]: event.target.value});
@@ -57,7 +53,6 @@ const AddExpenses = () => {
         setChecked(updatedList);
         setFormData({...formData, shared_with: updatedList})
 
-        console.log("checked =", checked)
     };
 
     const categories = [
@@ -90,13 +85,13 @@ const AddExpenses = () => {
 
         api.post("https://mynest.propulsion-learn.ch/backend/api/expenses/", formData, headers)
             .then(response => {
-                console.log("formData", formData);
-                if (response.status === 201) navigate("/expenses");
+                if (response.status === 201) {
+                    window.location.reload()
+                }
             })
             .catch(error => {
                 console.log(error);
             });
-
 
     }
 
@@ -109,7 +104,6 @@ const AddExpenses = () => {
                     <input id='' name='name' value={formData.name} onChange={handleChange} required/>
                 </div>
                 <div>
-                    {/*add a dropdown */}
                     <label htmlFor=''>Category </label>
                     <select onChange={handleChange}
                             name={'category'}>
@@ -125,9 +119,6 @@ const AddExpenses = () => {
                     <input id='' name='amount' value={formData.amount} onChange={handleChange} required/>
                 </div>
                 <div>
-                    {/*add a dropdown */}
-                    {/*<label htmlFor=''>Payer</label>*/}
-                    {/*<input id='' name='payer' value={formData.payer} onChange={handleChange} required/>*/}
                     <label htmlFor=''>Payer </label>
                     <select onChange={handleChange}
                             name={'payer'}>
@@ -153,24 +144,9 @@ const AddExpenses = () => {
                                        onChange={handleCheck}/>{memberName}
                             </label></>)
                     })}
-
-                    {/*// a map and going to have a list, a full object that represents the whole users of that home,*/}
                 </div>
-                {/*<div>*/}
-                {/*    <label htmlFor=''>Shared with</label>*/}
-                {/*    <select onChange={handleChange}>*/}
-                {/*// name={'category'}>*/}
-                {/*        /!*<option value="" selected>Select a category...</option>*!/*/}
-                {/*        <option value="1" selected>Share expenses with...</option>*/}
-                {/*        /!*{users.map((category) => (*!/*/}
-                {/*        /!*  // <option value={category.value}>{category.label}</option>*!/*/}
-                {/*        <option>Vjosa</option>*/}
-                {/*        <option>Nina</option>*/}
-                {/*        /!*))}*!/*/}
-                {/*    </select>*/}
-                {/*</div>*/}
                 <button type="submit">Save</button>
-                <button type="submit">Cancel</button>
+                <button onClick={goToHomePage}>Cancel</button>
             </form>
         </ExpensesComponentStyled>
     </>);

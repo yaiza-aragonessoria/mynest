@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
 
@@ -19,7 +19,6 @@ export const fetchUser = createAsyncThunk(
             console.log(error)
         }
     }
-
 )
 
 export const userProfileSlice = createSlice({
@@ -32,8 +31,6 @@ export const userProfileSlice = createSlice({
         [fetchUser.fulfilled]: (state, action) => {
 
             state.userProfileSlice = action.payload
-            console.log("action", action);
-
         },
 
     }
