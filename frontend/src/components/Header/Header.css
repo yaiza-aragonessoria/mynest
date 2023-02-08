@@ -1,9 +1,9 @@
-header, ul {
+#header, ul {
     display: flex;
     justify-content: space-around;
 }
 
-header {
+#header {
     width: 100%;
     height: var(--headerheight);
     position: fixed;

@@ -1,16 +1,12 @@
 import { Calendar, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
+import moment from 'moment';
 import React, { useState, useEffect } from "react"
 import axios from "axios";
 import './Calendar.css';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-// import CustomToolbar from './toolbar';
 import Popup from 'react-popup';
 import './popup.css';
+import uuid from 'react-uuid';
 
-// import Input from './input';
-// import moment from 'moment';
 
 
 
@@ -40,7 +36,7 @@ const HomeCalendar = (props) => {
             setHomeMembers([])
             const res = await axios.get("https://mynest.propulsion-learn.ch/backend/api/users/home/", headers);
             setHomeMembers(res.data);
-            console.log("homeMembers =", homeMembers);
+            // console.log("homeMembers =", homeMembers);
         }
         catch(e) {
             setErrorMessage(e.message);
@@ -54,14 +50,19 @@ const HomeCalendar = (props) => {
 
     const [errorMessage, setErrorMessage] = useState('');
     const [myEventsList, setMyEventsList] = useState([]);
-    const [newEvent, setNewEvent] = useState({})
+    const [newEvent, setNewEvent] = useState({
+                title: '',
+                start: '',
+                end: '',
+                participants: [],
+                notes: '',
+            })
 
     const getEvents = async() => {
         try {
             setMyEventsList([]);
             const res = await axios.get("https://mynest.propulsion-learn.ch/backend/api/events/home/", headers);
             setMyEventsList(res.data);
-            console.log("myEventsList =", myEventsList);
         }
         catch(e) {
             setErrorMessage(e.message);
@@ -75,7 +76,7 @@ const HomeCalendar = (props) => {
 
     const handleChange = (e) => {
         setNewEvent({...newEvent, [e.target.name]: e.target.value})
-        console.log(newEvent)
+        // console.log(newEvent)
     }
 
     // Add/Remove checked item from list
@@ -87,19 +88,27 @@ const HomeCalendar = (props) => {
         updatedList.splice(checked.indexOf(event.target.value), 1);
       }
       setChecked(updatedList);
-      console.log("typeof updatedList[0] ", typeof updatedList[0])
       setNewEvent({...newEvent, participants: updatedList})
-      console.log("checked =", checked)
     };
 
     const handleAddEvent = async (e) => {
         e.preventDefault();
-        console.log(newEvent)
+
+        // console.log(newEvent)
 
         try {
             const res = await axios.post("https://mynest.propulsion-learn.ch/backend/api/events/", newEvent, headers);
             getEvents();
-            console.log("myEventsList =", myEventsList);
+            setNewEvent({
+                title: '',
+                start: '',
+                end: '',
+                participants: [],
+                notes: '',
+            });
+            setChecked([]);
+            setHomeMembers(homeMembers);
+            // console.log(newEvent)
         } catch (e) {
             setErrorMessage(e.message);
         }
@@ -107,12 +116,9 @@ const HomeCalendar = (props) => {
     }
 
     const handleAddEventFromCalendar = async (slotInfo) => {
-        console.log(slotInfo)
-
         try {
             const res = await axios.post("https://mynest.propulsion-learn.ch/backend/api/events/", slotInfo, headers);
             getEvents();
-            console.log("myEventsList =", myEventsList);
         } catch (e) {
             setErrorMessage(e.message);
         }
@@ -121,12 +127,9 @@ const HomeCalendar = (props) => {
 
     // DELETE EVENT
     const handleDeleteEvent = async (slotInfo) => {
-        console.log(slotInfo)
-
         try {
             const res = await axios.delete(`https://mynest.propulsion-learn.ch/backend/api/events/${slotInfo.id}`, headers);
             getEvents();
-            console.log("myEventsList =", myEventsList);
         } catch (e) {
             setErrorMessage(e.message);
         }
@@ -134,19 +137,14 @@ const HomeCalendar = (props) => {
 
     // DELETE EVENT
     const handleUpdateEvent = async (slotInfo) => {
-        // e.preventDefault();
-        console.log(newEvent)
-        console.log(typeof slotInfo.participants[0])
         for (let i = 0; i < slotInfo.participants.length; i++) {
             if (typeof slotInfo.participants[i] === "number") slotInfo.participants[i] = slotInfo.participants[i].toString();
         }
-        console.log(typeof slotInfo.participants[0])
-
 
         try {
             const res = await axios.patch(`https://mynest.propulsion-learn.ch/backend/api/events/${slotInfo.id}`, slotInfo, headers);
             getEvents();
-            console.log("myEventsList =", myEventsList);
+            // console.log("myEventsList =", myEventsList);
         } catch (e) {
             setErrorMessage(e.message);
         }
@@ -154,9 +152,6 @@ const HomeCalendar = (props) => {
 
     const makeParticipantsString = (participantsIds) => {
             const participantNames = [];
-
-            console.log("participantsIds = ", participantsIds)
-
 
             participantsIds.map((participantId, index) => {
                 for ( const memberObj of homeMembers) {
@@ -166,22 +161,18 @@ const HomeCalendar = (props) => {
                     }
                 }
             });
-            console.log("participantNames = ", participantNames)
+            // console.log("participantNames = ", participantNames)
             return participantNames.join(', ')
         }
 
     //RENDER SINGLE EVENT POPUP CONTENT
     const renderEventContent = (slotInfo) => {
         setEventDetails(slotInfo)
-        console.log("eventDetails =", eventDetails)
-        console.log("slotInfo =", slotInfo)
 
         const start = moment(slotInfo.start).format('MMMM D, YYYY');
         const end = moment(slotInfo.end).format('MMMM D, YYYY');
         const participants = makeParticipantsString(slotInfo.participants);
         const notes = slotInfo.notes;
-
-        // console.log(slotInfo)
 
         return (
             <div>
@@ -193,19 +184,27 @@ const HomeCalendar = (props) => {
         );
         }
 
+        const isChecked = (memberId, participantsList) => {
+            // console.log("isChecked is called")
+            let isChecked = false;
+
+            for (const participant of participantsList) {
+                // console.log("participant =", participant)
+                if (participant === memberId) {
+                    isChecked = true;
+                    break;
+                };
+            }
+            return isChecked;
+        }
+
     //POPUP-FORM FUNCTION FOR CREATE AND EDIT EVENT
     const openPopupForm = (slotInfo) => {
-        console.log('openPopupForm')
-        console.log("slotInfo =", slotInfo)
-        // console.log("type slotInfo.participants[0] =", typeof slotInfo.participants[0])
         setEventDetails(slotInfo);
 
         let isNewEvent = false;
         let popupTitle = "Update Event";
-        console.log(slotInfo.hasOwnProperty('id'))
         if(!slotInfo.hasOwnProperty('id')) {
-            console.log("slotInfo has no id --> new event")
-            // slotInfo.id = moment().format('x');  //Generate id with Unix Millisecond Timestamp
             slotInfo.title = '';
             slotInfo.start = null;
             slotInfo.end = null;
@@ -217,68 +216,29 @@ const HomeCalendar = (props) => {
 
         const handleUpdate = (e) => {
             slotInfo = {...slotInfo, [e.target.name]: e.target.value}
-            // setEventDetails({...eventDetails, [e.target.name]: e.target.value})
-
-            console.log(eventDetails)
         }
 
-
         const handleUpdateCheck = (event) => {
-            console.log("value", event.target.value)
-            console.log("checked", event.target.checked)
-            // console.log("eventDetails.participants ", eventDetails.participants)
-            // console.log("type eventDetails.participants[0] =", typeof eventDetails.participants[0])
-            console.log("updatedChecked =", updatedChecked)
-
-
             for (let i = 0; i < slotInfo.participants.length; i++) {
                 if (typeof slotInfo.participants[i] === "number") slotInfo.participants[i] = slotInfo.participants[i].toString();
                 }
+
             setEventDetails(slotInfo)
+
             let updatedList = [...slotInfo.participants];
 
-            // console.log("type slotInfo.participants[0] =", typeof slotInfo.participants[0])
-            // console.log("type eventDetails.participants[0] =", typeof eventDetails.participants[0])
-            // console.log("type event.target.value =", typeof event.target.value)
-            // console.log("type updatedList[0] =", typeof updatedList[0])
-
-            // let updatedList = [...eventDetails.participants];
-            // console.log("exists? ", updatedList.indexOf(event.target.value))
             if (updatedList.indexOf(event.target.value) === -1) {
                 updatedList = [...slotInfo.participants, event.target.value];
             } else {
-                // console.log("to delete id =", event.target.value)
-                // console.log("event.target.value =", typeof event.target.value)
-                // console.log("type updatedList[0] =", typeof updatedList[0])
-                // console.log("type eventDetails.participants[0] =", typeof eventDetails.participants[0])
                 let index = updatedList.indexOf(event.target.value);
-                console.log("index ", index)
                 updatedList.splice(index, 1);
-                // slotInfo.participants.splice(updatedList.indexOf(event.target.value), 1);
             }
             setUpdatedChecked(updatedList);
             slotInfo.participants = updatedList
-            // setEventDetails({...eventDetails, participants: updatedList})
             setEventDetails(slotInfo)
-            // console.log("updatedList =", updatedList)
-            // console.log("updatedChecked =", updatedChecked)
-            console.log("slotInfo.participants ", slotInfo.participants)
-            // console.log("eventDetails.participants ", eventDetails.participants)
         };
 
-        const isChecked = (memberId) => {
-            console.log("isChecked is called")
-            let isChecked = false;
 
-            for (const participant of slotInfo.participants) {
-                console.log("participant =", participant)
-                if (participant === memberId) {
-                    isChecked = true;
-                    break;
-                };
-            }
-            return isChecked;
-        }
 
         Popup.create({
             title: popupTitle,
@@ -306,7 +266,7 @@ const HomeCalendar = (props) => {
                                     <label id={index} htmlFor={memberName}>
                                     <input type={"checkbox"}
                                             name={'participants'}
-                                            defaultChecked={isChecked(member.id)}
+                                            defaultChecked={isChecked(member.id, slotInfo.participants)}
                                             defaultValue={member.id}
                                             onChange={handleUpdateCheck}
                                                         />
@@ -345,8 +305,8 @@ const HomeCalendar = (props) => {
 
     //ON SELECT EVENT HANDLER FUNCTION
     const onSelectEventHandler = (slotInfo) => {
-        console.log('onSelectEventHandler')
-        console.log("type slotInfo.participants[0] =", typeof slotInfo.participants[0])
+        // console.log('onSelectEventHandler')
+        // console.log("type slotInfo.participants[0] =", typeof slotInfo.participants[0])
         setEventDetails(slotInfo)
 
         Popup.create({
@@ -359,7 +319,7 @@ const HomeCalendar = (props) => {
                     action: function () {
                         Popup.close(); //CLOSE PREVIOUS POPUP
                         openPopupForm(slotInfo); //OPEN NEW EDIT POPUP
-                    }.bind(this)
+                    }
                 }, {
                     text: 'Delete',
                     className: 'danger',
@@ -367,7 +327,7 @@ const HomeCalendar = (props) => {
                         //CALL EVENT DELETE ACTION
                         handleDeleteEvent(slotInfo);
                         Popup.close();
-                    }.bind(this)
+                    }
                 }]
             }
         });
@@ -377,7 +337,7 @@ const HomeCalendar = (props) => {
     const eventStyleGetter = (event, start, end, isSelected) => {
         let current_time = moment().format('YYYY MM DD');
         let event_time = moment(event.start).format('YYYY MM DD');
-        let background = (current_time>event_time) ? '#DE6987' : '#8CBD4C'; // Colours for events in calendar: weekend and weekdays (I think)
+        let background = (current_time>event_time) ? '#DE6987' : '#8CBD4C'; // Colours for events in calendar: past events and comming events (I think)
         return {
             style: {
                 backgroundColor: background
@@ -392,51 +352,52 @@ const HomeCalendar = (props) => {
     return (
         <>
             {isLoggedIn ?
-                <>
-                <form>
-                <input type={"text"}
-                       placeholder={"Add title"}
-                       name={'title'}
-                       value={newEvent.title}
-                       onChange={handleChange}
-                />
-                <input type={"date"}
-                       name={'start'}
-                       value={newEvent.start}
-                       onChange={handleChange}
-                />
-                <input type={"date"}
-                       name={'end'}
-                       value={newEvent.end}
-                       onChange={handleChange}
-                />
-                {homeMembers.length !== 0 && homeMembers.map( (member, index) => {
-                    let memberName = member.first_name ? member.first_name : member.email;
-                    return(
-                        <>
-                            <label id={index} htmlFor={memberName}>
-                            <input type={"checkbox"}
-                                    name={'participants'}
-                                    value={member.id}
-                                    onChange={handleCheck}
-                                                />
-                                {memberName}
-                            </label>
-                        </>
-                    )
-                    })
-                }
-                <input type={"text"}
-                       name={'notes'}
-                       placeholder={"Add a description"}
-                       value={newEvent.notes}
-                       onChange={handleChange}
-                />
-                <button type={'submit'}
-                        onClick={handleAddEvent}>
-                Add Event
-                </button>
-            </form>
+                <div className={'fullContainer'}>
+                    <form className={'add-form'}>
+                        <input type={"text"}
+                               placeholder={"Add title"}
+                               name={'title'}
+                               value={newEvent.title}
+                               onChange={handleChange}
+                        />
+                        <input type={"date"}
+                               name={'start'}
+                               value={newEvent.start}
+                               onChange={handleChange}
+                        />
+                        <input type={"date"}
+                               name={'end'}
+                               value={newEvent.end}
+                               onChange={handleChange}
+                        />
+                        {homeMembers.length !== 0 && homeMembers.map( (member, index) => {
+                            let memberName = member.first_name ? member.first_name : member.email;
+                            return(
+                                <>
+                                    <label id={index.toString()} htmlFor={memberName}>
+                                    <input type={"checkbox"}
+                                           id={uuid()}
+                                           name={'participants'}
+                                           value={member.id}
+                                           onChange={handleCheck}
+                                                        />
+                                        {memberName}
+                                    </label>
+                                </>
+                            )
+                            })
+                        }
+                        <input type={"text"}
+                               name={'notes'}
+                               placeholder={"Add a description"}
+                               value={newEvent.notes}
+                               onChange={handleChange}
+                        />
+                        <button type={'submit'}
+                                onClick={handleAddEvent}>
+                        Add Event
+                        </button>
+                </form>
                 <div className="myCustomHeight">
                     <Calendar
                         popup
@@ -453,7 +414,7 @@ const HomeCalendar = (props) => {
                     />
                 </div>
                 <Popup />
-                </>:
+                </div>:
                 <div>
                     You must be log in first
                 </div>
