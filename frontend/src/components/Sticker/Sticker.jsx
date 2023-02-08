@@ -40,14 +40,11 @@ const Sticker = ({sticker, toggleSticker, deleteSticker}) => {
         let s = ""
         if (months > 0) {
             s += months + " months "
-        }
-        if (days > 0) {
+        } else if (days > 0) {
             s += days + " days "
-        }
-        if (hours > 0) {
+        } else if (hours > 0) {
             s += hours + " hours "
-        }
-        if (minutes > 0) {
+        } else if (minutes > 0) {
             s += minutes + " minutes "
         }
         s += "ago"
