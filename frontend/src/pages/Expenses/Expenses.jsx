@@ -4,6 +4,7 @@ import {fetchExpenses} from "../../features/slices/expensesSlice";
 import ExpensesComponent from "../../components/Expenses/ExpensesComponent";
 import AddExpenses from "../../components/AddExpenses/AddExpenses";
 import {fetchUser} from '../../features/slices/userSlice'
+import {ExpensesStyled} from "./Expenses.styled";
 
 
 const Expenses = () => {
@@ -26,16 +27,18 @@ const Expenses = () => {
 
 
     return (<>
-        <button onClick={handleOpenModal}>Add Expense</button>
-        {showModal && <AddExpenses/>}
-        {!showModal && expensesData?.map((expense) => {
-            return (
-                <ExpensesComponent key={expense?.id} expenses={expense}
-                                   name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
-                                   onEdit={handleEdit}/>
-            )
-        })
-        }
+        <ExpensesStyled>
+            <button onClick={handleOpenModal}>Add Expense</button>
+            {showModal && <AddExpenses/>}
+            {!showModal && expensesData?.map((expense) => {
+                return (
+                    <ExpensesComponent key={expense?.id} expenses={expense}
+                                       name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
+                                       onEdit={handleEdit}/>
+                )
+            })
+            }
+        </ExpensesStyled>
     </>);
 };
 export default Expenses;

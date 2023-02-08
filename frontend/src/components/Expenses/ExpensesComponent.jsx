@@ -24,7 +24,7 @@ const ExpensesComponent = (props) => {
                 <span>{props.expenses.created}</span>
                 <span>{text}</span>
                 <span>{props.expenses.name}</span>
-                <span> You paid {props.expenses?.amount} CHF</span>
+                <span> Amount {props.expenses?.amount} CHF</span>
                 <span> Payer {props.expenses?.payer?.first_name ? props.expenses.payer.first_name : props.expenses.payer.email} </span>
                 <button className="button" onClick={handleEdit}>Edit</button>
                 <button className="button">Delete</button>
