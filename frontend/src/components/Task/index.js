@@ -1,9 +1,16 @@
 import { TaskContainer, Button } from "./Task.styled";
 import { useState } from "react";
 import api from "../../api/myNest";
+import { useNavigate } from "react-router-dom"
+import EditTask from "../EditTask";
 
 
-const Task = ({ name, status, assignee, id, onTaskDelete }) => {
+const Task = ({ name, status, assignee, id, onTaskDelete, planned }) => {
+  const navigate = useNavigate();
+  const[showEdit, setShowEdit] = useState(false);
+  const goToEditTask = () => {
+        navigate("/edit-task");
+      };
   const [currentStatus, setCurrentStatus] = useState(status);
   const access = localStorage.getItem("access");
   const config = {
@@ -13,8 +20,9 @@ const Task = ({ name, status, assignee, id, onTaskDelete }) => {
     },
   };
   const data =  {
-      status: currentStatus === 'TO DO' ? 'TD' : currentStatus === 'IN PROGRESS' ? 'IP' : 'DO',
+      status: currentStatus === 'TO DO' ? 'IP' : currentStatus === 'IN PROGRESS' ? 'DO' : 'DO',
   };
+ 
   const handleClick = async () => {
     if (currentStatus === "TO DO") {
       setCurrentStatus("IN PROGRESS");
@@ -37,6 +45,10 @@ const Task = ({ name, status, assignee, id, onTaskDelete }) => {
     onTaskDelete(id);
   };
 
+  const toggleEdit = (event) => {
+    setShowEdit(true);
+  };
+
 
 
   return (
@@ -50,12 +62,12 @@ const Task = ({ name, status, assignee, id, onTaskDelete }) => {
             {currentStatus === "TO DO" ? "START" : "DONE"}
           </button>
         )}
-        <button type="submit">EDIT</button>
+        <button onClick={toggleEdit} type="submit">EDIT</button>
         <button type="submit" onClick={handleDelete}>delete</button>
       </Button>
+        {showEdit && <EditTask name={name} assignee={assignee} planned={planned} id={id}  /> }
     </TaskContainer>
   );
 };
 export default Task;
 
-// ? 'TD' : currentStatus === 'IN PROGRESS' ? 'IP' : 'DO',

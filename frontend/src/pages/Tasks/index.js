@@ -13,75 +13,79 @@ const Tasks = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const access = localStorage.getItem("access");
   const config = {
-      method: "GET",
-      headers: {
-          Authorization: `Bearer ${access}`,
-      },
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${access}`,
+    },
+    params: { q: searchTerm }
   }
+
   const fetchTasks = async () => {
     try {
-      const response = await api.get(
-        searchTerm
-          ? `/tasks/home/search?search=${searchTerm}`
-          : "/tasks/home/month",
-        config
-      );
-          setTasks(response.data);
-      } catch (error) {
-          console.log(error.response);
-      }
+      const response = await api.get(`/tasks/home/search/`, config);
+      setTasks(response.data);
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 
+
   useEffect(() => {
-      fetchTasks();
-  }, []);
-
-  
-
-const sortTasks = (tasks) => {
-  return tasks.sort((a, b) => {
-    if (a.status === "TD") return -1;
-    if (b.status === "TD") return 1;
-    if (a.status === "DO") return 1;
-    if (b.status === "DO") return -1;
-    return 0;
-  });
-};
-
-const handleTaskDelete = (taskId) => {
-  setTasks(tasks.filter((task) => task.id !== taskId));
-};
+    fetchTasks();
+  }, [searchTerm]);
 
 
+  const sortTasks = (tasks) => {
+    return tasks.sort((a, b) => {
+      if (a.status === "TD") return -1;
+      if (b.status === "TD") return 1;
+      if (a.status === "DO") return 1;
+      if (b.status === "DO") return -1;
+      return 0;
+    });
+  };
 
-return (
-  <>
-    <TopPage>
-      <h1>TASK BOARD OF THE MONTH</h1>
-      <form>
-        <input
-          type="text"
-          placeholder="Search task..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </form>
-      <button onClick={goToCreateTask}>+ Add Task</button>
-    </TopPage>
-    <TasksContainer>
-      {sortTasks(tasks).map(task => (
-        <Task
-          key={task.id}
-          name={task.name}
-          status={task.status === 'TD' ? 'TO DO' : task.status === 'DO' ? 'DONE' : 'IN PROGRESS'}
-          assignee={task.assignee}
-          id={task.id}
-          onTaskDelete={handleTaskDelete}
-        />
-      ))}
-    </TasksContainer>
-  </>
-);
+  const handleTaskDelete = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  };
+
+//   const [chore, setChore] = useState({
+//     name: name,
+//     assignee: assignee,
+//     planned_for: date,
+// });
+
+
+
+  return (
+    <>
+      <TopPage>
+        <h1>TASK BOARD OF THE MONTH</h1>
+        <form>
+          <input
+            type="text"
+            placeholder="Search task..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </form>
+        <button onClick={goToCreateTask}>+ Add Task</button>
+      </TopPage>
+      <TasksContainer>
+        {sortTasks(tasks).map(task => (
+          <Task
+            key={task.id}
+            name={task.name}
+            status={task.status === 'TD' ? 'TO DO' : task.status === 'IP' ? 'IN PROGRESS' : 'DONE'}
+            assignee={task.assignee}
+            id={task.id}
+            onTaskDelete={handleTaskDelete}
+            planned={task.planned_for}
+          />
+        ))}
+      </TasksContainer>
+    </>
+  );
 
 };
 

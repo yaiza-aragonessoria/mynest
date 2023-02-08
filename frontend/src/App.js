@@ -9,7 +9,7 @@ import Calendar from "./pages/Calendar/Calendar";
 import FavouriteItems_popup from './components/FavouriteItems/FavouriteItems_popup';
 import CreateTask from './components/CreateTask';
 import Tasks from './pages/Tasks';
-
+import EditTask from './components/EditTask'
 
 function App() {
     return (
@@ -23,6 +23,7 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/to-do" element={<Tasks/>}/>
                 <Route path="/add-task" element={<CreateTask/>}/>
+                <Route path="/edit-task" element={<EditTask/>}/>
                 
             </Routes>
 

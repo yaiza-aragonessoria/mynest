@@ -27,7 +27,7 @@ const CreateTask = () => {
   const [task, setTask] = useState({
     name: '',
     frequency: '',
-    planned: '',
+    planned_for: '',
   });
 
   const handleChange = (event) => {
@@ -50,6 +50,7 @@ const CreateTask = () => {
       });
   }
   return (
+  
     <CreateTaskPage>
       <form onSubmit={handleSubmit}>
         <FormField>
@@ -73,8 +74,8 @@ const CreateTask = () => {
         <FormField>
           <label for=''>Planned for</label>
           <input
-            type="text"
-            name="planned"
+            type="date"
+            name="planned_for"
             value={task.planned}
             onChange={handleChange}
           />
@@ -83,6 +84,7 @@ const CreateTask = () => {
       </form>
       <button onClick={goToHomePage} >Cancel</button>
     </CreateTaskPage>
+    
   );
 };
 
