@@ -28,7 +28,7 @@ const Header = () => {
     <>
       <header>
             <NavLink to="/">Logo</NavLink>
-            <NavLink to="/shared-expenses">Shared Expenses</NavLink>
+            <NavLink to="/expenses">Shared Expenses</NavLink>
             <NavLink to="/shoppinglist">Shopping List</NavLink>
             <NavLink to="/to-do">To Do</NavLink>
             <NavLink to="/calendar">Calendar</NavLink>

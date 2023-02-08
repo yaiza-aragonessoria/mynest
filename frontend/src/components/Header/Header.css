@@ -5,5 +5,8 @@ header, ul {
 
 header {
     width: 100%;
-    height: 5%;
+    height: var(--headerheight);
+    position: fixed;
+    z-index: 4;
+    background-color: #fff;
 }
