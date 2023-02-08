@@ -16,9 +16,9 @@ min-width: 500px;
     margin: 5px;
     box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);}
 
-    i {font-size: 14px;
+    #favorited_item {
+    font-size: 12px !important;
     color: #7e8299; 
     margin-right: 5px;
-
     }
 `

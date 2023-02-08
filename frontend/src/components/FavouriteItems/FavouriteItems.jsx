@@ -52,7 +52,12 @@ const FavouriteItems = ({
               <div className="purchased_items"
               key={item.id}>
                 {item.favorite ? 
-                <i>{<FontAwesomeIcon icon={faStar} />}</i> : null}
+                <i id="favorited_item"
+                onClick={() => {
+                  updateCartStatus(item.id, "TB");
+                }}
+                >
+                  {<FontAwesomeIcon icon={faStar} />}</i> : null}
                 <p className="text"
                   onClick={() => {
                     updateCartStatus(item.id, "TB");
