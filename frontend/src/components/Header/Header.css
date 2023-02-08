@@ -2,3 +2,11 @@ header, ul {
     display: flex;
     justify-content: space-around;
 }
+
+header {
+    width: 100%;
+    height: var(--headerheight);
+    position: fixed;
+    z-index: 4;
+    background-color: #fff;
+}

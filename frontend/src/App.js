@@ -9,7 +9,6 @@ import Calendar from "./pages/Calendar/Calendar";
 import FavouriteItems_popup from './components/FavouriteItems/FavouriteItems_popup';
 import CreateTask from './components/CreateTask';
 import Tasks from './pages/Tasks';
-
 import Expenses from './pages/Expenses/Expenses';
 
 function App() {
