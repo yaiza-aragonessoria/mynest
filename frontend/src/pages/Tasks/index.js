@@ -4,6 +4,10 @@ import Task from "../../components/Task"
 import { TasksContainer, TopPage } from "./Tasks.styled";
 import { useNavigate } from "react-router-dom"
 import CreateTask from "../../components/CreateTask";
+import {useDispatch, useSelector} from "react-redux";
+import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
+import MustLogIn from "../../components/MustLogIn/MustLogIn";
+import {fetchUser} from "../../features/slices/userSlice";
 
 const Tasks = () => {
   const [showCreate, setShowCreate] = useState(false);
@@ -24,9 +28,9 @@ const Tasks = () => {
         params: { q: searchTerm }
       });
       setTasks(response.data);
-      console.log(tasks);
+      // console.log(tasks);
     } catch (error) {
-      console.log(error.response);
+      // console.log(error.response);
     }
   };
 
@@ -51,6 +55,8 @@ const Tasks = () => {
       fetchAllTasks();
     }
   }, [searchTerm, searchMode, newCreatedTask]);
+
+
 
   const sortTasks = (tasks) => {
     return tasks.sort((a, b) => {

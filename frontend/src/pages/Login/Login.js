@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {setAuth} from "../../features/slices/authSlice";
+import {ErrorMessage, FormFields, LoginForm, LoginTitle, LoginWrapper, Wrapper} from "./Login.styled";
 
 
 const Login = () => {
@@ -15,6 +16,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const auth = useSelector((state) => state.auth.data);
+
 
   const handleChange = e => {
     if(e.target.name === "email") {
@@ -47,7 +49,8 @@ const Login = () => {
       navigate("/");
 
     }).catch(error => {
-      setNewWarning(error.message);
+      console.log(error)
+      setNewWarning(error.response.data.detail);
     });
   }
 
@@ -60,7 +63,6 @@ const Login = () => {
     const authData = {
       email: localStorage.getItem('email'),
       access: localStorage.getItem('access'),
-
     };
 
     if(authData.access) {
@@ -70,23 +72,22 @@ const Login = () => {
   }, []);
 
   return (
-    <>
-      <h2>Login</h2>
-        <hr></hr>
-
-      <p>{newWarning}</p>
-
-      {!auth && <form onSubmit={handleSubmit}>
-                <span>
-                  <input name="email" type="email" placeholder="Email" value={newEmail} onChange={handleChange}/>
-                </span>
-                <span>
-                  <input name="password" type="password" placeholder="Password" value={newPassword} onChange={handleChange}/>
-                </span>
-                <button type="submit">Login</button>
-              </form>
+    <Wrapper>
+      <LoginTitle className="header">Login</LoginTitle>
+      <ErrorMessage>{newWarning}</ErrorMessage>
+      {!auth && <LoginWrapper>
+                  <form onSubmit={handleSubmit}>
+                  <FormFields>
+                    <input className="text" name="email" type="email" placeholder="Email" value={newEmail} onChange={handleChange}/>
+                  </FormFields>
+                  <FormFields>
+                    <input name="password" type="password" placeholder="Password" value={newPassword} onChange={handleChange}/>
+                  </FormFields>
+                  <button className="btn_purple" type="submit">Login</button>
+                  </form>
+              </LoginWrapper>
       }
-    </>
+    </Wrapper>
 
   );
 }
