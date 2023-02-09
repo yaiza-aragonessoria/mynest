@@ -16,7 +16,7 @@ class Expense(models.Model):
     name = models.TextField()
     category = models.IntegerField(choices=CATEGORIES, default=5)
     amount = models.FloatField()
-    bill_image = models.ImageField(max_length=255, blank=True)
+    bill_image = models.ImageField(max_length=255, blank=True, null=True)
     created = models.DateField(default=date.today)
     notes = models.TextField(blank=True, default='')
     creator = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='created_expenses')
