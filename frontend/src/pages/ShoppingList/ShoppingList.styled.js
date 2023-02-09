@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const MainWrapper = styled.div`
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--navheight));
   display: flex;
   justify-content: center;
 
@@ -12,7 +12,7 @@ export const MainWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     margin-left: 3rem;
-    margin-top: 4rem;
+    margin-top: 2rem;
     margin-right: 2rem;
 
   }
@@ -28,7 +28,7 @@ export const MainWrapper = styled.div`
     padding-left: 2rem;
     margin-right: 2rem;
     border-left: 1px dashed #E1E3EA;
-    margin-top: 3rem;
+    margin-top: 2rem;
 
   }
 
