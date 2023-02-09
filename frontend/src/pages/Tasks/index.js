@@ -6,22 +6,23 @@ import { useNavigate } from "react-router-dom"
 import CreateTask from "../../components/CreateTask";
 
 const Tasks = () => {
-  const[showCreate, setShowCreate] = useState(false);
-  const navigate = useNavigate();
+  const [showCreate, setShowCreate] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const access = localStorage.getItem("access");
-  const config = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${access}`,
-    },
-    params: { q: searchTerm }
-  }
+  const [searchMode, setSearchMode] = useState("month");
+  const [newCreatedTask, setNewCreatedTask] = useState(0);
 
-  const fetchTasks = async () => {
+  const access = localStorage.getItem("access");
+
+  const fetchMonthTasks = async () => {
     try {
-      const response = await api.get(`/tasks/home/search/`, config);
+      const response = await api.get(`/tasks/home/search/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+        params: { q: searchTerm }
+      });
       setTasks(response.data);
       console.log(tasks);
     } catch (error) {
@@ -29,7 +30,7 @@ const Tasks = () => {
     }
   };
 
-  const fetchTasksByAllMonths = async () => {
+  const fetchAllTasks = async () => {
     try {
       const response = await api.get(`/tasks/home/`, {
         headers: {
@@ -43,14 +44,13 @@ const Tasks = () => {
     }
   };
 
-
-
-
   useEffect(() => {
-    fetchTasks();
-    // fetchTasksByAllMonths();
-  }, [searchTerm]);
-
+    if (searchMode == "month") {
+      fetchMonthTasks();
+    } else {
+      fetchAllTasks();
+    }
+  }, [searchTerm, searchMode, newCreatedTask]);
 
   const sortTasks = (tasks) => {
     return tasks.sort((a, b) => {
@@ -66,9 +66,16 @@ const Tasks = () => {
     setShowCreate(!showCreate);
   };
 
-
   const handleTaskDelete = (taskId) => {
     setTasks(tasks.filter((task) => task.id !== taskId));
+  };
+
+  const handleTaskEdit = (editedTask) => {
+    setTasks(tasks.map((t) => t.id == editedTask.id ? editedTask : t))
+  };
+
+  const onCreateTask = () => {
+    setNewCreatedTask(newCreatedTask + 1);
   };
 
   const date = new Date();
@@ -87,40 +94,36 @@ const Tasks = () => {
     "DECEMBER"
   ];
   const currentMonth = months[date.getMonth()];
-  
-
 
   return (
-    <>
-      <TopPage>
-        <h1>TASK BOARD OF {currentMonth}</h1>
-        <form>
-          <input
-            type="text"
-            placeholder="Search task..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </form>
-        <button onClick={toggleEdit}>+ Add Task</button>
-        <button onClick={fetchTasksByAllMonths}>All months</button>
-      </TopPage>
-      <TasksContainer>
-        {sortTasks(tasks).map(task => (
-          <Task
-            key={task.id}
-            name={task.name}
-            status={task.status === 'TD' ? 'TO DO' : task.status === 'IP' ? 'IN PROGRESS' : 'DONE'}
-            assignee={task.assignee}
-            id={task.id}
-            onTaskDelete={handleTaskDelete}
-            planned={task.planned_for}
-            // nam={task.first_name}
-          />
-        ))}
-        {showCreate && <CreateTask toggleEdit={toggleEdit} /> }
-      </TasksContainer>
-    </>
+      <>
+        <TopPage>
+          <h1>TASK BOARD OF {currentMonth}</h1>
+          <form>
+            <input
+                type="text"
+                placeholder="Search task..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </form>
+          <button onClick={toggleEdit}>+ Add Task</button>
+          <button onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
+            {searchMode == "month" ? "show all tasks " : "show this month tasks" }
+          </button>
+        </TopPage>
+        <TasksContainer>
+          {sortTasks(tasks).map(task => (
+              <Task
+                  key={task.id}
+                  task={task}
+                  onTaskDelete={handleTaskDelete}
+                  onTaskEdit={handleTaskEdit}
+              />
+          ))}
+          {showCreate && <CreateTask toggleEdit={toggleEdit} onCreateTask={onCreateTask} /> }
+        </TasksContainer>
+      </>
   );
 
 };

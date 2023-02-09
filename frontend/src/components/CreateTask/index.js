@@ -4,25 +4,14 @@ import { useNavigate } from "react-router-dom"
 import { CreateTaskPage, FormField, PopPage } from './CreateTask.styled';
 
 
-const CreateTask = (props) => {
-  const navigate = useNavigate();
-  const goToHomePage = () => {
-    navigate("/to-do");
-  };
+const CreateTask = ({toggleEdit, onCreateTask}) => {
   const access = localStorage.getItem("access");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    if (access) setIsLoggedIn(true);
-    else setIsLoggedIn(false)
-
-  }, [access])
   const config = {
     method: "POST",
     headers: {
       Authorization: `Bearer ${access}`,
     },
   }
-
 
   const [task, setTask] = useState({
     name: '',
@@ -41,12 +30,11 @@ const CreateTask = (props) => {
     axios.post('https://mynest.propulsion-learn.ch/backend/api/tasks/home/', task, config)
       .then(response => {
         console.log(response);
-        if (response.status === 201) navigate("/");
-
+        onCreateTask();
+        toggleEdit();
       })
       .catch(error => {
         console.log(error);
-
       });
   }
   return (
@@ -82,7 +70,7 @@ const CreateTask = (props) => {
         </FormField>
         <button type="submit">Create Task</button>
       </form>
-      <button onClick={props.toggleEdit} >Cancel</button>
+      <button onClick={toggleEdit} >Cancel</button>
     </CreateTaskPage>
     </PopPage>
     
