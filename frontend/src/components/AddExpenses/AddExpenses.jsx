@@ -15,7 +15,7 @@ const AddExpenses = () => {
     const getHomeMembers = async () => {
         try {
             setHomeMembers([])
-            const res = await axios.get("https://mynest.propulsion-learn.ch/backend/api/users/home/", headers);
+            const res = await api.get("users/home/", headers);
             setHomeMembers(res.data);
 
         } catch (e) {
@@ -39,7 +39,6 @@ const AddExpenses = () => {
 
     const handleChange = event => {
         setFormData({...formData, [event.target.name]: event.target.value});
-        console.log("formData =", formData)
     }
     const [errorMessage, setErrorMessage] = useState("");
     const [checked, setChecked] = useState([]);
@@ -55,36 +54,13 @@ const AddExpenses = () => {
 
     };
 
-    const categories = [
-        {
-            label: "GROCERIES",
-            value: "1",
-        },
-        {
-            label: "MAINTENANCE",
-            value: "2",
-        },
-        {
-            label: "UTILITIES",
-            value: "3",
-        },
-        {
-            label: "HOUSEHOLD_SUPPLIES",
-            value: "4",
-        },
-        {
-            label: "OTHER",
-            value: "5",
-        }
-    ];
-
-
     const handleSubmit = event => {
         event.preventDefault();
 
 
-        api.post("https://mynest.propulsion-learn.ch/backend/api/expenses/", formData, headers)
+        api.post("expenses/", formData, headers)
             .then(response => {
+                console.log(formData)
                 if (response.status === 201) {
                     window.location.reload()
                 }
@@ -108,7 +84,7 @@ const AddExpenses = () => {
                     <label htmlFor=''>Category </label>
                     <select onChange={handleChange}
                             name={'category'}>
-                        <option value="" className={'select-option'}>Select a value...</option>
+                        <option value="" >Select the category</option>
                         {categories.map((category) => (
                             <option value={category.value}>{category.label}</option>
                         ))}
@@ -123,9 +99,9 @@ const AddExpenses = () => {
                     <label htmlFor=''>Payer </label>
                     <select onChange={handleChange}
                             name={'payer'}>
-                        <option value="" className={'select-option'}>Select a value...</option>
+                        <option value="" className={'select-option'}>Select a payer</option>
                         {homeMembers.map((member) => (
-                            <option value={member.id}>{member.first_name}</option>
+                            <option value={member?.id}>{member?.first_name}</option>
                         ))}
                     </select>
                 </div>
@@ -136,12 +112,12 @@ const AddExpenses = () => {
                 <div>
                     <label>Shared with:</label>
                     {homeMembers.map((member, index) => {
-                        let memberName = member.first_name ? member.first_name : member.email;
+                        let memberName = member?.first_name ? member.first_name : member.email;
                         return (<>
                             <label id={index} htmlFor={memberName}>
                                 <input type={"checkbox"}
                                        name={'shared_with'}
-                                       value={member.id}
+                                       value={member?.id}
                                        onChange={handleCheck}/>{memberName}
                             </label></>)
                     })}

@@ -12,6 +12,8 @@ const Home = () => {
     const [homeAddress, setHomeAddress] = useState("");
     const [homeUsers, setHomeUsers] = useState([]);
     const [homeStickers, setHomeStickers] = useState([]);
+    const [newStickerContent, setNewStickerContent] = useState("");
+    const [warning, setWarning] = useState("");
 
     const toggleSticker = id => {
         let newStickers = homeStickers.map(s => s.id == id ? {...s, pinned: !s.pinned} : s);
@@ -22,7 +24,6 @@ const Home = () => {
     }
 
     const compareStickers = (a, b) => {
-        console.log(a);
         if (a.pinned && b.pinned) {
             return b.id - a.id;
         } else if (a.pinned) {
@@ -36,25 +37,50 @@ const Home = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            console.log("fetchdata");
             let backendData = await axios.get(
                 "https://mynest.propulsion-learn.ch/backend/api/home/", config
             );
-            console.log(backendData);
+            // console.log(backendData);
             setHomeName(backendData.data.name);
             setHomeAddress(backendData.data.address)
             backendData = await axios.get(
                 "https://mynest.propulsion-learn.ch/backend/api/users/home/", config
             );
-            console.log(backendData);
+            // console.log(backendData);
             setHomeUsers(backendData.data);
             backendData = await axios.get(
                 "https://mynest.propulsion-learn.ch/backend/api/stickers/home/", config
             );
-            console.log(backendData);
+            // console.log(backendData);
             setHomeStickers(backendData.data)
         };
         fetchData();
     }, []);
+
+    const handleNewStickerContentChange = (e) => {
+        setNewStickerContent(e.target.value);
+    };
+
+    const handleCreateNewSticker = (e) => {
+        e.preventDefault();
+
+        setWarning("");
+        axios
+          .post(
+            "https://mynest.propulsion-learn.ch/backend/api/stickers/home/", {
+                content: newStickerContent,
+              }, config
+          )
+          .then((result) => {
+              setNewStickerContent("");
+              setHomeStickers([...homeStickers, result.data]);
+          })
+          .catch((error) => {
+              // set warning
+              setWarning(error.message);
+          });
+    };
 
     return (
         <div>
@@ -67,9 +93,12 @@ const Home = () => {
                 </li>)}
             </ul>
             <form>
-                <input style={{width: "80%", margin: "20px"}} type="text" placeholder="new sticker..." />
-
+                <input style={{width: "80%", margin: "20px"}} type="text" placeholder="new sticker..." value={newStickerContent} onChange={handleNewStickerContentChange} />
+                <button type="submit" onClick={handleCreateNewSticker}>Add Sticker</button>
             </form>
+            <div>
+                {warning}
+            </div>
             <div>
                 {homeStickers.sort(compareStickers).map(s => <Sticker key={s.id} sticker={s} toggleSticker={toggleSticker} deleteSticker={deleteSticker} />)}
             </div>
