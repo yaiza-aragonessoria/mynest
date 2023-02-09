@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import api from '../../api/myNest';
-import {ExpensesComponentStyled} from "./AddExpense.styled";
+import {ExpensesComponentStyled, PopupWrapper} from "./AddExpense.styled";
 import axios from "axios";
 
 const AddExpenses = () => {
@@ -98,6 +98,7 @@ const AddExpenses = () => {
 
     return (<>
         <ExpensesComponentStyled>
+            <PopupWrapper>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor=''>Expense name</label>
@@ -148,6 +149,7 @@ const AddExpenses = () => {
                 <button type="submit">Save</button>
                 <button onClick={goToHomePage}>Cancel</button>
             </form>
+            </PopupWrapper>
         </ExpensesComponentStyled>
     </>);
 };
