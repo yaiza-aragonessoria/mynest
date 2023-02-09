@@ -13,16 +13,17 @@ const Tasks = () => {
   const [newCreatedTask, setNewCreatedTask] = useState(0);
 
   const access = localStorage.getItem("access");
+  const config = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${access}`,
+    },
+    params: { q: searchTerm }
+  };
 
   const fetchMonthTasks = async () => {
     try {
-      const response = await api.get(`/tasks/home/search/`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-        params: { q: searchTerm }
-      });
+      const response = await api.get(`/tasks/home/search-month/`, config);
       setTasks(response.data);
       console.log(tasks);
     } catch (error) {
@@ -32,11 +33,7 @@ const Tasks = () => {
 
   const fetchAllTasks = async () => {
     try {
-      const response = await api.get(`/tasks/home/`, {
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-      });
+      const response = await api.get(`/tasks/home/search-all/`, config);
       setTasks(response.data);
       console.log(tasks);
     } catch (error) {
@@ -109,7 +106,7 @@ const Tasks = () => {
           </form>
           <button onClick={toggleEdit}>+ Add Task</button>
           <button onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
-            {searchMode == "month" ? "show all tasks " : "show this month tasks" }
+            {searchMode == "month" ? "show all tasks " : "just this month" }
           </button>
         </TopPage>
         <TasksContainer>
