@@ -12,7 +12,8 @@ const Home = () => {
     const [homeAddress, setHomeAddress] = useState("");
     const [homeUsers, setHomeUsers] = useState([]);
     const [homeStickers, setHomeStickers] = useState([]);
-    const [newStickerContent, setNewStickerContent] = useState("")
+    const [newStickerContent, setNewStickerContent] = useState("");
+    const [warning, setWarning] = useState("");
 
     const toggleSticker = id => {
         let newStickers = homeStickers.map(s => s.id == id ? {...s, pinned: !s.pinned} : s);
@@ -64,8 +65,7 @@ const Home = () => {
     const handleCreateNewSticker = (e) => {
         e.preventDefault();
 
-        console.log("handlecretenewsticker");
-
+        setWarning("");
         axios
           .post(
             "https://mynest.propulsion-learn.ch/backend/api/stickers/home/", {
@@ -73,13 +73,12 @@ const Home = () => {
               }, config
           )
           .then((result) => {
-              console.log(result);
               setNewStickerContent("");
-              // add to the stickers list
+              setHomeStickers([...homeStickers, result.data]);
           })
           .catch((error) => {
               // set warning
-              console.log(error);
+              setWarning(error.message);
           });
     };
 
@@ -97,6 +96,9 @@ const Home = () => {
                 <input style={{width: "80%", margin: "20px"}} type="text" placeholder="new sticker..." value={newStickerContent} onChange={handleNewStickerContentChange} />
                 <button type="submit" onClick={handleCreateNewSticker}>Add Sticker</button>
             </form>
+            <div>
+                {warning}
+            </div>
             <div>
                 {homeStickers.sort(compareStickers).map(s => <Sticker key={s.id} sticker={s} toggleSticker={toggleSticker} deleteSticker={deleteSticker} />)}
             </div>
