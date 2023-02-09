@@ -4,14 +4,15 @@ import Task from "../../components/Task"
 import { TasksContainer, TopPage } from "./Tasks.styled";
 import { useNavigate } from "react-router-dom"
 import CreateTask from "../../components/CreateTask";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
+import {fetchUser} from "../../features/slices/userSlice";
 
 const Tasks = () => {
+  const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userData = useSelector(store => store.userProfile.userProfileSlice)
-  const [hasUserHome, setHasUserHome] = useState(false);
 
   const[showCreate, setShowCreate] = useState(false);
   const navigate = useNavigate();
@@ -30,9 +31,9 @@ const Tasks = () => {
     try {
       const response = await api.get(`/tasks/home/search/`, config);
       setTasks(response.data);
-      console.log(tasks);
+      // console.log(tasks);
     } catch (error) {
-      console.log(error.response);
+      // console.log(error.response);
     }
   };
 
@@ -51,12 +52,12 @@ const Tasks = () => {
   };
 
   useEffect(() => {
-    if(access) setIsLoggedIn(true);
-    else setIsLoggedIn(false);
+      if (access) setIsLoggedIn(true);
+      else setIsLoggedIn(false);
 
-    if(userData?.home) setHasUserHome(true);
-    else setHasUserHome(false);
-  }, []);
+      dispatch(fetchUser());
+
+    }, []);
 
 
 
@@ -109,7 +110,7 @@ const Tasks = () => {
 
   return (
       <>
-      {isLoggedIn ? hasUserHome ?
+      {isLoggedIn ? userData?.home ?
               <>
                 <TopPage>
                   <h1>TASK BOARD OF {currentMonth}</h1>

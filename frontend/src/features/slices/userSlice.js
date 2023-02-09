@@ -2,16 +2,18 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
 
-const access = localStorage.getItem('access')
-const config = {
-    headers: {
-        'Authorization': `Bearer ${access}`,
-    }
-}
+
 
 export const fetchUser = createAsyncThunk(
     "fetchUsers",
     async () => {
+        const access = localStorage.getItem('access')
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${access}`,
+            }
+        }
+
         try {
             const response = await axios.get('https://mynest.propulsion-learn.ch/backend/api/users/me/', config)
             return response.data;
@@ -27,7 +29,7 @@ export const userProfileSlice = createSlice({
         userProfileSlice: []
     },
     reducers: {
-        cleaUserData: (state) => {
+        cleanUserData: (state) => {
             const newState = { ...state }
 
             newState.userProfileSlice = undefined // Set the data to undefined
@@ -43,6 +45,6 @@ export const userProfileSlice = createSlice({
     }
 })
 
-export const {cleaUserData} = userProfileSlice.actions;
+export const {cleanUserData} = userProfileSlice.actions;
 
 export default userProfileSlice.reducer;

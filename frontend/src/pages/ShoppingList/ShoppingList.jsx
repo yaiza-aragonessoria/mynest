@@ -17,18 +17,26 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGears, faSort } from '@fortawesome/free-solid-svg-icons'
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
+import {fetchUser} from "../../features/slices/userSlice";
 
 
 
 const Shoppinglist = () => {
  
-
+  const dispatch = useDispatch();
   const token = localStorage.getItem("access");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userData = useSelector(store => store.userProfile.userProfileSlice)
-  const [hasUserHome, setHasUserHome] = useState(false);
+
+  useEffect(() => {
+    if (token) setIsLoggedIn(true);
+    else setIsLoggedIn(false);
+
+    dispatch(fetchUser());
+
+  }, []);
 
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -43,12 +51,6 @@ const Shoppinglist = () => {
   const [tobuyItem, setTobuyItem] = useState([]);
 
   useEffect(() => {
-    if(token) setIsLoggedIn(true);
-    else setIsLoggedIn(false);
-
-    if(userData?.home) setHasUserHome(true);
-    else setHasUserHome(false);
-
     const fetchData = async () => {
       const backendData = await axios.get(
         "https://mynest.propulsion-learn.ch/backend/api/products/home/",
@@ -141,7 +143,7 @@ const Shoppinglist = () => {
 
   return (
       <>
-      {isLoggedIn ? hasUserHome ?
+      {isLoggedIn ? userData?.home ?
               <MainWrapper>
                 <FavouriteItems_popup
                     showPopup={showPopup}

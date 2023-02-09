@@ -13,9 +13,10 @@ import {
   CalendarFormWrapper,
   CalendarWrapper,
 } from "./Calendar.styled";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
+import {fetchUser} from "../../features/slices/userSlice";
 
 /* sources:
 https://www.youtube.com/watch?v=lyRP_D0qCfk
@@ -27,6 +28,8 @@ https://codesandbox.io/s/sksajureact-redux-event-calendar-n5her?file=/src/compon
 const localizer = momentLocalizer(moment); // or globalizeLocalizer
 
 const HomeCalendar = (props) => {
+  const dispatch = useDispatch();
+
   const access = localStorage.getItem("access");
   const headers = {
     headers: {
@@ -34,8 +37,7 @@ const HomeCalendar = (props) => {
     },
   };
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const userData = useSelector(store => store.userProfile.userProfileSlice)
-  const [hasUserHome, setHasUserHome] = useState(false);
+  const userData = useSelector(store => store.userProfile.userProfileSlice);
   const [homeMembers, setHomeMembers] = useState([]);
   const [checked, setChecked] = useState([]);
   const [updatedChecked, setUpdatedChecked] = useState([]);
@@ -58,7 +60,9 @@ const HomeCalendar = (props) => {
   useEffect(() => {
     if (access) setIsLoggedIn(true);
     else setIsLoggedIn(false);
-  }, [access]);
+
+    dispatch(fetchUser());
+    }, []);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [myEventsList, setMyEventsList] = useState([]);
@@ -403,7 +407,7 @@ const HomeCalendar = (props) => {
 
   return (
       <>
-      {isLoggedIn ? hasUserHome ?
+      {isLoggedIn ? userData?.home ?
             <>
               {isLoggedIn ? (
                 <CalendarPageWrapper className="text">

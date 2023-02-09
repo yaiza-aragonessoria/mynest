@@ -8,8 +8,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const ExpensesComponent = (props) => {
     const userData = useSelector(store => store.userProfile.userProfileSlice)
-    console.log("userData", userData.home)
-
 
     let text;
     if (props.expenses.category === 1) {

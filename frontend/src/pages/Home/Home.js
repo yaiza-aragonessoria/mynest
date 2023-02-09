@@ -3,12 +3,13 @@ import axios from "axios";
 import Sticker from "../../components/Sticker/Sticker";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchUser} from "../../features/slices/userSlice";
 const Home = () => {
+    const dispatch = useDispatch();
     const token = localStorage.getItem("access");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const userData = useSelector(store => store.userProfile.userProfileSlice)
-    const [hasUserHome, setHasUserHome] = useState(false);
+    const userData = useSelector(store => store.userProfile.userProfileSlice);
 
 
     const config = {
@@ -43,13 +44,16 @@ const Home = () => {
     }
 
     useEffect(() => {
-        if(token) setIsLoggedIn(true);
+        if (token) setIsLoggedIn(true);
         else setIsLoggedIn(false);
 
-        if(userData?.home) setHasUserHome(true);
-        else setHasUserHome(false);
+        dispatch(fetchUser());
+
+      }, []);
+
+    useEffect(() => {
         const fetchData = async () => {
-            console.log("fetchdata");
+            // console.log("fetchdata");
             let backendData = await axios.get(
                 "https://mynest.propulsion-learn.ch/backend/api/home/", config
             );
@@ -96,7 +100,7 @@ const Home = () => {
 
     return (
         <>
-            {isLoggedIn ? hasUserHome ?
+            {isLoggedIn ? userData?.home ?
                     <div>
                         <div>{homeName}</div>
                         <div>{homeAddress}</div>
