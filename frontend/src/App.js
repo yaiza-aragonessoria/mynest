@@ -11,6 +11,7 @@ import CreateTask from './components/CreateTask';
 import Tasks from './pages/Tasks';
 import EditTask from './components/EditTask'
 import Expenses from './pages/Expenses/Expenses';
+import Footer from './components/Footer/Footer';
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/edit-task" element={<EditTask/>}/>
                 <Route path="/expenses" element={<Expenses/>}/>
             </Routes>
+            <Footer />
 
         </div>);
 }

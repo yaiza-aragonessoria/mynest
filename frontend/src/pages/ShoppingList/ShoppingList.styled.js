@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const MainWrapper = styled.div`
   width: 100%;
-  min-height: calc(100vh - var(--navheight));
+  min-height: var(--maincontainer);
   display: flex;
   justify-content: center;
 
