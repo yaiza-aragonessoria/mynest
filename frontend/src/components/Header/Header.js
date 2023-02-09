@@ -26,9 +26,9 @@ const Header = () => {
 
   return (
     <>
-      <header>
+      <div id='header'>
             <NavLink to="/">Logo</NavLink>
-            <NavLink to="/shared-expenses">Shared Expenses</NavLink>
+            <NavLink to="/expenses">Shared Expenses</NavLink>
             <NavLink to="/shoppinglist">Shopping List</NavLink>
             <NavLink to="/to-do">To Do</NavLink>
             <NavLink to="/calendar">Calendar</NavLink>
@@ -37,7 +37,7 @@ const Header = () => {
             <button type="button" id="signup" onClick={() => navigate("/sign-up")}>SIGNUP</button>
             {isLoggedIn ? <button type="button" id="logout" onClick={handleLogout}>LOGOUT</button> : <button type="button" id="login" onClick={() => navigate("/login")}>LOGIN</button> }
           </div>
-      </header>
+      </div>
     </>
   );
 };

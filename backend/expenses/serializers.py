@@ -17,5 +17,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
     def to_representation(self, expense):
         representation = super().to_representation(expense)
         shared_with_queryset = User.objects.filter(id__in=representation['shared_with'])
+        payer_queryset = User.objects.get(id=representation['payer'])
         representation['shared_with'] = UserSerializer(shared_with_queryset, many=True).data
+        representation['payer'] = UserSerializer(payer_queryset).data
         return representation

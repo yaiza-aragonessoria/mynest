@@ -1,6 +1,11 @@
 import React from "react";
 import axios from "axios";
 
+// STYLES
+import { PopupBg, PopupWrapper } from "./FavouriteItems_popup.styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
+
 const FavouriteItems_popup = ({
   showPopup,
   setShowPopup,
@@ -55,41 +60,45 @@ const FavouriteItems_popup = ({
   };
 
   return showPopup ? (
-    <div>
-      <h3>Recently Purchased</h3>
-      <div className="recently_purchased">
-        <div>
-          {tobuyItem
-            .filter((item) => {
-              return item.status === "BO" || item.favorite;
-            })
-            .map((item, index) => {
-              return (
-                <div key={item.id}>
-                  <button
-                    onClick={() => {
-                      handleLike(item.id, item.favorite);
-                    }}
-                    className="add_to_fav"
-                  >
-                    Like
-                  </button>
-                  <span className="item_name"> {item.name}</span>
-                  <button
-                    onClick={() => {
-                      handleDelete(item.id);
-                    }}
-                    className="add_to_fav"
-                  >
-                    Delete
-                  </button>
-                </div>
-              );
-            })}
-        </div>
+    <PopupBg>
+    <PopupWrapper>
+      <h3 className="header">Edit recently purchased items</h3>
+      <div className="purchased_items_container">
+        {tobuyItem
+          .filter((item) => {
+            return item.status === "BO" || item.favorite;
+          })
+          .map((item, index) => {
+            return (
+              <div className="purchased_item text" key={item.id}>
+                <i
+                  className={item.favorite ? "favorite_item": "add_to_fav"}
+                  onClick={() => {
+                    handleLike(item.id, item.favorite);
+                  }}
+                >
+                  {<FontAwesomeIcon icon={faStar} />}
+                </i>
+
+                <span className="item_name"> {item.name}</span>
+
+                <i
+                  className="delete_item"
+                  onClick={() => {
+                    handleDelete(item.id);
+                  }}
+                >
+                  {<FontAwesomeIcon icon={faTrash} />}
+                </i>
+              </div>
+            );
+          })}
       </div>
-      <button onClick={closePopup}>Close</button>
-    </div>
+      <button onClick={closePopup} className="btn_grey">
+        Close
+      </button>
+    </PopupWrapper>
+  </PopupBg>
   ) : (
     ""
   );

@@ -1,4 +1,14 @@
 /* default style of Big-Calendar. We can adapt it as we want :) */
+.fullContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.add-form {
+  margin-top: 3rem;
+}
+
 
 @charset "UTF-8";
 .rbc-btn {

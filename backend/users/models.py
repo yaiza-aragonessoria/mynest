@@ -46,7 +46,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     first_name = models.CharField(verbose_name='first name', max_length=200, blank=True, default='unkown')
     last_name = models.CharField(verbose_name='last name', max_length=200, blank=True, default='unkown')
-    avatar = models.ImageField(verbose_name='profile picture', max_length=255, blank=True)
+    avatar = models.ImageField(verbose_name='avatar', max_length=255, blank=True)
     username = None
     home = models.ForeignKey(to=Home, on_delete=models.PROTECT, related_name='cohabitants', blank=True, null=True)
 
