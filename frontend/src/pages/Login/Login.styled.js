@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const Wrapper = styled.div`
+  min-height: var(--maincontainer);
+`
+
 export const LoginWrapper = styled.div`
   z-index: 3;
   height: 50%;
