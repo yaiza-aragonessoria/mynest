@@ -1,5 +1,5 @@
 import { TaskContainer, Button } from "./Task.styled";
-import { useState } from "react";
+import React, { useState } from "react";
 import api from "../../api/myNest";
 import { useNavigate } from "react-router-dom"
 import EditTask from "../EditTask";
@@ -56,7 +56,7 @@ const Task = ({ name, status, assignee, id, onTaskDelete, planned, nam }) => {
     <TaskContainer>
       <p>{name}</p>
       <p>{currentStatus}</p>
-      <p>{assignee}</p>
+      <p>{assignee.first_name} <img src={assignee.avatar}/></p>
       <Button>
         {currentStatus !== "DONE" && (
           <button type="submit" onClick={handleClick}>
