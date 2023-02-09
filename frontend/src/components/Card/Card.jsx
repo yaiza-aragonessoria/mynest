@@ -47,7 +47,7 @@ const Card = ({ foodDataItem, tobuyItem, setTobuyItem, updateCartStatus }) => {
           <h3 className="subheader" id="card_text">{foodDataItem.name}</h3>
           <p className="text" id="card_text">{foodDataItem.description}</p>
           <button
-          className="btn_grey"
+          className="btn_purple_inverted"
             onClick={() => {
               handleAddItem(foodDataItem.id, foodDataItem.name);
             }}
