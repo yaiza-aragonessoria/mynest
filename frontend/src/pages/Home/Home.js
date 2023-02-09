@@ -61,7 +61,10 @@ const Home = () => {
             <div>{homeName}</div>
             <div>{homeAddress}</div>
             <ul>
-                {homeUsers.map(u => <li key={u.id}>{u.first_name} {u.last_name}</li>)}
+                {homeUsers.map(u => <li key={u.id}>
+                    {u.first_name}
+                    <img src={u.avatar}/>
+                </li>)}
             </ul>
             <form>
                 <input style={{width: "80%", margin: "20px"}} type="text" placeholder="new sticker..." />

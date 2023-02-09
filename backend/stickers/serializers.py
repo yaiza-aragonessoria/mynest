@@ -5,6 +5,7 @@ from .models import Sticker
 class UserStickerSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
+    avatar = serializers.ImageField()
 
 
 class StickerSerializer(serializers.ModelSerializer):
