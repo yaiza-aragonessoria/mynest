@@ -23,7 +23,7 @@ const Header = () => {
       localStorage.removeItem('email');
       dispatch(clearAuth());
       setIsLoggedIn(false)
-      navigate("/sign-in")
+      navigate("/login")
     };
 
 

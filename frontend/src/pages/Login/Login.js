@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {setAuth} from "../../features/slices/authSlice";
+import {ErrorMessage, FormFields, LoginForm, LoginTitle, LoginWrapper} from "./Login.styled";
 
 
 const Login = () => {
@@ -47,7 +48,8 @@ const Login = () => {
       navigate("/");
 
     }).catch(error => {
-      setNewWarning(error.message);
+      console.log(error)
+      setNewWarning(error.response.data.detail);
     });
   }
 
@@ -71,20 +73,19 @@ const Login = () => {
 
   return (
     <>
-      <h2>Login</h2>
-        <hr></hr>
-
-      <p>{newWarning}</p>
-
-      {!auth && <form onSubmit={handleSubmit}>
-                <span>
-                  <input name="email" type="email" placeholder="Email" value={newEmail} onChange={handleChange}/>
-                </span>
-                <span>
-                  <input name="password" type="password" placeholder="Password" value={newPassword} onChange={handleChange}/>
-                </span>
-                <button type="submit">Login</button>
-              </form>
+      <LoginTitle className="header">Login</LoginTitle>
+      <ErrorMessage>{newWarning}</ErrorMessage>
+      {!auth && <LoginWrapper>
+                  <form onSubmit={handleSubmit}>
+                  <FormFields>
+                    <input className="text" name="email" type="email" placeholder="Email" value={newEmail} onChange={handleChange}/>
+                  </FormFields>
+                  <FormFields>
+                    <input name="password" type="password" placeholder="Password" value={newPassword} onChange={handleChange}/>
+                  </FormFields>
+                  <button className="btn_purple" type="submit">Login</button>
+                  </form>
+              </LoginWrapper>
       }
     </>
 
