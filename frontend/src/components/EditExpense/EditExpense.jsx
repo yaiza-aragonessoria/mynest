@@ -11,11 +11,22 @@ import axios from "axios";
 // const EditExpense = ({showEditModal, setEditModal, expense}) => {
 const EditExpense = (props) => {
         const navigate = useNavigate();
-        const [inputValue, setInputValue] = useState(props.expense);
+        const [inputValue, setInputValue] = useState({
+            name: props.expense.name,
+            amount: props.expense.amount,
+            category: props.expense.category,
+            creator: props.expense.creator,
+            bill_image: props.expense.bill_image,
+            shared_with: props.expense.shared_with,
+            created: props.expense.created,
+            payer: props.expense.payer.id
+        });
         const access = localStorage.getItem("access");
         const [checked, setChecked] = useState([]);
         const [errorMessage, setErrorMessage] = useState("");
         const [homeMembers, setHomeMembers] = useState([]);
+
+        console.log(inputValue)
 
         const handleChange = (e) => {
             setInputValue({...inputValue, [e.target.name]: e.target.value})
@@ -57,6 +68,7 @@ const EditExpense = (props) => {
         }, []);
 
 
+
         const handleSave = event => {
             event.preventDefault();
             console.log("EXpenseeeee", inputValue)
@@ -64,8 +76,7 @@ const EditExpense = (props) => {
             api.patch(`expenses/${props.expenseId}/`, inputValue, headers)
                 .then(response => {
                     console.log(response);
-                    if (response.status === 201) navigate("/");
-                    // comment for Yaiza: here, check where you want to be redirected on save, or maybe just reload
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.log(error);
@@ -79,8 +90,10 @@ const EditExpense = (props) => {
                     <div>
                         <label>Name</label>
                         <input
+                            name={'name'}
                             type="text"
-                            defaultValue={inputValue.name}
+                            value={inputValue.name}
+                            // defaultValue={inputValue.name}
                             onChange={handleChange}
                         />
                     </div>
@@ -89,9 +102,12 @@ const EditExpense = (props) => {
                         <select onChange={handleChange}
                                 name={'payer'}>
                             <option value="">Select a payer</option>
-                            {homeMembers.map((member) => (
-                                <option value={member?.id}>{member?.first_name}</option>
-                            ))}
+                            {homeMembers.map((member) => {
+                                return (
+                                    <option value={member?.id}
+                                            selected={member.id === inputValue.payer}>{member?.first_name}</option>
+                                );})
+                            }
                         </select>
                     </div>
                     <div>
@@ -117,7 +133,8 @@ const EditExpense = (props) => {
                     </div>
                     <div>
                         <label htmlFor=''>Date</label>
-                        <input id='' name='date' type={'date'} defaultValue={inputValue.date} onChange={handleChange}
+                        {console.log(inputValue)}
+                        <input id='' name='created' type={'date'} value={inputValue.created} defaultValue={inputValue.created} onChange={handleChange}
                         />
                     </div>
 
@@ -125,6 +142,7 @@ const EditExpense = (props) => {
                         <label>Shared with:</label>
                         {homeMembers.map((member, index) => {
                             let memberName = member?.first_name ? member.first_name : member.email;
+                            console.log(inputValue.shared_with)
                             return (<>
                                 <label id={index} htmlFor={memberName}>
                                     <input type={"checkbox"}
