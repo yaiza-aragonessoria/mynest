@@ -1,6 +1,4 @@
 from rest_framework import serializers
-
-import users.serializers
 from .models import Task
 
 
@@ -18,9 +16,9 @@ class TaskSerializer(serializers.ModelSerializer):
         read_only_fields = ['created', 'updated', 'creator']
 
     def to_representation(self, instance):
-            data = super().to_representation(instance)
-            data["assignee"] = AssigneeSerializer(instance.assignee).data
-            return data
+        data = super().to_representation(instance)
+        data["assignee"] = AssigneeSerializer(instance.assignee).data
+        return data
 
 
 class TaskCreationSerializer(serializers.Serializer):

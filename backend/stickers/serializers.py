@@ -17,6 +17,6 @@ class StickerSerializer(serializers.ModelSerializer):
         read_only_fields = ['created', 'updated']
 
     def to_representation(self, instance):
-            data = super().to_representation(instance)
-            data["author"] = UserStickerSerializer(instance.author).data
-            return data
+        data = super().to_representation(instance)
+        data["author"] = UserStickerSerializer(instance.author).data
+        return data
