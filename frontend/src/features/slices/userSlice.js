@@ -26,7 +26,14 @@ export const userProfileSlice = createSlice({
     initialState: {
         userProfileSlice: []
     },
-    reducers: {},
+    reducers: {
+        cleaUserData: (state) => {
+            const newState = { ...state }
+
+            newState.userProfileSlice = undefined // Set the data to undefined
+
+            return newState
+        },},
     extraReducers: {
         [fetchUser.fulfilled]: (state, action) => {
 
@@ -36,6 +43,6 @@ export const userProfileSlice = createSlice({
     }
 })
 
-export const {} = userProfileSlice.actions;
+export const {cleaUserData} = userProfileSlice.actions;
 
 export default userProfileSlice.reducer;

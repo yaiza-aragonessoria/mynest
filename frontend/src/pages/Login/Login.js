@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {setAuth} from "../../features/slices/authSlice";
-import {ErrorMessage, FormFields, LoginForm, LoginTitle, LoginWrapper} from "./Login.styled";
+import {ErrorMessage, FormFields, LoginForm, LoginTitle, LoginWrapper, Wrapper} from "./Login.styled";
 
 
 const Login = () => {
@@ -72,7 +72,7 @@ const Login = () => {
   }, []);
 
   return (
-    <>
+    <Wrapper>
       <LoginTitle className="header">Login</LoginTitle>
       <ErrorMessage>{newWarning}</ErrorMessage>
       {!auth && <LoginWrapper>
@@ -87,7 +87,7 @@ const Login = () => {
                   </form>
               </LoginWrapper>
       }
-    </>
+    </Wrapper>
 
   );
 }
