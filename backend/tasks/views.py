@@ -21,7 +21,7 @@ class ListCreateTaskView(ListCreateAPIView):
     permission_classes = [IsAuthenticated, HasHome]
 
     def get_queryset(self):
-        return Task.objects.filter(creator__home=self.request.user.home).order_by("-updated")
+        return Task.objects.filter(creator__home=self.request.user.home).order_by("name")
 
     def post(self, request, *args, **kwargs):
         req_serializer = TaskCreationSerializer(data=request.data)
@@ -42,9 +42,21 @@ class ListCreateTaskView(ListCreateAPIView):
         return Response(TaskSerializer(results, many=True).data, status=status.HTTP_201_CREATED)
 
 
-class ListMonthTaskView(ListAPIView):
+class ListSearchAllTaskView(ListAPIView):
     """
-    get: Lists all tasks of the logged-in User's Home for this month in inverted chronological order.
+    get: Lists all tasks of the logged-in User's Home with a name containing the parameter "q".
+    """
+    serializer_class = TaskSerializer
+    permission_classes = [IsAuthenticated, HasHome]
+
+    def get_queryset(self):
+        return Task.objects.filter(
+            name__contains=self.request.GET.get('q', ''), creator__home=self.request.user.home).order_by("name")
+
+
+class ListSearchMonthTaskView(ListAPIView):
+    """
+    get: Lists all tasks of the logged-in User's Home for this month with a name containing the parameter "q".
     """
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated, HasHome]
@@ -52,7 +64,7 @@ class ListMonthTaskView(ListAPIView):
     def get_queryset(self):
         return Task.objects.filter(
             planned_for__year=datetime.now().year, planned_for__month=datetime.now().month,
-            creator__home=self.request.user.home).order_by("-updated")
+            name__contains=self.request.GET.get('q', ''), creator__home=self.request.user.home).order_by("name")
 
 
 class RetrieveUpdateDeleteTaskView(RetrieveUpdateDestroyAPIView):
@@ -67,17 +79,3 @@ class RetrieveUpdateDeleteTaskView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'  # field in the database
     lookup_url_kwarg = 'id_task'  # field in the request
     http_method_names = ['get', 'patch', 'delete']  # disallow put as we don't use it
-
-
-class ListSearchView(ListAPIView):
-    """
-     get: Lists all tasks of the current month and of the logged-in User's Home
-     with a name containing the parameter "q" in inverted chronological order.
-     """
-    serializer_class = TaskSerializer
-    permission_classes = [IsAuthenticated, HasHome]
-
-    def get_queryset(self):
-        return Task.objects.filter(
-            creator__home=self.request.user.home, name__contains=self.request.GET.get('q', ''),
-            planned_for__year=datetime.now().year, planned_for__month=datetime.now().month).order_by("-updated")
