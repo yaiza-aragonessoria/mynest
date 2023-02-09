@@ -4,8 +4,15 @@ import Task from "../../components/Task"
 import { TasksContainer, TopPage } from "./Tasks.styled";
 import { useNavigate } from "react-router-dom"
 import CreateTask from "../../components/CreateTask";
+import {useSelector} from "react-redux";
+import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
+import MustLogIn from "../../components/MustLogIn/MustLogIn";
 
 const Tasks = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userData = useSelector(store => store.userProfile.userProfileSlice)
+  const [hasUserHome, setHasUserHome] = useState(false);
+
   const[showCreate, setShowCreate] = useState(false);
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
@@ -43,6 +50,14 @@ const Tasks = () => {
     }
   };
 
+  useEffect(() => {
+    if(access) setIsLoggedIn(true);
+    else setIsLoggedIn(false);
+
+    if(userData?.home) setHasUserHome(true);
+    else setHasUserHome(false);
+  }, []);
+
 
 
 
@@ -50,6 +65,8 @@ const Tasks = () => {
     fetchTasks();
     // fetchTasksByAllMonths();
   }, [searchTerm]);
+
+
 
 
   const sortTasks = (tasks) => {
@@ -91,36 +108,41 @@ const Tasks = () => {
 
 
   return (
-    <>
-      <TopPage>
-        <h1>TASK BOARD OF {currentMonth}</h1>
-        <form>
-          <input
-            type="text"
-            placeholder="Search task..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </form>
-        <button onClick={toggleEdit}>+ Add Task</button>
-        <button onClick={fetchTasksByAllMonths}>All months</button>
-      </TopPage>
-      <TasksContainer>
-        {sortTasks(tasks).map(task => (
-          <Task
-            key={task.id}
-            name={task.name}
-            status={task.status === 'TD' ? 'TO DO' : task.status === 'IP' ? 'IN PROGRESS' : 'DONE'}
-            assignee={task.assignee}
-            id={task.id}
-            onTaskDelete={handleTaskDelete}
-            planned={task.planned_for}
-            // nam={task.first_name}
-          />
-        ))}
-        {showCreate && <CreateTask toggleEdit={toggleEdit} /> }
-      </TasksContainer>
-    </>
+      <>
+      {isLoggedIn ? hasUserHome ?
+              <>
+                <TopPage>
+                  <h1>TASK BOARD OF {currentMonth}</h1>
+                  <form>
+                    <input
+                      type="text"
+                      placeholder="Search task..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </form>
+                  <button onClick={toggleEdit}>+ Add Task</button>
+                  <button onClick={fetchTasksByAllMonths}>All months</button>
+                </TopPage>
+                <TasksContainer>
+                  {sortTasks(tasks).map(task => (
+                    <Task
+                      key={task.id}
+                      name={task.name}
+                      status={task.status === 'TD' ? 'TO DO' : task.status === 'IP' ? 'IN PROGRESS' : 'DONE'}
+                      assignee={task.assignee}
+                      id={task.id}
+                      onTaskDelete={handleTaskDelete}
+                      planned={task.planned_for}
+                      // nam={task.first_name}
+                    />
+                  ))}
+                  {showCreate && <CreateTask toggleEdit={toggleEdit} /> }
+                </TasksContainer>
+              </>
+          : <MustHaveHome/> : <MustLogIn/>
+      }
+      </>
   );
 
 };

@@ -1,8 +1,15 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Sticker from "../../components/Sticker/Sticker";
+import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
+import MustLogIn from "../../components/MustLogIn/MustLogIn";
+import {useSelector} from "react-redux";
 const Home = () => {
     const token = localStorage.getItem("access");
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const userData = useSelector(store => store.userProfile.userProfileSlice)
+    const [hasUserHome, setHasUserHome] = useState(false);
+
 
     const config = {
         headers: { Authorization: `Bearer ${token}` },
@@ -36,6 +43,11 @@ const Home = () => {
     }
 
     useEffect(() => {
+        if(token) setIsLoggedIn(true);
+        else setIsLoggedIn(false);
+
+        if(userData?.home) setHasUserHome(true);
+        else setHasUserHome(false);
         const fetchData = async () => {
             console.log("fetchdata");
             let backendData = await axios.get(
@@ -83,26 +95,31 @@ const Home = () => {
     };
 
     return (
-        <div>
-            <div>{homeName}</div>
-            <div>{homeAddress}</div>
-            <ul>
-                {homeUsers.map(u => <li key={u.id}>
-                    {u.first_name}
-                    <img src={u.avatar}/>
-                </li>)}
-            </ul>
-            <form>
-                <input style={{width: "80%", margin: "20px"}} type="text" placeholder="new sticker..." value={newStickerContent} onChange={handleNewStickerContentChange} />
-                <button type="submit" onClick={handleCreateNewSticker}>Add Sticker</button>
-            </form>
-            <div>
-                {warning}
-            </div>
-            <div>
-                {homeStickers.sort(compareStickers).map(s => <Sticker key={s.id} sticker={s} toggleSticker={toggleSticker} deleteSticker={deleteSticker} />)}
-            </div>
-        </div>
+        <>
+            {isLoggedIn ? hasUserHome ?
+                    <div>
+                        <div>{homeName}</div>
+                        <div>{homeAddress}</div>
+                        <ul>
+                            {homeUsers.map(u => <li key={u.id}>
+                                {u.first_name}
+                                <img src={u.avatar}/>
+                            </li>)}
+                        </ul>
+                        <form>
+                            <input style={{width: "80%", margin: "20px"}} type="text" placeholder="new sticker..." value={newStickerContent} onChange={handleNewStickerContentChange} />
+                            <button type="submit" onClick={handleCreateNewSticker}>Add Sticker</button>
+                        </form>
+                        <div>
+                            {warning}
+                        </div>
+                        <div>
+                            {homeStickers.sort(compareStickers).map(s => <Sticker key={s.id} sticker={s} toggleSticker={toggleSticker} deleteSticker={deleteSticker} />)}
+                        </div>
+                    </div>
+                : <MustHaveHome/> : <MustLogIn/>
+            }
+        </>
     );
 };
 

@@ -13,6 +13,9 @@ import {
   CalendarFormWrapper,
   CalendarWrapper,
 } from "./Calendar.styled";
+import {useSelector} from "react-redux";
+import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
+import MustLogIn from "../../components/MustLogIn/MustLogIn";
 
 /* sources:
 https://www.youtube.com/watch?v=lyRP_D0qCfk
@@ -31,6 +34,8 @@ const HomeCalendar = (props) => {
     },
   };
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userData = useSelector(store => store.userProfile.userProfileSlice)
+  const [hasUserHome, setHasUserHome] = useState(false);
   const [homeMembers, setHomeMembers] = useState([]);
   const [checked, setChecked] = useState([]);
   const [updatedChecked, setUpdatedChecked] = useState([]);
@@ -397,101 +402,106 @@ const HomeCalendar = (props) => {
   };
 
   return (
-    <>
-      {isLoggedIn ? (
-        <CalendarPageWrapper className="text">
-          <CalendarFormWrapper>
-            <input
-              className="add_event_input"
-              type="text"
-              placeholder="Add title"
-              name="title"
-              value={newEvent.title}
-              onChange={handleChange}
-            />
+      <>
+      {isLoggedIn ? hasUserHome ?
+            <>
+              {isLoggedIn ? (
+                <CalendarPageWrapper className="text">
+                  <CalendarFormWrapper>
+                    <input
+                      className="add_event_input"
+                      type="text"
+                      placeholder="Add title"
+                      name="title"
+                      value={newEvent.title}
+                      onChange={handleChange}
+                    />
 
-            <div className="date_input">
-              <div className="date_input_from">
-                <p>from</p>
-                <input
-                  type="date"
-                  name="start"
-                  value={newEvent.start}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="date_input_until">
-                <p>until</p>
-                <input
-                  type="date"
-                  name="end"
-                  value={newEvent.end}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div className="participants text">
-              {homeMembers.length !== 0 &&
-                homeMembers.map((member, index) => {
-                  let memberName = member.first_name
-                    ? member.first_name
-                    : member.email;
-                  return (
-                    <div className="participant">
-                      <label id={index.toString()} htmlFor={memberName}>
+                    <div className="date_input">
+                      <div className="date_input_from">
+                        <p>from</p>
                         <input
-                          type="checkbox"
-                          id={uuid()}
-                          name="participants"
-                          value={member.id}
-                          onChange={handleCheck}
+                          type="date"
+                          name="start"
+                          value={newEvent.start}
+                          onChange={handleChange}
                         />
-                        {memberName}
-                      </label>
+                      </div>
+
+                      <div className="date_input_until">
+                        <p>until</p>
+                        <input
+                          type="date"
+                          name="end"
+                          value={newEvent.end}
+                          onChange={handleChange}
+                        />
+                      </div>
                     </div>
-                  );
-                })}
-            </div>
 
-            <input
-              className="add_event_input"
-              type="text"
-              name="notes"
-              placeholder={"Add a description"}
-              value={newEvent.notes}
-              onChange={handleChange}
-            />
-            <button className="btn_blue" type="submit" onClick={handleAddEvent}>
-              Add Event
-            </button>
-          </CalendarFormWrapper>
+                    <div className="participants text">
+                      {homeMembers.length !== 0 &&
+                        homeMembers.map((member, index) => {
+                          let memberName = member.first_name
+                            ? member.first_name
+                            : member.email;
+                          return (
+                            <div className="participant">
+                              <label id={index.toString()} htmlFor={memberName}>
+                                <input
+                                  type="checkbox"
+                                  id={uuid()}
+                                  name="participants"
+                                  value={member.id}
+                                  onChange={handleCheck}
+                                />
+                                {memberName}
+                              </label>
+                            </div>
+                          );
+                        })}
+                    </div>
 
-          <CalendarWrapper>
-            <Calendar
-              popup
-              selectable
-              localizer={localizer}
-              events={myEventsList}
-              views={["month", "agenda"]}
-              startAccessor="start"
-              endAccessor="end"
-              eventPropGetter={eventStyleGetter}
-              onSelectEvent={(slotInfo) => onSelectEventHandler(slotInfo)}
-              onSelectSlot={(slotInfo) => onSelectEventSlotHandler(slotInfo)}
-              style={{ height: 500, margin: "50px" }}
-            />
-          </CalendarWrapper>
+                    <input
+                      className="add_event_input"
+                      type="text"
+                      name="notes"
+                      placeholder={"Add a description"}
+                      value={newEvent.notes}
+                      onChange={handleChange}
+                    />
+                    <button className="btn_blue" type="submit" onClick={handleAddEvent}>
+                      Add Event
+                    </button>
+                  </CalendarFormWrapper>
 
-          <Popup />
-        </CalendarPageWrapper>
-      ) : (
-        <div>
-          <p className="header">You must be logged in first</p>
-        </div>
-      )}
-    </>
+                  <CalendarWrapper>
+                    <Calendar
+                      popup
+                      selectable
+                      localizer={localizer}
+                      events={myEventsList}
+                      views={["month", "agenda"]}
+                      startAccessor="start"
+                      endAccessor="end"
+                      eventPropGetter={eventStyleGetter}
+                      onSelectEvent={(slotInfo) => onSelectEventHandler(slotInfo)}
+                      onSelectSlot={(slotInfo) => onSelectEventSlotHandler(slotInfo)}
+                      style={{ height: 500, margin: "50px" }}
+                    />
+                  </CalendarWrapper>
+
+                  <Popup />
+                </CalendarPageWrapper>
+              ) : (
+                <div>
+                  <p className="header">You must be logged in first</p>
+                </div>
+              )}
+            </>
+          : <MustHaveHome/> : <MustLogIn/>
+      }
+      </>
   );
 };
 
