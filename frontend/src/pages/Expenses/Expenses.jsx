@@ -40,26 +40,21 @@ const Expenses = () => {
 
         return (<>
             <ExpensesStyled>
-                <button onClick={handleOpenModal}>Add Expense</button>
+                {!showModal && <button onClick={handleOpenModal}>Add Expense</button>}
                 {showModal && <AddExpenses/>}
-                {!showModal && expensesData?.map((expense) => {
+                {expensesData?.map((expense) => {
                     return (
                         <>
-                            { <ExpensesComponent key={expense?.id} expenses={expense}
-                                                           name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
-                                                           onEdit={handleEdit}
-                                                           onExpenseDelete={handleExpenseDelete}/>}
-                            {/*{showEditModal &&*/}
-                            {/*    <EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={expense}*/}
-                            {/*                 expenseId={expense.id}/>}*/}
+                            {<ExpensesComponent key={expense?.id} expenses={expense}
+                                                name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
+                                                onEdit={handleEdit}
+                                                onExpenseDelete={handleExpenseDelete}/>}
+
                         </>
                     )
                 })
                 }
-                {/*{expensesData?.map((expense) => {*/}
-                {/*    return (<EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={expense}*/}
-                {/*                         expenseId={expense.id}/>)*/}
-                {/*})}*/}
+
             </ExpensesStyled>
         </>);
     }

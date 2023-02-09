@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
 import api from '../../api/myNest';
-import {ExpensesComponentStyled, PopupWrapper} from "./AddExpense.styled";
-import axios from "axios";
-
+import {ExpensesComponentStyled, FormFields, PopupWrapper} from "./AddExpense.styled";
+import {categories} from "../../constants/categories";
 const AddExpenses = () => {
     const [homeMembers, setHomeMembers] = useState([]);
     const access = localStorage.getItem("access");
@@ -75,12 +74,14 @@ const AddExpenses = () => {
     return (<>
         <ExpensesComponentStyled>
             <PopupWrapper>
+                <h3 className="header">Add Expense</h3>
             <form onSubmit={handleSubmit}>
-                <div>
+
+                <FormFields>
                     <label htmlFor=''>Expense name</label>
                     <input id='' name='name' value={formData.name} onChange={handleChange} required/>
-                </div>
-                <div>
+                </FormFields>
+                <FormFields>
                     <label htmlFor=''>Category </label>
                     <select onChange={handleChange}
                             name={'category'}>
@@ -90,12 +91,12 @@ const AddExpenses = () => {
                         ))}
                     </select>
 
-                </div>
-                <div>
+                </FormFields>
+                <FormFields>
                     <label htmlFor=''>Amount</label>
                     <input id='' name='amount' value={formData.amount} onChange={handleChange} required/>
-                </div>
-                <div>
+                </FormFields>
+                <FormFields>
                     <label htmlFor=''>Payer </label>
                     <select onChange={handleChange}
                             name={'payer'}>
@@ -104,12 +105,12 @@ const AddExpenses = () => {
                             <option value={member?.id}>{member?.first_name}</option>
                         ))}
                     </select>
-                </div>
-                <div>
+                </FormFields>
+                <FormFields>
                     <label htmlFor=''>Date</label>
                     <input id='' name='date' type={'date'} value={formData.date} onChange={handleChange} required/>
-                </div>
-                <div>
+                </FormFields>
+                <FormFields>
                     <label>Shared with:</label>
                     {homeMembers.map((member, index) => {
                         let memberName = member?.first_name ? member.first_name : member.email;
@@ -121,9 +122,9 @@ const AddExpenses = () => {
                                        onChange={handleCheck}/>{memberName}
                             </label></>)
                     })}
-                </div>
-                <button type="submit">Save</button>
-                <button onClick={goToHomePage}>Cancel</button>
+                </FormFields>
+                <button className="btn_purple" type="submit">Save</button>
+                <button className="btn_purple" onClick={goToHomePage}>Cancel</button>
             </form>
             </PopupWrapper>
         </ExpensesComponentStyled>
