@@ -15,12 +15,16 @@ margin-right: 50px;
 
 export const TopPage = styled.div`
 margin-top: 40px;
+margin-left: 450px;
+gap: 20px;
 
 button {
     position: relative;
     left: 500px;
     top: 5px;
+    gap: 10px;
 }
+
 
 input {
     width: 400px;

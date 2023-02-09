@@ -1,16 +1,16 @@
 import styled from "styled-components"
 
-export const CreateTaskPage = styled.div`
+export const EditTaskPage = styled.div`
 position: relative;
 display: flex;
 flex-direction: column;
 height: 98vh;
 justify-content: space-around;
 align-items: center;
-border: 1px solid black;
 background-color: white;
 height: 70vh;
-width: 45%;
+/* width: 45%; */
+
 
 
 button {
@@ -28,7 +28,7 @@ export const FormField = styled.div`
     
     display: flex;
     flex-direction: column;
-    
+    width: 45vw;
     
     label, select {
             font-weight: 600;
@@ -47,7 +47,7 @@ export const FormField = styled.div`
 
 `;
 
-export const PopPage = styled.div`
+export const PopUp = styled.div`
 position: fixed;
 top: 0;
 left: 0;
@@ -61,3 +61,5 @@ align-items: center;
 
     
 `
+
+
