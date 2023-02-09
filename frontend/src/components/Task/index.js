@@ -55,14 +55,14 @@ const Task = ({ name, status, assignee, id, onTaskDelete, planned, nam }) => {
   return (
     <TaskContainer>
       <p>{name}</p>
-      <p>{currentStatus}</p>
       <p>{assignee.first_name} <img src={assignee.avatar}/></p>
+      <p>{currentStatus}</p>
       <Button>
         {currentStatus !== "DONE" && (
           <button type="submit" onClick={handleClick}>
             {currentStatus === "TO DO" ? "START" : "DONE"}
           </button>
-        )}
+        )}  
         <button onClick={toggleEdit} type="submit">EDIT</button>
         <button type="submit" onClick={handleDelete}>delete</button>
       </Button>

@@ -1,7 +1,7 @@
 import api from "../../api/myNest";
 import React, { useState, useEffect } from "react"
 import Task from "../../components/Task"
-import { TasksContainer, TopPage } from "./Tasks.styled";
+import { MainContainer, TasksContainer, TopPage, Description } from "./Tasks.styled";
 import { useNavigate } from "react-router-dom"
 import CreateTask from "../../components/CreateTask";
 
@@ -18,6 +18,7 @@ const Tasks = () => {
     },
     params: { q: searchTerm }
   }
+  
 
   const fetchTasks = async () => {
     try {
@@ -92,6 +93,7 @@ const Tasks = () => {
 
   return (
     <>
+     <MainContainer>
       <TopPage>
         <h1>TASK BOARD OF {currentMonth}</h1>
         <form>
@@ -102,9 +104,13 @@ const Tasks = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </form>
-        <button onClick={toggleEdit}>+ Add Task</button>
-        <button onClick={fetchTasksByAllMonths}>All months</button>
+        <button className="btn_purple" onClick={toggleEdit}>+ Add Task</button>
       </TopPage>
+      <Description>
+        <h3>Task name</h3>
+        <h3>Assignee</h3>
+        <h3>Status</h3>
+      </Description>
       <TasksContainer>
         {sortTasks(tasks).map(task => (
           <Task
@@ -120,6 +126,7 @@ const Tasks = () => {
         ))}
         {showCreate && <CreateTask toggleEdit={toggleEdit} /> }
       </TasksContainer>
+    </MainContainer>
     </>
   );
 
