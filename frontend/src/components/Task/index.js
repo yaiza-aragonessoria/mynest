@@ -5,13 +5,9 @@ import { useNavigate } from "react-router-dom"
 import EditTask from "../EditTask";
 
 
-const Task = ({ name, status, assignee, id, onTaskDelete, planned, nam }) => {
-  const navigate = useNavigate();
+const Task = ({ task, onTaskDelete, onTaskEdit }) => {
   const[showEdit, setShowEdit] = useState(false);
-  const goToEditTask = () => {
-        navigate("/edit-task");
-      };
-  const [currentStatus, setCurrentStatus] = useState(status);
+  const [currentStatus, setCurrentStatus] = useState(task.status);
   const access = localStorage.getItem("access");
   const config = {
     method: "PATCH",
@@ -19,54 +15,52 @@ const Task = ({ name, status, assignee, id, onTaskDelete, planned, nam }) => {
       Authorization: `Bearer ${access}`,
     },
   };
-  const data =  {
-      status: currentStatus === 'TO DO' ? 'IP' : currentStatus === 'IN PROGRESS' ? 'DO' : 'DO',
-  };
- 
+
   const handleClick = async () => {
-    if (currentStatus === "TO DO") {
-      setCurrentStatus("IN PROGRESS");
-      await api.patch(`/tasks/${id}/`, data, config);
-    } else if (currentStatus === "IN PROGRESS") {
-      setCurrentStatus("DONE");
-      await api.patch(`/tasks/${id}/`, data, config);
+    if (currentStatus === "TD") {
+      setCurrentStatus("IP");
+      await api.patch(`/tasks/${task.id}/`,  { status: "IP"}, config);
+    } else if (currentStatus === "IP") {
+      setCurrentStatus("DO");
+      await api.patch(`/tasks/${task.id}/`, { status: "DO"}, config);
     }
   };
 
-  const configDelete = {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
-    },
-  };
-
   const handleDelete = async () => {
-    await api.delete(`/tasks/${id}`, configDelete);
-    onTaskDelete(id);
+    await api.delete(`/tasks/${task.id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      },
+    });
+    onTaskDelete(task.id);
   };
 
-  const toggleEdit = (event) => {
+  const toggleEdit = () => {
     setShowEdit(!showEdit);
   };
 
-  
-
+  const statusLabel = {
+    "TD": "TO DO",
+    "IP": "IN PROGRESS",
+    "DO": "DONE",
+  }
 
   return (
     <TaskContainer>
-      <p>{name}</p>
-      <p>{assignee.first_name} <img src={assignee.avatar}/></p>
-      <p>{currentStatus}</p>
+      <p>{task.name}</p>
+      <p>{statusLabel[currentStatus]}</p>
+      <p>{task.assignee.first_name} <img src={task.assignee.avatar}/></p>
       <Button>
-        {currentStatus !== "DONE" && (
+        {currentStatus !== "DO" && (
           <button type="submit" onClick={handleClick}>
-            {currentStatus === "TO DO" ? "START" : "DONE"}
+            {currentStatus === "TD" ? "START" : "DONE"}
           </button>
         )}  
         <button onClick={toggleEdit} type="submit">EDIT</button>
         <button type="submit" onClick={handleDelete}>delete</button>
       </Button>
-        {showEdit && <EditTask name={name} assignee={assignee} planned={planned} id={id} toggleEdit={toggleEdit}  /> }
+        {showEdit && <EditTask task={task} toggleEdit={toggleEdit} onTaskEdit={onTaskEdit} /> }
     </TaskContainer>
   );
 };
