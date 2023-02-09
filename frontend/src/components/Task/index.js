@@ -56,7 +56,7 @@ const Task = ({ task, onTaskDelete, onTaskEdit }) => {
           <button type="submit" onClick={handleClick}>
             {currentStatus === "TD" ? "START" : "DONE"}
           </button>
-        )}
+        )}  
         <button onClick={toggleEdit} type="submit">EDIT</button>
         <button type="submit" onClick={handleDelete}>delete</button>
       </Button>

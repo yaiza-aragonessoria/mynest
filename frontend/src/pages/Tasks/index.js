@@ -1,7 +1,7 @@
 import api from "../../api/myNest";
 import React, { useState, useEffect } from "react"
 import Task from "../../components/Task"
-import { TasksContainer, TopPage } from "./Tasks.styled";
+import { MainContainer, TasksContainer, TopPage, Description } from "./Tasks.styled";
 import { useNavigate } from "react-router-dom"
 import CreateTask from "../../components/CreateTask";
 import {useDispatch, useSelector} from "react-redux";
@@ -100,32 +100,39 @@ const Tasks = () => {
 
   return (
       <>
-        <TopPage>
-          <h1>TASK BOARD OF {currentMonth}</h1>
-          <form>
-            <input
-                type="text"
-                placeholder="Search task..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </form>
-          <button onClick={toggleEdit}>+ Add Task</button>
-          <button onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
-            {searchMode == "month" ? "show all tasks " : "just this month" }
-          </button>
-        </TopPage>
-        <TasksContainer>
-          {sortTasks(tasks).map(task => (
-              <Task
-                  key={task.id}
-                  task={task}
-                  onTaskDelete={handleTaskDelete}
-                  onTaskEdit={handleTaskEdit}
+        <MainContainer>
+          <TopPage>
+            <h1>TASK BOARD OF {currentMonth}</h1>
+            <form>
+              <input
+                  type="text"
+                  placeholder="Search task..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
               />
-          ))}
-          {showCreate && <CreateTask toggleEdit={toggleEdit} onCreateTask={onCreateTask} /> }
-        </TasksContainer>
+            </form>
+            <button className="btn_purple" onClick={toggleEdit}>+ Add Task</button>
+            <button onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
+              {searchMode == "month" ? "show all tasks " : "just this month" }
+            </button>
+          </TopPage>
+          <Description>
+            <h3>Task name</h3>
+            <h3>Assignee</h3>
+          <h3>Status</h3>
+      </Description>
+          <TasksContainer>
+            {sortTasks(tasks).map(task => (
+                <Task
+                    key={task.id}
+                    task={task}
+                    onTaskDelete={handleTaskDelete}
+                    onTaskEdit={handleTaskEdit}
+                />
+            ))}
+            {showCreate && <CreateTask toggleEdit={toggleEdit} onCreateTask={onCreateTask} /> }
+          </TasksContainer>
+        </MainContainer>
       </>
   );
 
