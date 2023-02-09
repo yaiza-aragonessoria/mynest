@@ -1,10 +1,16 @@
 import styled from "styled-components"
 
 export const CreateTaskPage = styled.div`
+position: relative;
 display: flex;
 flex-direction: column;
 height: 98vh;
 justify-content: space-around;
+align-items: center;
+border: 1px solid black;
+background-color: white;
+height: 70vh;
+width: 45%;
 
 
 button {
@@ -40,3 +46,18 @@ export const FormField = styled.div`
 
 
 `;
+
+export const PopPage = styled.div`
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100vh;
+background-color: rgba(0, 0, 0, 0.2) ;
+display: flex;
+justify-content: center;
+align-items: center;
+
+
+    
+`

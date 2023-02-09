@@ -3,12 +3,11 @@ import React, { useState, useEffect } from "react"
 import Task from "../../components/Task"
 import { TasksContainer, TopPage } from "./Tasks.styled";
 import { useNavigate } from "react-router-dom"
+import CreateTask from "../../components/CreateTask";
 
 const Tasks = () => {
+  const[showCreate, setShowCreate] = useState(false);
   const navigate = useNavigate();
-  const goToCreateTask = () => {
-    navigate("/add-task");
-  };
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const access = localStorage.getItem("access");
@@ -24,14 +23,32 @@ const Tasks = () => {
     try {
       const response = await api.get(`/tasks/home/search/`, config);
       setTasks(response.data);
+      console.log(tasks);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const fetchTasksByAllMonths = async () => {
+    try {
+      const response = await api.get(`/tasks/home/`, {
+        headers: {
+          Authorization: `Bearer ${access}`,
+        },
+      });
+      setTasks(response.data);
+      console.log(tasks);
     } catch (error) {
       console.log(error.response);
     }
   };
 
 
+
+
   useEffect(() => {
     fetchTasks();
+    // fetchTasksByAllMonths();
   }, [searchTerm]);
 
 
@@ -45,22 +62,38 @@ const Tasks = () => {
     });
   };
 
+  const toggleEdit = (event) => {
+    setShowCreate(!showCreate);
+  };
+
+
   const handleTaskDelete = (taskId) => {
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
-//   const [chore, setChore] = useState({
-//     name: name,
-//     assignee: assignee,
-//     planned_for: date,
-// });
-
+  const date = new Date();
+  const months = [
+    "JANUARY",
+    "FEBRUARY",
+    "MARCH",
+    "APRIL",
+    "MAY",
+    "JUNE",
+    "JULY",
+    "AUGUST",
+    "SEPTEMBER",
+    "OCTOBER",
+    "NOVEMBER",
+    "DECEMBER"
+  ];
+  const currentMonth = months[date.getMonth()];
+  
 
 
   return (
     <>
       <TopPage>
-        <h1>TASK BOARD OF THE MONTH</h1>
+        <h1>TASK BOARD OF {currentMonth}</h1>
         <form>
           <input
             type="text"
@@ -69,7 +102,8 @@ const Tasks = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </form>
-        <button onClick={goToCreateTask}>+ Add Task</button>
+        <button onClick={toggleEdit}>+ Add Task</button>
+        <button onClick={fetchTasksByAllMonths}>All months</button>
       </TopPage>
       <TasksContainer>
         {sortTasks(tasks).map(task => (
@@ -81,8 +115,10 @@ const Tasks = () => {
             id={task.id}
             onTaskDelete={handleTaskDelete}
             planned={task.planned_for}
+            // nam={task.first_name}
           />
         ))}
+        {showCreate && <CreateTask toggleEdit={toggleEdit} /> }
       </TasksContainer>
     </>
   );

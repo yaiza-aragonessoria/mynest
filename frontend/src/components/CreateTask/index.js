@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { CreateTaskPage, FormField } from './CreateTask.styled';
+import { CreateTaskPage, FormField, PopPage } from './CreateTask.styled';
 
 
-const CreateTask = () => {
+const CreateTask = (props) => {
   const navigate = useNavigate();
   const goToHomePage = () => {
     navigate("/to-do");
@@ -50,7 +50,7 @@ const CreateTask = () => {
       });
   }
   return (
-  
+    <PopPage>
     <CreateTaskPage>
       <form onSubmit={handleSubmit}>
         <FormField>
@@ -76,14 +76,15 @@ const CreateTask = () => {
           <input
             type="date"
             name="planned_for"
-            value={task.planned}
+            value={task.planned_for}
             onChange={handleChange}
           />
         </FormField>
         <button type="submit">Create Task</button>
       </form>
-      <button onClick={goToHomePage} >Cancel</button>
+      <button onClick={props.toggleEdit} >Cancel</button>
     </CreateTaskPage>
+    </PopPage>
     
   );
 };

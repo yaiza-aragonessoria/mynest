@@ -3,38 +3,51 @@ import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { EditTaskPage, FormField, PopUp } from './EditTask.styled';
 
-const EditTask = (id, name, assignee, planned) => {
-    // console.log(id);
+const EditTask = (props) => {
+    const [errorMessage, setErrorMessage] = useState("");
+    const [homeMembers, setHomeMembers] = useState([]);
     const navigate = useNavigate();
-    const goToChorePage = () => {
-        navigate("/to-do");
-    };
+    // const goToChorePage = () => {
+    //     navigate("/to-do");
+    // };
     const access = localStorage.getItem("access");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    
+
     useEffect(() => {
         if (access) setIsLoggedIn(true);
         else setIsLoggedIn(false)
+        getHomeMembers();
 
     }, [access])
     const config = {
-        method: "PATCH",
         headers: {
             Authorization: `Bearer ${access}`,
         },
     }
+    const getHomeMembers = async () => {
+        try {
+            setHomeMembers([])
+            const res = await axios.get("https://mynest.propulsion-learn.ch/backend/api/users/home/", config);
+            setHomeMembers(res.data);
+
+        } catch (e) {
+            setErrorMessage(e.message);
+        }
+    }
     const [chore, setChore] = useState({
-        name: '',
-        assignee: '',
-        planned_for: '',
+        name: props.name,
+        assignee: props.assignee,
+        planned_for: props.planned,
     });
     console.log(chore);
    
     const handleSubmit = event => {
         event.preventDefault();
-        axios.patch(`https://mynest.propulsion-learn.ch/backend/api/tasks/${id}/`, chore, config)
+        axios.patch(`https://mynest.propulsion-learn.ch/backend/api/tasks/${props.id}/`, chore, config)
             .then(response => {
                 console.log(response);
-                if (response.status === 201) navigate("/to-do");
+                // if (response.status === 200) navigate("/to-do");
 
             })
             .catch(error => {
@@ -60,13 +73,15 @@ const EditTask = (id, name, assignee, planned) => {
                         />
                     </FormField>
                     <FormField>
-                        <label for=''>Assignee</label>
-                        <input
-                            type="text"
-                            name="assignee"
-                            value={chore.assignee}
-                            onChange={handleChange}
-                        />
+                    <label htmlFor=''>Assignee </label>
+                    <select onChange={handleChange}
+                            name={'assignee'}>
+                        <option value="" className={'select-option'}>Select a value...</option>
+                        {homeMembers.map((member) => (
+                            <option value={member.id}>{member.first_name}</option>
+                        ))}
+                    </select>
+
                     </FormField>
                     <FormField>
                         <label for=''>Planned for</label>
@@ -79,7 +94,7 @@ const EditTask = (id, name, assignee, planned) => {
                     </FormField>
                     <button type="submit">Save Task</button>
                 </form>
-                <button onClick={goToChorePage} >Cancel</button>
+                <button onClick={props.toggleEdit} >Cancel</button>
             </EditTaskPage>
             </PopUp>
         </>

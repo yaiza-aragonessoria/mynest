@@ -7,17 +7,16 @@ flex-direction: column;
 height: 98vh;
 justify-content: space-around;
 align-items: center;
-border: 1px solid black;
 background-color: white;
 height: 70vh;
-
+/* width: 45%; */
 
 
 
 button {
         width: 140px;
         height: 40px;
-        background:purple;
+        background:black;
         font-size: 12px;
         color: white;
         border: none;
@@ -29,7 +28,7 @@ export const FormField = styled.div`
     
     display: flex;
     flex-direction: column;
-    width: 55vw;
+    width: 45vw;
     
     label, select {
             font-weight: 600;

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import EditTask from "../EditTask";
 
 
-const Task = ({ name, status, assignee, id, onTaskDelete, planned }) => {
+const Task = ({ name, status, assignee, id, onTaskDelete, planned, nam }) => {
   const navigate = useNavigate();
   const[showEdit, setShowEdit] = useState(false);
   const goToEditTask = () => {
@@ -46,9 +46,10 @@ const Task = ({ name, status, assignee, id, onTaskDelete, planned }) => {
   };
 
   const toggleEdit = (event) => {
-    setShowEdit(true);
+    setShowEdit(!showEdit);
   };
 
+  
 
 
   return (
@@ -65,7 +66,7 @@ const Task = ({ name, status, assignee, id, onTaskDelete, planned }) => {
         <button onClick={toggleEdit} type="submit">EDIT</button>
         <button type="submit" onClick={handleDelete}>delete</button>
       </Button>
-        {showEdit && <EditTask name={name} assignee={assignee} planned={planned} id={id}  /> }
+        {showEdit && <EditTask name={name} assignee={assignee} planned={planned} id={id} toggleEdit={toggleEdit}  /> }
     </TaskContainer>
   );
 };
