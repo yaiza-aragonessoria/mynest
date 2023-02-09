@@ -7,6 +7,8 @@ import {fetchUser} from '../../features/slices/userSlice'
 import {ExpensesStyled} from "./Expenses.styled";
 import EditExpense from '../../components/EditExpense/EditExpense'
 import api from "../../api/myNest";
+import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
+import MustLogIn from "../../components/MustLogIn/MustLogIn";
 
 const Expenses = () => {
         const dispatch = useDispatch();
@@ -17,6 +19,9 @@ const Expenses = () => {
         const [showModal, setShowModal] = useState(false)
         const [showEditModal, setEditModal] = useState(false);
         const [errorMessage, setErrorMessage] = useState('');
+        const [isLoggedIn, setIsLoggedIn] = useState(false);
+        const [hasUserHome, setHasUserHome] = useState(false);
+
         const headers = {
             headers: {
                 Authorization: `Bearer ${access}`,
@@ -43,6 +48,16 @@ const Expenses = () => {
         }
 
         useEffect(() => {
+            if (access) setIsLoggedIn(true);
+            else setIsLoggedIn(false);
+
+            dispatch(fetchUser());
+
+        }, []);
+
+
+
+        useEffect(() => {
             dispatch(fetchExpenses())
             dispatch(fetchUser())
         }, [showModal])
@@ -52,31 +67,38 @@ const Expenses = () => {
             window.location.reload()
         };
 
-        return (<>
-            <ExpensesStyled>
-                <button onClick={handleOpenModal}>Add Expense</button>
-                {showModal && <AddExpenses/>}
-                <button onClick={handleSettleUp}>Settle up</button>
-                {!showModal && expensesData?.map((expense) => {
-                    return (
-                        <>
-                            { <ExpensesComponent key={expense?.id} expenses={expense}
-                                                           name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
-                                                           onEdit={handleEdit}
-                                                           onExpenseDelete={handleExpenseDelete}/>}
-                            {/*{showEditModal &&*/}
-                            {/*    <EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={expense}*/}
-                            {/*                 expenseId={expense.id}/>}*/}
-                        </>
-                    )
-                })
-                }
-                {/*{expensesData?.map((expense) => {*/}
-                {/*    return (<EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={expense}*/}
-                {/*                         expenseId={expense.id}/>)*/}
-                {/*})}*/}
-            </ExpensesStyled>
-        </>);
+        return (
+            <>
+            {isLoggedIn ? userData?.home ?
+                    <>
+                    <ExpensesStyled>
+                        <button onClick={handleOpenModal}>Add Expense</button>
+                        {showModal && <AddExpenses/>}
+                        <button onClick={handleSettleUp}>Settle up</button>
+                        {!showModal && expensesData?.map((expense) => {
+                            return (
+                                <>
+                                    { <ExpensesComponent key={expense?.id} expenses={expense}
+                                                                   name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
+                                                                   onEdit={handleEdit}
+                                                                   onExpenseDelete={handleExpenseDelete}/>}
+                                    {/*{showEditModal &&*/}
+                                    {/*    <EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={expense}*/}
+                                    {/*                 expenseId={expense.id}/>}*/}
+                                </>
+                            )
+                        })
+                        }
+                        {/*{expensesData?.map((expense) => {*/}
+                        {/*    return (<EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={expense}*/}
+                        {/*                         expenseId={expense.id}/>)*/}
+                        {/*})}*/}
+                    </ExpensesStyled>
+                </>
+                : <MustHaveHome/> : <MustLogIn/>
+      }
+      </>
+    );
     }
 ;
 export default Expenses;

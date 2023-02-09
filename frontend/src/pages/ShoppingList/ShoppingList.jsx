@@ -16,14 +16,27 @@ import {
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGears, faSort } from '@fortawesome/free-solid-svg-icons'
-
+import MustLogIn from "../../components/MustLogIn/MustLogIn";
+import {useDispatch, useSelector} from "react-redux";
+import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
+import {fetchUser} from "../../features/slices/userSlice";
 
 
 
 const Shoppinglist = () => {
  
-
+  const dispatch = useDispatch();
   const token = localStorage.getItem("access");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userData = useSelector(store => store.userProfile.userProfileSlice)
+
+  useEffect(() => {
+    if (token) setIsLoggedIn(true);
+    else setIsLoggedIn(false);
+
+    dispatch(fetchUser());
+
+  }, []);
 
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -127,96 +140,102 @@ const Shoppinglist = () => {
     setShowPopup(true);
   };
 
+
   return (
-    <MainWrapper>
-        <FavouriteItems_popup
-          showPopup={showPopup}
-          setShowPopup={setShowPopup}
-          tobuyItem={tobuyItem}
-          setTobuyItem={setTobuyItem}
-        />
+      <>
+      {isLoggedIn ? userData?.home ?
+              <MainWrapper>
+                <FavouriteItems_popup
+                    showPopup={showPopup}
+                    setShowPopup={setShowPopup}
+                    tobuyItem={tobuyItem}
+                    setTobuyItem={setTobuyItem}
+                />
 
-      <div className="left_main_container">
-        <InputContainer>
-          <form>
-            <input
-              className="text"
-              type="text"
-              placeholder="What do you need to buy?"
-              onChange={handleInputText}
-              value={inputText}
-            />
-            <button
-              className="btn_purple"
-              type="submit"
-              onClick={handleSubmitItem}
-              disabled={inputText.length < 1}
-            >
-              Add to list
-            </button>
-          </form>
-        </InputContainer>
+                <div className="left_main_container">
+                  <InputContainer>
+                    <form>
+                      <input
+                          className="text"
+                          type="text"
+                          placeholder="What do you need to buy?"
+                          onChange={handleInputText}
+                          value={inputText}
+                      />
+                      <button
+                          className="btn_purple"
+                          type="submit"
+                          onClick={handleSubmitItem}
+                          disabled={inputText.length < 1}
+                      >
+                        Add to list
+                      </button>
+                    </form>
+                  </InputContainer>
 
-        <ItemsContainer>
-          <div className="to_buy_wrapper">
-            <div className="to_buy_header">
-              <h2 className="header">Things to Buy</h2>
-              <button
-                className="sort"
-                onClick={() => {
-                  setEnableSort(!enableSort);
-                }}
-              >
-                <i>{<FontAwesomeIcon icon={faSort} />}</i>
-              </button>
-            </div>
+                  <ItemsContainer>
+                    <div className="to_buy_wrapper">
+                      <div className="to_buy_header">
+                        <h2 className="header">Things to Buy</h2>
+                        <button
+                            className="sort"
+                            onClick={() => {
+                              setEnableSort(!enableSort);
+                            }}
+                        >
+                          <i>{<FontAwesomeIcon icon={faSort}/>}</i>
+                        </button>
+                      </div>
 
-            <ShoppingList_item
-              tobuyItem={tobuyItem}
-              enableSort={enableSort}
-              updateCartStatus={updateCartStatus}
-            />
-          </div>
+                      <ShoppingList_item
+                          tobuyItem={tobuyItem}
+                          enableSort={enableSort}
+                          updateCartStatus={updateCartStatus}
+                      />
+                    </div>
 
-          <InCart tobuyItem={tobuyItem} updateCartStatus={updateCartStatus} />
-        </ItemsContainer>
+                    <InCart tobuyItem={tobuyItem} updateCartStatus={updateCartStatus}/>
+                  </ItemsContainer>
 
-        <button className="btn_grey empty_list_btn" onClick={addToPurchased}>
-          Empty the list
-        </button>
+                  <button className="btn_grey empty_list_btn" onClick={addToPurchased}>
+                    Empty the list
+                  </button>
 
-        {/* <div className="send_email">
-          <input type="email" placeholder="Enter email" />
-          <button>Send list by email</button>
-        </div> */}
-      </div>
+                  {/* <div className="send_email">
+                      <input type="email" placeholder="Enter email" />
+                      <button>Send list by email</button>
+                    </div> */}
+                </div>
 
-      <div className="right_main_container">
-        <FavoritesContainer>
-          <div className="header_wrapper">
-            <h2 className="header">Recently purchased</h2>
-            <i onClick={handlePopup}>{<FontAwesomeIcon icon={faGears} />}</i>
-          </div>
+                <div className="right_main_container">
+                  <FavoritesContainer>
+                    <div className="header_wrapper">
+                      <h2 className="header">Recently purchased</h2>
+                      <i onClick={handlePopup}>{<FontAwesomeIcon icon={faGears}/>}</i>
+                    </div>
 
-          <FavouriteItems
-            tobuyItem={tobuyItem}
-            setTobuyItem={setTobuyItem}
-            updateCartStatus={updateCartStatus}
-            showPopup={showPopup}
-            setShowPopup={setShowPopup}
-          />
-        </FavoritesContainer>
+                    <FavouriteItems
+                        tobuyItem={tobuyItem}
+                        setTobuyItem={setTobuyItem}
+                        updateCartStatus={updateCartStatus}
+                        showPopup={showPopup}
+                        setShowPopup={setShowPopup}
+                    />
+                  </FavoritesContainer>
 
-        <div className="cards_wraper">
-          <h2 className="header">Seasonal picks</h2>
-          <Cards
-            tobuyItem={tobuyItem}
-            setTobuyItem={setTobuyItem}
-            updateCartStatus={updateCartStatus}
-          />
-        </div>
-      </div>
-    </MainWrapper>
+                  <div className="cards_wraper">
+                    <h2 className="header">Seasonal picks</h2>
+                    <Cards
+                        tobuyItem={tobuyItem}
+                        setTobuyItem={setTobuyItem}
+                        updateCartStatus={updateCartStatus}
+                    />
+                  </div>
+                </div>
+              </MainWrapper>
+             : <MustHaveHome/> : <MustLogIn/>
+      }
+      </>
   );
 };
 

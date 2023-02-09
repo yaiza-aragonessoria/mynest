@@ -7,9 +7,9 @@ export const CardLayout = styled.div`
   gap: 1rem;
   padding: 1.5rem;
   border-radius: 10px;
-  /* background-color: #F9F9F9; */
+  margin-bottom: 2rem;
   background: rgb(248,245,255);
-background: linear-gradient(328deg, rgba(248,245,255,1) 0%, rgba(114,57,234,0.5) 80%);
+background: linear-gradient(310deg, rgba(248,245,255,0.9346113445378151) 0%, rgba(176,144,244,0.9178046218487395) 41%, rgba(114,57,234,1) 100%);
 
 
 #card_text {
