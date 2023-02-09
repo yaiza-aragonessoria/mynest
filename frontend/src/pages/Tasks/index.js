@@ -10,14 +10,12 @@ import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import {fetchUser} from "../../features/slices/userSlice";
 
 const Tasks = () => {
-  const dispatch = useDispatch();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const userData = useSelector(store => store.userProfile.userProfileSlice)
-
-  const[showCreate, setShowCreate] = useState(false);
-  const navigate = useNavigate();
+  const [showCreate, setShowCreate] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchMode, setSearchMode] = useState("month");
+  const [newCreatedTask, setNewCreatedTask] = useState(0);
+
   const access = localStorage.getItem("access");
   const config = {
     method: "GET",
@@ -25,11 +23,11 @@ const Tasks = () => {
       Authorization: `Bearer ${access}`,
     },
     params: { q: searchTerm }
-  }
+  };
 
-  const fetchTasks = async () => {
+  const fetchMonthTasks = async () => {
     try {
-      const response = await api.get(`/tasks/home/search/`, config);
+      const response = await api.get(`/tasks/home/search-month/`, config);
       setTasks(response.data);
       // console.log(tasks);
     } catch (error) {
@@ -37,13 +35,9 @@ const Tasks = () => {
     }
   };
 
-  const fetchTasksByAllMonths = async () => {
+  const fetchAllTasks = async () => {
     try {
-      const response = await api.get(`/tasks/home/`, {
-        headers: {
-          Authorization: `Bearer ${access}`,
-        },
-      });
+      const response = await api.get(`/tasks/home/search-all/`, config);
       setTasks(response.data);
       console.log(tasks);
     } catch (error) {
@@ -52,21 +46,12 @@ const Tasks = () => {
   };
 
   useEffect(() => {
-      if (access) setIsLoggedIn(true);
-      else setIsLoggedIn(false);
-
-      dispatch(fetchUser());
-
-    }, []);
-
-
-
-
-  useEffect(() => {
-    fetchTasks();
-    // fetchTasksByAllMonths();
-  }, [searchTerm]);
-
+    if (searchMode == "month") {
+      fetchMonthTasks();
+    } else {
+      fetchAllTasks();
+    }
+  }, [searchTerm, searchMode, newCreatedTask]);
 
 
 
@@ -84,9 +69,16 @@ const Tasks = () => {
     setShowCreate(!showCreate);
   };
 
-
   const handleTaskDelete = (taskId) => {
     setTasks(tasks.filter((task) => task.id !== taskId));
+  };
+
+  const handleTaskEdit = (editedTask) => {
+    setTasks(tasks.map((t) => t.id == editedTask.id ? editedTask : t))
+  };
+
+  const onCreateTask = () => {
+    setNewCreatedTask(newCreatedTask + 1);
   };
 
   const date = new Date();
@@ -105,44 +97,35 @@ const Tasks = () => {
     "DECEMBER"
   ];
   const currentMonth = months[date.getMonth()];
-  
-
 
   return (
       <>
-      {isLoggedIn ? userData?.home ?
-              <>
-                <TopPage>
-                  <h1>TASK BOARD OF {currentMonth}</h1>
-                  <form>
-                    <input
-                      type="text"
-                      placeholder="Search task..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </form>
-                  <button onClick={toggleEdit}>+ Add Task</button>
-                  <button onClick={fetchTasksByAllMonths}>All months</button>
-                </TopPage>
-                <TasksContainer>
-                  {sortTasks(tasks).map(task => (
-                    <Task
-                      key={task.id}
-                      name={task.name}
-                      status={task.status === 'TD' ? 'TO DO' : task.status === 'IP' ? 'IN PROGRESS' : 'DONE'}
-                      assignee={task.assignee}
-                      id={task.id}
-                      onTaskDelete={handleTaskDelete}
-                      planned={task.planned_for}
-                      // nam={task.first_name}
-                    />
-                  ))}
-                  {showCreate && <CreateTask toggleEdit={toggleEdit} /> }
-                </TasksContainer>
-              </>
-          : <MustHaveHome/> : <MustLogIn/>
-      }
+        <TopPage>
+          <h1>TASK BOARD OF {currentMonth}</h1>
+          <form>
+            <input
+                type="text"
+                placeholder="Search task..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </form>
+          <button onClick={toggleEdit}>+ Add Task</button>
+          <button onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
+            {searchMode == "month" ? "show all tasks " : "just this month" }
+          </button>
+        </TopPage>
+        <TasksContainer>
+          {sortTasks(tasks).map(task => (
+              <Task
+                  key={task.id}
+                  task={task}
+                  onTaskDelete={handleTaskDelete}
+                  onTaskEdit={handleTaskEdit}
+              />
+          ))}
+          {showCreate && <CreateTask toggleEdit={toggleEdit} onCreateTask={onCreateTask} /> }
+        </TasksContainer>
       </>
   );
 

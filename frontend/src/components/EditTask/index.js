@@ -1,25 +1,18 @@
 import axios from 'axios';
 import React, { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 import { EditTaskPage, FormField, PopUp } from './EditTask.styled';
 
-const EditTask = (props) => {
+const EditTask = ({task, toggleEdit, onTaskEdit}) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [homeMembers, setHomeMembers] = useState([]);
-    const navigate = useNavigate();
-    // const goToChorePage = () => {
-    //     navigate("/to-do");
-    // };
     const access = localStorage.getItem("access");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    
+    console.log(task);
+    const [chore, setChore] = useState(task);
 
     useEffect(() => {
-        if (access) setIsLoggedIn(true);
-        else setIsLoggedIn(false)
         getHomeMembers();
-
     }, [access])
+
     const config = {
         headers: {
             Authorization: `Bearer ${access}`,
@@ -30,33 +23,36 @@ const EditTask = (props) => {
             setHomeMembers([])
             const res = await axios.get("https://mynest.propulsion-learn.ch/backend/api/users/home/", config);
             setHomeMembers(res.data);
-
         } catch (e) {
             setErrorMessage(e.message);
         }
     }
-    const [chore, setChore] = useState({
-        name: props.name,
-        assignee: props.assignee,
-        planned_for: props.planned,
-    });
+
     console.log(chore);
    
     const handleSubmit = event => {
         event.preventDefault();
-        axios.patch(`https://mynest.propulsion-learn.ch/backend/api/tasks/${props.id}/`, chore, config)
+        let data = {
+            name: chore.name,
+            assignee: chore.assignee ? chore.assignee.id : null,
+            planned_for: chore.planned_for,
+        }
+        axios.patch(`https://mynest.propulsion-learn.ch/backend/api/tasks/${task.id}/`, data, config)
             .then(response => {
                 console.log(response);
-                // if (response.status === 200) navigate("/to-do");
-
+                onTaskEdit(chore);
+                toggleEdit();
             })
             .catch(error => {
                 console.log(error);
-
             });
     }
     const handleChange = (event) => {
-        setChore({ ...chore, [event.target.name]: event.target.value });
+        let value = event.target.value;
+        if (event.target.name == "assignee") {
+            value = homeMembers.find(m => m.id == value);
+        }
+        setChore({ ...chore, [event.target.name]: value });
     };
     return (
         <>
@@ -64,7 +60,7 @@ const EditTask = (props) => {
             <EditTaskPage>
                 <form onSubmit={handleSubmit}>
                     <FormField>
-                        <label for=''>Task name</label>
+                        <label htmlFor=''>Task name</label>
                         <input
                             type="text"
                             name="name"
@@ -78,23 +74,24 @@ const EditTask = (props) => {
                             name={'assignee'}>
                         <option value="" className={'select-option'}>Select a value...</option>
                         {homeMembers.map((member) => (
-                            <option value={member.id}>{member.first_name}</option>
+                            <option key={member.id} value={member.id}>{member.first_name}</option>
                         ))}
                     </select>
 
                     </FormField>
                     <FormField>
-                        <label for=''>Planned for</label>
+                        <label htmlFor=''>Planned for</label>
                         <input
-                            type="text"
-                            name="planned"
+                            type="date"
+                            name="planned_for"
                             value={chore.planned_for}
                             onChange={handleChange}
                         />
                     </FormField>
+                    <div>{errorMessage}</div>
                     <button type="submit">Save Task</button>
                 </form>
-                <button onClick={props.toggleEdit} >Cancel</button>
+                <button onClick={toggleEdit} >Cancel</button>
             </EditTaskPage>
             </PopUp>
         </>
