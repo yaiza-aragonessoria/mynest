@@ -2,12 +2,13 @@ import React, {useState} from "react";
 import {ExpensesComponentStyled} from "./ExpensesComponent.styled";
 import api from "../../api/myNest";
 import EditExpense from "../EditExpense/EditExpense";
+import {useSelector} from "react-redux";
+import {faXmark} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const ExpensesComponent = (props) => {
-    // const handleEdit = (event) => {
-    //
-    //     props.onEdit(event);
-    // };
+    const userData = useSelector(store => store.userProfile.userProfileSlice)
+
     let text;
     if (props.expenses.category === 1) {
         text = "Groceries"
@@ -40,6 +41,14 @@ const ExpensesComponent = (props) => {
         props.onExpenseDelete(props.expenses.id);
 
     };
+
+    const whoPaid = payer => {
+        let payerName = '';
+        if (payer.id === userData.id) payerName = 'You';
+        else payerName = props.expenses?.payer?.first_name ? props.expenses.payer.first_name : props.expenses.payer.email
+        return payerName + ' paid';
+    }
+
     return (
         <>
             <ExpensesComponentStyled>
@@ -47,8 +56,9 @@ const ExpensesComponent = (props) => {
                 <span>{text}</span>
                 <span>{props.expenses.name}</span>
                 <span> Amount {props.expenses?.amount} CHF</span>
-                <span> Payer {props.expenses?.payer?.first_name ? props.expenses.payer.first_name : props.expenses.payer.email} </span>
-                <button className="button" onClick={handleModalEdit}>Edit</button>
+                <span> {whoPaid(props.expenses.payer)} </span>
+                {/*<span> Payer {props.expenses?.payer?.first_name ? props.expenses.payer.first_name : props.expenses.payer.email} </span>*/}
+                <button className="button" onClick={handleModalEdit}>{showEditModal ? <FontAwesomeIcon icon={faXmark} /> : <>Edit</>}</button>
                 <button className="button" onClick={handleDelete}>Delete</button>
             </ExpensesComponentStyled>
             {showEditModal &&
