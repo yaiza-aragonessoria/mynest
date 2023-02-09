@@ -17,6 +17,7 @@ const Login = () => {
 
   const auth = useSelector((state) => state.auth.data);
 
+
   const handleChange = e => {
     if(e.target.name === "email") {
       setNewEmail(e.target.value);
@@ -62,7 +63,6 @@ const Login = () => {
     const authData = {
       email: localStorage.getItem('email'),
       access: localStorage.getItem('access'),
-
     };
 
     if(authData.access) {

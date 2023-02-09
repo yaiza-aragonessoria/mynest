@@ -48,12 +48,14 @@ const Expenses = () => {
         }
 
         useEffect(() => {
-            if(access) setIsLoggedIn(true);
+            if (access) setIsLoggedIn(true);
             else setIsLoggedIn(false);
 
-            if(userData?.home) setHasUserHome(true);
-            else setHasUserHome(false);
-            }, []);
+            dispatch(fetchUser());
+
+        }, []);
+
+
 
         useEffect(() => {
             dispatch(fetchExpenses())
@@ -67,7 +69,7 @@ const Expenses = () => {
 
         return (
             <>
-            {isLoggedIn ? hasUserHome ?
+            {isLoggedIn ? userData?.home ?
                     <>
                     <ExpensesStyled>
                         <button onClick={handleOpenModal}>Add Expense</button>
