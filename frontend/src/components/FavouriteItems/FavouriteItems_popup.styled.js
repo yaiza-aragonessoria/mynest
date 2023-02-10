@@ -2,14 +2,16 @@ import styled from "styled-components";
 
 export const PopupBg = styled.div`
 width: 100%;
-height: 100%;
+min-height: 100%;
+top: 0;
+left: 0;
 z-index: 3;
 position: fixed;
 background: rgb(248,245,255);
 background: linear-gradient(328deg, rgba(248,245,255,0.6208858543417367) 0%, rgba(114,57,234,0.36318277310924374) 59%);
 display: flex;
-  justify-content: center;
-  align-items: center;
+justify-content: center;
+align-items: center;
 
 
 `
