@@ -12,3 +12,6 @@ export const ExpensesComponentStyled = styled.section`
     margin-right: 15px;
   }
 }`
+
+
+
