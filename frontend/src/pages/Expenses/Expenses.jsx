@@ -8,17 +8,20 @@ import {Wraper} from "./Expenses.styled";
 import api from "../../api/myNest";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
+import {useNavigate} from "react-router-dom";
+import Loading from "../../components/Loading/Loading";
 
 const Expenses = () => {
+        const navigate = useNavigate();
         const dispatch = useDispatch();
         const access = localStorage.getItem("access");
         const expensesData = useSelector(store => store.expenses.expensesSlice)
         const userData = useSelector(store => store.userProfile.userProfileSlice)
+        const userLoaded = useSelector(state => state.userProfile.loaded);
         const [expenses, setExpenses] = useState([]);
         const [showModal, setShowModal] = useState(false)
         const [showEditModal, setEditModal] = useState(false);
         const [errorMessage, setErrorMessage] = useState('');
-        const [isLoggedIn, setIsLoggedIn] = useState(false);
         const [hasUserHome, setHasUserHome] = useState(false);
 
         const headers = {
@@ -46,14 +49,12 @@ const Expenses = () => {
             }
         }
 
-        useEffect(() => {
-            if (access) setIsLoggedIn(true);
-            else setIsLoggedIn(false);
+      useEffect(() => {
+        if (!access) navigate("/login");
 
-            dispatch(fetchUser());
+        dispatch(fetchUser());
 
-        }, []);
-
+      }, []);
 
         useEffect(() => {
             dispatch(fetchExpenses())
@@ -67,7 +68,7 @@ const Expenses = () => {
 
         return (
             <>
-                {isLoggedIn ? userData?.home ?
+                {userLoaded? userData?.home ?
                     <>
                         <Wraper>
                             <button className='btn_purple' onClick={handleOpenModal}>Add Expense</button>
@@ -87,10 +88,10 @@ const Expenses = () => {
                             }
                         </Wraper>
                     </>
-                    : <MustHaveHome/> : <MustLogIn/>
-                }
-            </>
-        );
-    }
+             : <MustHaveHome/> : <Loading/>
+      }
+      </>
+  );
+};
 ;
 export default Expenses;

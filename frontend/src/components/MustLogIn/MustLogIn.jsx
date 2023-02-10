@@ -4,6 +4,8 @@ import {Box, Text, Wrapper} from "./MustLogIn.styles";
 
 const MustLogIn = () => {
   const navigate = useNavigate();
+  console.log("Showing MustLogIn");
+
 
   return (
     <Wrapper>

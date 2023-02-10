@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import {fetchUser} from "../../features/slices/userSlice";
+import Loading from "../../components/Loading/Loading";
 
 const Tasks = () => {
   const [showCreate, setShowCreate] = useState(false);
@@ -16,9 +17,10 @@ const Tasks = () => {
   const [searchMode, setSearchMode] = useState("month");
   const [newCreatedTask, setNewCreatedTask] = useState(0);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector(store => store.userProfile.userProfileSlice)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userLoaded = useSelector(state => state.userProfile.loaded);
   const access = localStorage.getItem("access");
   const config = {
     method: "GET",
@@ -29,8 +31,7 @@ const Tasks = () => {
   };
 
   useEffect(() => {
-    if (access) setIsLoggedIn(true);
-    else setIsLoggedIn(false);
+    if (!access) navigate("/login");
 
     dispatch(fetchUser());
 
@@ -111,7 +112,7 @@ const Tasks = () => {
 
   return (
       <>
-      {isLoggedIn ? userData?.home ?
+      {userLoaded? userData?.home ?
         <>
           <MainContainer>
             <TopPage>
@@ -147,7 +148,7 @@ const Tasks = () => {
             </TasksContainer>
           </MainContainer>
         </>
-        : <MustHaveHome/> : <MustLogIn/>
+          : <MustHaveHome/> : <Loading/>
       }
       </>
   );

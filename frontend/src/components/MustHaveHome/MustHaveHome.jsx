@@ -7,6 +7,7 @@ import {Box, Text, Wrapper} from "./MustHaveHome.styles";
 
 const MustHaveHome = () => {
   const navigate = useNavigate();
+  console.log("Showing MustHaveHome");
 
   return (
     <Wrapper>
