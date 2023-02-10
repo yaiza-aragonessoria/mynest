@@ -46,7 +46,7 @@ const Login = () => {
 
       dispatch(setAuth(authData));
 
-      navigate("/");
+      navigate("/shoppinglist");
 
     }).catch(error => {
       console.log(error)

@@ -23,25 +23,44 @@ export const fetchUser = createAsyncThunk(
     }
 )
 
+const initialState = {
+        userProfileSlice: [],
+        isLoading: true, // Set true to avoid showing MustHaveHome when data is loading.
+        loaded: false,
+        rejected: false
+    }
+
 export const userProfileSlice = createSlice({
     name: "userProfileSlice",
-    initialState: {
-        userProfileSlice: []
-    },
+    initialState: initialState,
     reducers: {
         cleanUserData: (state) => {
-            const newState = { ...state }
+            const newState = initialState
 
-            newState.userProfileSlice = undefined // Set the data to undefined
+            // newState.userProfileSlice = undefined // Set the data to undefined
 
             return newState
         },},
     extraReducers: {
-        [fetchUser.fulfilled]: (state, action) => {
-
-            state.userProfileSlice = action.payload
+        [fetchUser.pending]: (state, action) => {
+          console.log("Loading user data...");
+          state.isLoading = true;
+          state.loaded = false;
+          state.rejected = false;
         },
-
+        [fetchUser.fulfilled]: (state, action) => {
+          console.log("User data fetched.")
+            state.userProfileSlice = action.payload;
+            state.isLoading = false;
+            state.loaded = true;
+            state.rejected = false;
+        },
+        [fetchUser.rejected]: (state) => {
+          console.log("Request rejected.")
+          state.isLoading = true; // Set true to avoid showing MustHaveHome when data is loading.
+          state.loaded = false;
+          state.rejected = true;
+        }
     }
 })
 
