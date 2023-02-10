@@ -501,7 +501,7 @@ const HomeCalendar = (props) => {
 
                   <Popup />
                 </CalendarPageWrapper>
-              )
+              
             </>
              : <MustHaveHome/> : <Loading/>
       }

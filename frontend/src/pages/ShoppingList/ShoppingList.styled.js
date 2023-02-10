@@ -6,6 +6,8 @@ export const MainWrapper = styled.div`
   display: flex;
   justify-content: center;
 
+  background-color: var(--color-orange-light);
+
   .left_main_container {
     width: 50%;
     display: flex;
@@ -63,6 +65,7 @@ export const InputContainer = styled.div`
     padding: 10px;
     border: 1px solid #b5b5c3;
     border-radius: 15px;
+    outline:none;
   }
 
   input:focus {
