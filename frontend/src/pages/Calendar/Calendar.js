@@ -98,12 +98,12 @@ const HomeCalendar = (props) => {
   };
 
   // Add/Remove checked item from list
-  const handleCheck = (event) => {
+  const handleCheck = (event, id) => {
     let updatedList = [...checked];
     if (event.target.checked) {
-      updatedList = [...checked, event.target.value];
+      updatedList = [...checked, id];
     } else {
-      updatedList.splice(checked.indexOf(event.target.value), 1);
+      updatedList.splice(checked.indexOf(id), 1);
     }
     setChecked(updatedList);
     setNewEvent({ ...newEvent, participants: updatedList });
@@ -450,14 +450,14 @@ const HomeCalendar = (props) => {
                             ? member.first_name
                             : member.email;
                           return (
-                            <div className="participant">
+                            <div key={member.id} className="participant">
                               <label id={index.toString()} htmlFor={memberName}>
                                 <input
                                   type="checkbox"
                                   id={uuid()}
-                                  name="participants"
-                                  value={member.id}
-                                  onChange={handleCheck}
+                                  name={"participants " + member.id}
+                                  checked={checked.includes(member.id)}
+                                  onChange={(event) => handleCheck(event, member.id)}
                                 />
                                 {memberName}
                               </label>
