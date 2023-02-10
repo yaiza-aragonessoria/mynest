@@ -2,16 +2,16 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
 
-const access = localStorage.getItem('access')
-const config = {
-    headers: {
-        'Authorization': `Bearer ${access}`,
-    }
-}
-
 export const fetchExpenses = createAsyncThunk(
     "fetchExpenses",
     async () => {
+        const access = localStorage.getItem('access')
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${access}`,
+            }
+        }
+
         try {
             const response = await axios.get('https://mynest.propulsion-learn.ch/backend/api/expenses/home/', config)
             return response.data;
