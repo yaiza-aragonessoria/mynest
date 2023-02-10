@@ -6,6 +6,7 @@ import {clearAuth, setAuth} from "../../features/slices/authSlice";
 // STYLES
 import logo_purple from "../../assets/logo_purple.png"
 import { NavBar, Links, SigninSignup } from "./Header.styled";
+import {cleanUserData} from "../../features/slices/userSlice";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -22,8 +23,9 @@ const Header = () => {
       localStorage.removeItem('access');
       localStorage.removeItem('email');
       dispatch(clearAuth());
+      dispatch(cleanUserData());
       setIsLoggedIn(false)
-      navigate("/sign-in")
+      navigate("/login")
     };
 
 

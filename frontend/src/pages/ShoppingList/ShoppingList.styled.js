@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const MainWrapper = styled.div`
   width: 100%;
-  min-height: calc(100vh - var(--navheight));
+  min-height: var(--maincontainer);
   display: flex;
   justify-content: center;
 
@@ -14,6 +14,7 @@ export const MainWrapper = styled.div`
     margin-left: 3rem;
     margin-top: 2rem;
     margin-right: 2rem;
+    margin-bottom: 1rem;
 
   }
 

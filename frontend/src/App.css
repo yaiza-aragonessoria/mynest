@@ -1,5 +1,7 @@
 .App {
   height: 100%;
   --navheight: 4rem;
+  --footerheight: 3rem;
+  --maincontainer: calc(100vh - var(--navheight) - var(--footerheight));
 
 }
