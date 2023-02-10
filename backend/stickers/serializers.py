@@ -14,7 +14,7 @@ class StickerSerializer(serializers.ModelSerializer):
         model = Sticker
         fields = '__all__'
         required_fields = ['content']
-        read_only_fields = ['created', 'updated']
+        read_only_fields = ['created', 'updated', 'author']
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
