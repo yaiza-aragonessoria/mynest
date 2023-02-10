@@ -6,6 +6,7 @@ export const CalendarPageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  background-color: var(--color-orange-light);
 `;
 
 export const CalendarFormWrapper = styled.div`
@@ -15,7 +16,13 @@ export const CalendarFormWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
+  border-right: 1px dashed #E1E3EA;
+
+
+
+
   .form_content {
+
     display: flex;
     flex-direction: column;
     justify-content: center;
