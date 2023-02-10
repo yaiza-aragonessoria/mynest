@@ -1,7 +1,7 @@
 import api from "../../api/myNest";
 import React, { useState, useEffect } from "react"
 import Task from "../../components/Task"
-import { MainContainer, TasksContainer, TopPage, Description } from "./Tasks.styled";
+import { MainContainer, TasksContainer, TopPage, Description, Header, StatusHeader, SearchBar } from "./Tasks.styled";
 import { useNavigate } from "react-router-dom"
 import CreateTask from "../../components/CreateTask";
 import {useDispatch, useSelector} from "react-redux";
@@ -84,7 +84,7 @@ const Tasks = () => {
   const date = new Date();
   const months = [
     "JANUARY",
-    "FEBRUARY",
+    "February",
     "MARCH",
     "APRIL",
     "MAY",
@@ -102,7 +102,11 @@ const Tasks = () => {
       <>
         <MainContainer>
           <TopPage>
-            <h1>TASK BOARD OF {currentMonth}</h1>
+            <Header>
+            <h1>Task Board of {currentMonth}</h1>
+            <button className="btn_purple" onClick={toggleEdit}>+ Add Task</button>
+            </Header>
+            <SearchBar>
             <form>
               <input
                   type="text"
@@ -111,15 +115,17 @@ const Tasks = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
               />
             </form>
-            <button className="btn_purple" onClick={toggleEdit}>+ Add Task</button>
-            <button onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
+            <button className="btn_grey" onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
               {searchMode == "month" ? "show all tasks " : "just this month" }
             </button>
+            </SearchBar>
           </TopPage>
           <Description>
             <h3>Task name</h3>
-            <h3>Assignee</h3>
-          <h3>Status</h3>
+          <StatusHeader>
+            <h3>Status</h3>
+          </StatusHeader>
+          <h3>Assignee</h3>
       </Description>
           <TasksContainer>
             {sortTasks(tasks).map(task => (

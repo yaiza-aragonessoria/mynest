@@ -1,8 +1,10 @@
-import { TaskContainer, Button } from "./Task.styled";
+import { TaskContainer, Buttons, IconStatus, IconEdit, IconDelete } from "./Task.styled";
 import React, { useState } from "react";
 import api from "../../api/myNest";
 import { useNavigate } from "react-router-dom"
 import EditTask from "../EditTask";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFilePen, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 
 const Task = ({ task, onTaskDelete, onTaskEdit }) => {
@@ -47,19 +49,25 @@ const Task = ({ task, onTaskDelete, onTaskEdit }) => {
   }
 
   return (
-    <TaskContainer>
+    <TaskContainer taskstatus={currentStatus}>
       <p>{task.name}</p>
       <p>{statusLabel[currentStatus]}</p>
       <p>{task.assignee.first_name} <img src={task.assignee.avatar}/></p>
-      <Button>
+      <Buttons>
+        <IconStatus>
         {currentStatus !== "DO" && (
           <button type="submit" onClick={handleClick}>
             {currentStatus === "TD" ? "START" : "DONE"}
           </button>
         )}  
-        <button onClick={toggleEdit} type="submit">EDIT</button>
-        <button type="submit" onClick={handleDelete}>delete</button>
-      </Button>
+        </IconStatus>
+        <IconEdit>
+        <i onClick={toggleEdit}>{<FontAwesomeIcon icon={faFilePen}/>}</i>
+        </IconEdit>
+        <IconDelete>
+        <i onClick={handleDelete}>{<FontAwesomeIcon icon={faTrash}/>}</i>
+        </IconDelete>
+      </Buttons>
         {showEdit && <EditTask task={task} toggleEdit={toggleEdit} onTaskEdit={onTaskEdit} /> }
     </TaskContainer>
   );
