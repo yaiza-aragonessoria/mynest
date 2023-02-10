@@ -393,7 +393,7 @@ const HomeCalendar = (props) => {
   const eventStyleGetter = (event, start, end, isSelected) => {
     let current_time = moment().format("YYYY MM DD");
     let event_time = moment(event.start).format("YYYY MM DD");
-    let background = current_time > event_time ? "#7239EA" : "#FFC700"; // Colours for events in calendar: past events and comming events (I think)
+    let background = current_time > event_time ? "#7239EA" : "#f4bf04"; // Colours for events in calendar: past events and comming events (I think)
     return {
       style: {
         backgroundColor: background,

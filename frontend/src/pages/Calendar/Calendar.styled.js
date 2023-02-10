@@ -89,7 +89,7 @@ export const CalendarWrapper = styled.div`
   .rbc-calendar {
     width: 90%;
     height: 70%;
-    background-color: #F9F9F9;
+    background-color: #f9f9f9;
     box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
 
     border-radius: 15px;
@@ -119,7 +119,7 @@ export const CalendarWrapper = styled.div`
     text-transform: uppercase;
     padding: 1rem;
     border: 1px solid #ddd;
-    
+
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
   }
@@ -135,40 +135,38 @@ export const CalendarWrapper = styled.div`
     border: none;
   }
   .rbc-btn-group button:hover {
-    background-color: #ffc700;
+    background-color: #f4bf04;
     color: #fff;
     transform: none;
     border: none;
-
   }
 
   button.rbc-active {
     padding: 0.4rem 0.5rem;
     cursor: pointer;
     text-transform: uppercase;
-    background-color: #B5B5C3;
+    background-color: #b5b5c3;
     border: none;
     font-size: 12px;
     color: #fff;
     border: none;
-
   }
 
   .button.rbc-active:hover {
-    background-color: #ffc700;
+    background-color: #f4bf04;
     color: #fff;
     border: none;
     transform: none;
   }
 
   .rbc-month-header {
-    background-color: #B5B5C3;
+    background-color: #b5b5c3;
     font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: #fff;
-  text-transform: uppercase;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+    text-transform: uppercase;
   }
 
   .rbc-month-view {
@@ -182,15 +180,32 @@ export const CalendarWrapper = styled.div`
 
   .rbc-today {
     background-color: #e6e2ef;
-    
-    /* border: 1px solid #7239ea;   */
   }
 
   .rbc-current {
     color: #7239ea;
   }
 
- 
+  /* AGENDA */
 
- 
+  .rbc-header {
+    background-color: #b5b5c3;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+    text-transform: uppercase;
+  }
+
+  tbody {
+    color: #fff;
+  }
+
+  .rbc-agenda-view table.rbc-agenda-table thead > tr > th {
+    padding: 5px 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-weight: 600;
+  }
 `;
