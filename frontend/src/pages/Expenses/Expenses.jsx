@@ -5,7 +5,6 @@ import ExpensesComponent from "../../components/Expenses/ExpensesComponent";
 import AddExpenses from "../../components/AddExpenses/AddExpenses";
 import {fetchUser} from '../../features/slices/userSlice'
 import {ExpensesStyled} from "./Expenses.styled";
-import EditExpense from '../../components/EditExpense/EditExpense'
 
 const Expenses = () => {
         const dispatch = useDispatch();
@@ -14,7 +13,6 @@ const Expenses = () => {
         const [expenses, setExpenses] = useState([]);
         const [showModal, setShowModal] = useState(false)
         const [showEditModal, setEditModal] = useState(false);
-        // const [isEdit, setIsEdit] = useState(false);
 
 
         const handleEdit = (event) => {
@@ -40,7 +38,7 @@ const Expenses = () => {
 
         return (<>
             <ExpensesStyled>
-                {!showModal && <button onClick={handleOpenModal}>Add Expense</button>}
+                {!showModal && <button  className='btn_purple' onClick={handleOpenModal}>Add Expense</button>}
                 {showModal && <AddExpenses/>}
                 {expensesData?.map((expense) => {
                     return (
