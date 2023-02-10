@@ -17,7 +17,7 @@ export const ExpensesComponentStyled = styled.section`
 }`
 
 export const PopupWrapper = styled.div`
-  
+
   z-index: 3;
   height: 50%;
   position: fixed;
@@ -104,7 +104,7 @@ export const SharedCheckbox = styled.div`
   line-height: 21px;
   color: #7E8299;
   background: white;
-  
+
   label {
     padding: 15px;
   }
