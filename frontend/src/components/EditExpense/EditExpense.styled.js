@@ -2,24 +2,28 @@ import styled from 'styled-components';
 
 export const ExpensesComponentStyled = styled.section`
 {
+  min-height: 100%;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   z-index: 3;
   position: fixed;
   background: rgb(248, 245, 255);
-  background: linear-gradient(328deg, rgba(248, 245, 255, 0.6208858543417367) 0%, rgba(114, 57, 234, 0.36) 59%);
+  background: linear-gradient(328deg, rgba(248, 245, 255, 0.6208858543417367) 0%, rgba(114, 57, 234, 0.36318277310924374) 59%);
   display: flex;
   justify-content: center;
   align-items: center;
 }`
 
 export const PopupWrapper = styled.div`
+
   z-index: 3;
   height: 50%;
   position: fixed;
   width: 35%;
   background-color: #fff;
-  border: 5px solid rgba(114, 57, 234, 0.36);
+  border: 2px solid #246fbd;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -87,6 +91,7 @@ export const Buttons = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 25px;
+
 `
 
 export const SharedCheckbox = styled.div`
@@ -100,14 +105,8 @@ export const SharedCheckbox = styled.div`
   color: #7E8299;
   background: white;
 
-  
   label {
     padding: 15px;
   }
-  
-  input[type="checkbox"]::before {
-    box-shadow: inset 1em 1em var(--form-control-color);
-  }
-
 `
 

@@ -50,7 +50,9 @@ const ExpensesComponent = (props) => {
     }
 
     return (
-        <>
+        <>   {showEditModal &&
+                <EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={props.expenses}
+                             expenseId={props.expenses.id}/>}
             <ExpensesComponentStyled>
                 <span>{props.expenses.created}</span>
                 <span>{text}</span>
@@ -61,9 +63,7 @@ const ExpensesComponent = (props) => {
                 <button className="button" onClick={handleModalEdit}>{showEditModal ? <FontAwesomeIcon icon={faXmark} /> : <>Edit</>}</button>
                 <button className="button" onClick={handleDelete}>Delete</button>
             </ExpensesComponentStyled>
-            {showEditModal &&
-                <EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={props.expenses}
-                             expenseId={props.expenses.id}/>}
+
         </>);
 };
 export default ExpensesComponent;

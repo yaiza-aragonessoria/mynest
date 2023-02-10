@@ -4,8 +4,7 @@ import {fetchExpenses} from "../../features/slices/expensesSlice";
 import ExpensesComponent from "../../components/Expenses/ExpensesComponent";
 import AddExpenses from "../../components/AddExpenses/AddExpenses";
 import {fetchUser} from '../../features/slices/userSlice'
-import {ExpensesStyled} from "./Expenses.styled";
-import EditExpense from '../../components/EditExpense/EditExpense'
+import {Wraper} from "./Expenses.styled";
 import api from "../../api/myNest";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
@@ -13,7 +12,7 @@ import {useNavigate} from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
 
 const Expenses = () => {
-  const navigate = useNavigate();
+        const navigate = useNavigate();
         const dispatch = useDispatch();
         const access = localStorage.getItem("access");
         const expensesData = useSelector(store => store.expenses.expensesSlice)
@@ -71,30 +70,24 @@ const Expenses = () => {
             <>
                 {userLoaded? userData?.home ?
                     <>
-                    <ExpensesStyled>
-                        <button onClick={handleOpenModal}>Add Expense</button>
-                        {showModal && <AddExpenses/>}
-                        <button onClick={handleSettleUp}>Settle up</button>
-                        {!showModal && expensesData?.map((expense) => {
-                            return (
-                                <>
-                                    { <ExpensesComponent key={expense?.id} expenses={expense}
-                                                                   name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
-                                                                   onEdit={handleEdit}
-                                                                   onExpenseDelete={handleExpenseDelete}/>}
-                                    {/*{showEditModal &&*/}
-                                    {/*    <EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={expense}*/}
-                                    {/*                 expenseId={expense.id}/>}*/}
-                                </>
-                            )
-                        })
-                        }
-                        {/*{expensesData?.map((expense) => {*/}
-                        {/*    return (<EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={expense}*/}
-                        {/*                         expenseId={expense.id}/>)*/}
-                        {/*})}*/}
-                    </ExpensesStyled>
-                </>
+                        <Wraper>
+                            <button className='btn_purple' onClick={handleOpenModal}>Add Expense</button>
+                            {showModal && <AddExpenses/>}
+                            <button className='btn_purple' onClick={handleSettleUp}>Settle up</button>
+                            {!showModal && expensesData?.map((expense) => {
+                                return (
+                                    <>
+                                        {<ExpensesComponent key={expense?.id} expenses={expense}
+                                                            name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
+                                                            onEdit={handleEdit}
+                                                            onExpenseDelete={handleExpenseDelete}/>}
+
+                                    </>
+                                )
+                            })
+                            }
+                        </Wraper>
+                    </>
              : <MustHaveHome/> : <Loading/>
       }
       </>
