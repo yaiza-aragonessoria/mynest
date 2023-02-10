@@ -37,6 +37,12 @@ export const LoginWrapper = styled.div`
     }
   }
 `
+export const SignIn = styled.div`
+{
+  padding: 20px;
+  //background-color: #27ae60;
+}
+`
 
 export const FormFields = styled.div`
   display: flex;
