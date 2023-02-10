@@ -393,7 +393,7 @@ const HomeCalendar = (props) => {
   const eventStyleGetter = (event, start, end, isSelected) => {
     let current_time = moment().format("YYYY MM DD");
     let event_time = moment(event.start).format("YYYY MM DD");
-    let background = current_time > event_time ? "#DE6987" : "#8CBD4C"; // Colours for events in calendar: past events and comming events (I think)
+    let background = current_time > event_time ? "#7239EA" : "#FFC700"; // Colours for events in calendar: past events and comming events (I think)
     return {
       style: {
         backgroundColor: background,
@@ -412,6 +412,8 @@ const HomeCalendar = (props) => {
               {isLoggedIn ? (
                 <CalendarPageWrapper className="text">
                   <CalendarFormWrapper>
+                    <div className="form_content">
+                        <p className="header">Add new event</p>
                     <input
                       className="add_event_input"
                       type="text"
@@ -474,9 +476,10 @@ const HomeCalendar = (props) => {
                       value={newEvent.notes}
                       onChange={handleChange}
                     />
-                    <button className="btn_blue" type="submit" onClick={handleAddEvent}>
+                    <button className="btn_purple" type="submit" onClick={handleAddEvent}>
                       Add Event
                     </button>
+                    </div>
                   </CalendarFormWrapper>
 
                   <CalendarWrapper>
@@ -491,7 +494,7 @@ const HomeCalendar = (props) => {
                       eventPropGetter={eventStyleGetter}
                       onSelectEvent={(slotInfo) => onSelectEventHandler(slotInfo)}
                       onSelectSlot={(slotInfo) => onSelectEventSlotHandler(slotInfo)}
-                      style={{ height: 500, margin: "50px" }}
+                      className="text"
                     />
                   </CalendarWrapper>
 
