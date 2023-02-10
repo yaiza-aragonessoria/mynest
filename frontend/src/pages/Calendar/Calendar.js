@@ -17,6 +17,8 @@ import {useDispatch, useSelector} from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import {fetchUser} from "../../features/slices/userSlice";
+import Loading from "../../components/Loading/Loading";
+import {useNavigate} from "react-router-dom";
 
 /* sources:
 https://www.youtube.com/watch?v=lyRP_D0qCfk
@@ -29,15 +31,15 @@ const localizer = momentLocalizer(moment); // or globalizeLocalizer
 
 const HomeCalendar = (props) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const access = localStorage.getItem("access");
   const headers = {
     headers: {
       Authorization: `Bearer ${access}`,
     },
   };
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userData = useSelector(store => store.userProfile.userProfileSlice);
+  const userLoaded = useSelector(state => state.userProfile.loaded);
   const [homeMembers, setHomeMembers] = useState([]);
   const [checked, setChecked] = useState([]);
   const [updatedChecked, setUpdatedChecked] = useState([]);
@@ -58,11 +60,11 @@ const HomeCalendar = (props) => {
   };
 
   useEffect(() => {
-    if (access) setIsLoggedIn(true);
-    else setIsLoggedIn(false);
+    if (!access) navigate("/login");
 
     dispatch(fetchUser());
-    }, []);
+
+  }, []);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [myEventsList, setMyEventsList] = useState([]);
@@ -407,10 +409,9 @@ const HomeCalendar = (props) => {
 
   return (
       <>
-      {isLoggedIn ? userData?.home ?
+      {userLoaded? userData?.home ?
             <>
-              {isLoggedIn ? (
-                <CalendarPageWrapper className="text">
+              <CalendarPageWrapper className="text">
                   <CalendarFormWrapper>
                     <input
                       className="add_event_input"
@@ -497,13 +498,9 @@ const HomeCalendar = (props) => {
 
                   <Popup />
                 </CalendarPageWrapper>
-              ) : (
-                <div>
-                  <p className="header">You must be logged in first</p>
-                </div>
-              )}
+              )
             </>
-          : <MustHaveHome/> : <MustLogIn/>
+             : <MustHaveHome/> : <Loading/>
       }
       </>
   );

@@ -16,7 +16,6 @@ import {
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGears, faSort } from '@fortawesome/free-solid-svg-icons'
-import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import {useDispatch, useSelector} from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import {fetchUser} from "../../features/slices/userSlice";
@@ -144,7 +143,6 @@ const Shoppinglist = () => {
 
   return (
       <>
-      {console.log("userLoaded", userLoaded)}
       {userLoaded? userData?.home ?
               <MainWrapper>
                 <FavouriteItems_popup
