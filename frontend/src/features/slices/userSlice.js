@@ -14,34 +14,47 @@ export const fetchUser = createAsyncThunk(
             }
         }
 
-        try {
-            const response = await axios.get('https://mynest.propulsion-learn.ch/backend/api/users/me/', config)
-            return response.data;
-        } catch (error) {
-            console.log(error)
-        }
+        const response = await axios.get('https://mynest.propulsion-learn.ch/backend/api/users/me/', config)
+        return response.data;
     }
 )
 
+const initialState = {
+        userProfileSlice: [],
+        isLoading: false,
+        loaded: false,
+        rejected: false
+    }
+
 export const userProfileSlice = createSlice({
     name: "userProfileSlice",
-    initialState: {
-        userProfileSlice: []
-    },
+    initialState: initialState,
     reducers: {
         cleanUserData: (state) => {
-            const newState = { ...state }
-
-            newState.userProfileSlice = undefined // Set the data to undefined
+            const newState = initialState
 
             return newState
         },},
     extraReducers: {
-        [fetchUser.fulfilled]: (state, action) => {
-
-            state.userProfileSlice = action.payload
+        [fetchUser.pending]: (state, action) => {
+          console.log("Loading user data...");
+          state.isLoading = true;
+          state.loaded = false;
+          state.rejected = false;
         },
-
+        [fetchUser.fulfilled]: (state, action) => {
+          console.log("User data fetched.")
+            state.userProfileSlice = action.payload;
+            state.isLoading = false;
+            state.loaded = true;
+            state.rejected = false;
+        },
+        [fetchUser.rejected]: (state) => {
+          console.log("Request rejected.")
+          state.isLoading = false;
+          state.loaded = false;
+          state.rejected = true;
+        }
     }
 })
 

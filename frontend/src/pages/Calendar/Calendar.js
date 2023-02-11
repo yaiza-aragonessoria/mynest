@@ -17,6 +17,8 @@ import {useDispatch, useSelector} from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import {fetchUser} from "../../features/slices/userSlice";
+import Loading from "../../components/Loading/Loading";
+import {useNavigate} from "react-router-dom";
 
 /* sources:
 https://www.youtube.com/watch?v=lyRP_D0qCfk
@@ -29,15 +31,15 @@ const localizer = momentLocalizer(moment); // or globalizeLocalizer
 
 const HomeCalendar = (props) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const access = localStorage.getItem("access");
   const headers = {
     headers: {
       Authorization: `Bearer ${access}`,
     },
   };
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userData = useSelector(store => store.userProfile.userProfileSlice);
+  const userLoaded = useSelector(state => state.userProfile.loaded);
   const [homeMembers, setHomeMembers] = useState([]);
   const [checked, setChecked] = useState([]);
   const [updatedChecked, setUpdatedChecked] = useState([]);
@@ -58,11 +60,11 @@ const HomeCalendar = (props) => {
   };
 
   useEffect(() => {
-    if (access) setIsLoggedIn(true);
-    else setIsLoggedIn(false);
+    if (!access) navigate("/login");
 
     dispatch(fetchUser());
-    }, []);
+
+  }, []);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [myEventsList, setMyEventsList] = useState([]);
@@ -98,12 +100,12 @@ const HomeCalendar = (props) => {
   };
 
   // Add/Remove checked item from list
-  const handleCheck = (event) => {
+  const handleCheck = (event, id) => {
     let updatedList = [...checked];
     if (event.target.checked) {
-      updatedList = [...checked, event.target.value];
+      updatedList = [...checked, id];
     } else {
-      updatedList.splice(checked.indexOf(event.target.value), 1);
+      updatedList.splice(checked.indexOf(id), 1);
     }
     setChecked(updatedList);
     setNewEvent({ ...newEvent, participants: updatedList });
@@ -393,7 +395,7 @@ const HomeCalendar = (props) => {
   const eventStyleGetter = (event, start, end, isSelected) => {
     let current_time = moment().format("YYYY MM DD");
     let event_time = moment(event.start).format("YYYY MM DD");
-    let background = current_time > event_time ? "#DE6987" : "#8CBD4C"; // Colours for events in calendar: past events and comming events (I think)
+    let background = current_time > event_time ? "#7239EA" : "#f4bf04"; // Colours for events in calendar: past events and comming events (I think)
     return {
       style: {
         backgroundColor: background,
@@ -407,11 +409,12 @@ const HomeCalendar = (props) => {
 
   return (
       <>
-      {isLoggedIn ? userData?.home ?
+      {userLoaded? userData?.home ?
             <>
-              {isLoggedIn ? (
-                <CalendarPageWrapper className="text">
+              <CalendarPageWrapper className="text">
                   <CalendarFormWrapper>
+                    <div className="form_content">
+                        <p className="header">Add new event</p>
                     <input
                       className="add_event_input"
                       type="text"
@@ -450,14 +453,14 @@ const HomeCalendar = (props) => {
                             ? member.first_name
                             : member.email;
                           return (
-                            <div className="participant">
+                            <div key={member.id} className="participant">
                               <label id={index.toString()} htmlFor={memberName}>
                                 <input
                                   type="checkbox"
                                   id={uuid()}
-                                  name="participants"
-                                  value={member.id}
-                                  onChange={handleCheck}
+                                  name={"participants " + member.id}
+                                  checked={checked.includes(member.id)}
+                                  onChange={(event) => handleCheck(event, member.id)}
                                 />
                                 {memberName}
                               </label>
@@ -474,9 +477,10 @@ const HomeCalendar = (props) => {
                       value={newEvent.notes}
                       onChange={handleChange}
                     />
-                    <button className="btn_blue" type="submit" onClick={handleAddEvent}>
+                    <button className="btn_purple" type="submit" onClick={handleAddEvent}>
                       Add Event
                     </button>
+                    </div>
                   </CalendarFormWrapper>
 
                   <CalendarWrapper>
@@ -491,19 +495,15 @@ const HomeCalendar = (props) => {
                       eventPropGetter={eventStyleGetter}
                       onSelectEvent={(slotInfo) => onSelectEventHandler(slotInfo)}
                       onSelectSlot={(slotInfo) => onSelectEventSlotHandler(slotInfo)}
-                      style={{ height: 500, margin: "50px" }}
+                      className="text"
                     />
                   </CalendarWrapper>
 
                   <Popup />
                 </CalendarPageWrapper>
-              ) : (
-                <div>
-                  <p className="header">You must be logged in first</p>
-                </div>
-              )}
+              
             </>
-          : <MustHaveHome/> : <MustLogIn/>
+             : <MustHaveHome/> : <Loading/>
       }
       </>
   );

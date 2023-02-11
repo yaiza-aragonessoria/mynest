@@ -1,16 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {fetchExpenses} from "../../features/slices/expensesSlice";
-import {fetchUser} from "../../features/slices/userSlice";
 import {categories} from "../../constants/categories";
 import api from "../../api/myNest";
-import {useNavigate} from "react-router-dom"
-import axios from "axios";
+import {ExpensesComponentStyled, PopupWrapper, FormFields, Buttons, SharedCheckbox} from "./EditExpense.styled";
 
 
-// const EditExpense = ({showEditModal, setEditModal, expense}) => {
 const EditExpense = (props) => {
-        const navigate = useNavigate();
         const [inputValue, setInputValue] = useState({
             name: props.expense.name,
             amount: props.expense.amount,
@@ -26,11 +20,9 @@ const EditExpense = (props) => {
         const [errorMessage, setErrorMessage] = useState("");
         const [homeMembers, setHomeMembers] = useState([]);
 
-        console.log(inputValue)
 
         const handleChange = (e) => {
             setInputValue({...inputValue, [e.target.name]: e.target.value})
-            console.log(inputValue)
         }
 
         const headers = {
@@ -68,14 +60,10 @@ const EditExpense = (props) => {
         }, []);
 
 
-
         const handleSave = event => {
             event.preventDefault();
-            console.log("EXpenseeeee", inputValue)
-            console.log("id", props.expenseId)
             api.patch(`expenses/${props.expenseId}/`, inputValue, headers)
                 .then(response => {
-                    console.log(response);
                     window.location.reload();
                 })
                 .catch(error => {
@@ -85,79 +73,87 @@ const EditExpense = (props) => {
             props.setEditModal(false);
         }
         return (
-            props.showEditModal && (
-                <form onSubmit={handleSave}>
-                    <div>
-                        <label>Name</label>
-                        <input
-                            name={'name'}
-                            type="text"
-                            value={inputValue.name}
-                            // defaultValue={inputValue.name}
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor=''>Payer </label>
-                        <select onChange={handleChange}
-                                name={'payer'}>
-                            <option value="">Select a payer</option>
-                            {homeMembers.map((member) => {
-                                return (
-                                    <option value={member?.id}
-                                            selected={member.id === inputValue.payer}>{member?.first_name}</option>
-                                );})
-                            }
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor=''>Category </label>
-                        <select onChange={handleChange}
-                                name={'category'}>
+            <ExpensesComponentStyled>
+                <PopupWrapper>
+                    <h3 className="header">Edit Expense</h3>
+                    {props.showEditModal && (
+                        <form onSubmit={handleSave}>
+                            <FormFields>
+                                <label>Expense name</label>
+                                <input
+                                    name={'name'}
+                                    type="text"
+                                    value={inputValue.name}
+                                    // defaultValue={inputValue.name}
+                                    onChange={handleChange}
+                                />
+                            </FormFields>
+                            <FormFields>
+                                <label htmlFor=''>Payer </label>
+                                <select onChange={handleChange}
+                                        name={'payer'}>
+                                    <option value="">Select a payer</option>
+                                    {homeMembers.map((member, index) => {
+                                        return (
+                                            <option value={member?.id}
+                                                    key={index}
+                                                    selected={member.id === inputValue.payer}>{member?.first_name}</option>
+                                        );
+                                    })
+                                    }
+                                </select>
+                            </FormFields>
+                            <FormFields>
+                                <label htmlFor=''>Category </label>
+                                <select onChange={handleChange}
+                                        name={'category'}>
 
-                            {categories.map((category) => {
-                                return (
-                                    <>
-                                        <option selected={Number(category.value) === inputValue.category}
-                                                value={category.value}>{category.label}</option>
+                                    {categories.map((category, index) => {
+                                        return (
+                                            <>
+                                                <option
+                                                    selected={Number(category.value) === inputValue.category}
+                                                    key={index} value={category.value}>{category.label}</option>
 
-                                    </>
-                                )
-                            })}
-                        </select>
+                                            </>
+                                        )
+                                    })}
+                                </select>
 
-                    </div>
-                    <div>
-                        <label htmlFor=''>Amount</label>
-                        <input id='' name='amount' defaultValue={inputValue.amount} onChange={handleChange}/>
-                    </div>
-                    <div>
-                        <label htmlFor=''>Date</label>
-                        {console.log(inputValue)}
-                        <input id='' name='created' type={'date'} value={inputValue.created} defaultValue={inputValue.created} onChange={handleChange}
-                        />
-                    </div>
+                            </FormFields>
+                            <FormFields>
+                                <label htmlFor=''>Amount</label>
+                                <input id='' name='amount' defaultValue={inputValue.amount} onChange={handleChange}/>
+                            </FormFields>
+                            <FormFields>
+                                <label htmlFor=''>Date</label>
+                                <input id='' name='created' type={'date'} value={inputValue.created}
+                                       defaultValue={inputValue.created} onChange={handleChange}
+                                />
+                            </FormFields>
 
-                    <div>
-                        <label>Shared with:</label>
-                        {homeMembers.map((member, index) => {
-                            let memberName = member?.first_name ? member.first_name : member.email;
-                            console.log(inputValue.shared_with)
-                            return (<>
-                                <label id={index} htmlFor={memberName}>
-                                    <input type={"checkbox"}
-                                           name={'shared_with'}
-                                           value={member?.id}
-                                           onChange={handleCheck}/>{memberName}
-                                </label></>)
-                        })}
-                    </div>
-
-                    <button type="submit">Save</button>
-                    <button onClick={() => props.setEditModal(false)}>Cancel</button>
-
-                </form>
-            )
+                            <SharedCheckbox>
+                                <label>Shared with:</label>
+                                {homeMembers.map((member, index) => {
+                                    let memberName = member?.first_name ? member.first_name : member.email;
+                                    return (<>
+                                        <label id={index} htmlFor={memberName}>
+                                            <input type={"checkbox"}
+                                                   name={'shared_with'}
+                                                   value={member?.id}
+                                                   key={index}
+                                                   onChange={handleCheck}/>{memberName}
+                                        </label></>)
+                                })}
+                            </SharedCheckbox>
+                            <Buttons>
+                                <button className="btn_purple" type="submit">Save</button>
+                                <button className="btn_purple" onClick={() => props.setEditModal(false)}>Cancel</button>
+                            </Buttons>
+                        </form>
+                    )}
+                </PopupWrapper>
+            </ExpensesComponentStyled>
         );
     }
 ;

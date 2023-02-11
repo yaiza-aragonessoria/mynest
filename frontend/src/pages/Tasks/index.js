@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import {fetchUser} from "../../features/slices/userSlice";
+import Loading from "../../components/Loading/Loading";
 
 const Tasks = () => {
   const [showCreate, setShowCreate] = useState(false);
@@ -16,6 +17,10 @@ const Tasks = () => {
   const [searchMode, setSearchMode] = useState("month");
   const [newCreatedTask, setNewCreatedTask] = useState(0);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userData = useSelector(store => store.userProfile.userProfileSlice)
+  const userLoaded = useSelector(state => state.userProfile.loaded);
   const access = localStorage.getItem("access");
   const config = {
     method: "GET",
@@ -24,6 +29,13 @@ const Tasks = () => {
     },
     params: { q: searchTerm }
   };
+
+  useEffect(() => {
+    if (!access) navigate("/login");
+
+    dispatch(fetchUser());
+
+  }, []);
 
   const fetchMonthTasks = async () => {
     try {
@@ -100,48 +112,52 @@ const Tasks = () => {
 
   return (
       <>
-        <MainContainer>
-          <TopPage>
+      {userLoaded? userData?.home ?
+        <>
+          <MainContainer>
+            <TopPage>
             <Header>
-            <h1>Task Board of {currentMonth}</h1>
-            <button className="btn_purple" onClick={toggleEdit}>+ Add Task</button>
+              <h1>TASK BOARD OF {currentMonth}</h1>
+              <button className="btn_purple" onClick={toggleEdit}>+ Add Task</button>
             </Header>
             <SearchBar>
-            <form>
-              <input
-                  type="text"
-                  placeholder="Search task..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </form>
-            <button className="btn_grey" onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
-              {searchMode == "month" ? "show all tasks " : "just this month" }
-            </button>
-            </SearchBar>
-          </TopPage>
-          <Description>
-            <h3>Task name</h3>
-          <StatusHeader>
-            <h3>Status</h3>
-          </StatusHeader>
-          <h3>Assignee</h3>
-      </Description>
-          <TasksContainer>
-            {sortTasks(tasks).map(task => (
-                <Task
-                    key={task.id}
-                    task={task}
-                    onTaskDelete={handleTaskDelete}
-                    onTaskEdit={handleTaskEdit}
+              <form>
+                <input
+                    type="text"
+                    placeholder="Search task..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
-            ))}
-            {showCreate && <CreateTask toggleEdit={toggleEdit} onCreateTask={onCreateTask} /> }
-          </TasksContainer>
-        </MainContainer>
+              </form>
+              <button className="btn_grey" onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
+                {searchMode == "month" ? "show all tasks " : "just this month" }
+              </button>
+            </SearchBar>
+            </TopPage>
+            <Description>
+              <h3>Task name</h3>
+            <StatusHeader>
+              <h3>Status</h3>
+            </StatusHeader>
+            <h3>Assignee</h3>
+        </Description>
+            <TasksContainer>
+              {sortTasks(tasks).map(task => (
+                  <Task
+                      key={task.id}
+                      task={task}
+                      onTaskDelete={handleTaskDelete}
+                      onTaskEdit={handleTaskEdit}
+                  />
+              ))}
+              {showCreate && <CreateTask toggleEdit={toggleEdit} onCreateTask={onCreateTask} /> }
+            </TasksContainer>
+          </MainContainer>
+        </>
+          : <MustHaveHome/> : <Loading/>
+      }
       </>
   );
-
 };
 
 export default Tasks;

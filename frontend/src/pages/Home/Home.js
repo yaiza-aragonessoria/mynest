@@ -5,11 +5,16 @@ import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUser} from "../../features/slices/userSlice";
+import Loading from "../../components/Loading/Loading";
+import {useNavigate} from "react-router-dom";
+
 const Home = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const token = localStorage.getItem("access");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const userData = useSelector(store => store.userProfile.userProfileSlice);
+    const userLoaded = useSelector(state => state.userProfile.loaded);
 
 
     const config = {
@@ -43,9 +48,8 @@ const Home = () => {
         }
     }
 
-    useEffect(() => {
-        if (token) setIsLoggedIn(true);
-        else setIsLoggedIn(false);
+      useEffect(() => {
+        if (!token) navigate("/login");
 
         dispatch(fetchUser());
 
@@ -99,8 +103,8 @@ const Home = () => {
     };
 
     return (
-        <>
-            {isLoggedIn ? userData?.home ?
+      <>
+      {userLoaded? userData?.home ?
                     <div>
                         <div>{homeName}</div>
                         <div>{homeAddress}</div>
@@ -121,10 +125,10 @@ const Home = () => {
                             {homeStickers.sort(compareStickers).map(s => <Sticker key={s.id} sticker={s} toggleSticker={toggleSticker} deleteSticker={deleteSticker} />)}
                         </div>
                     </div>
-                : <MustHaveHome/> : <MustLogIn/>
-            }
-        </>
-    );
+             : <MustHaveHome/> : <Loading/>
+      }
+      </>
+  );
 };
 
 

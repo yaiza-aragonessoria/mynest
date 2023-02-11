@@ -5,7 +5,19 @@ export const NavBar = styled.nav`
   height: var(--navheight);
   /* position: fixed; */
   z-index: 4;
-  background-color: #e1e3ea;
+
+
+  /* background-color: #e1e3ea; */
+  /* background: linear-gradient(
+      70deg,
+      rgba(193, 165, 255, 1) 0%,
+      rgba(114, 57, 234, 1) 72%
+    ); */
+
+    background: rgb(255,199,0);
+background: linear-gradient(108deg, rgba(255,199,0,1) 0%, rgba(114,57,234,1) 100%);
+
+
   border-bottom: 1px solid #d4d4d4;
   display: flex;
   justify-content: space-between;
@@ -36,18 +48,19 @@ export const Links = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #000;
+    color: #fff;
     text-decoration: none;
     padding-left: 2rem;
     padding-right: 2rem;
+    font-weight: 600;
   }
 
   a:hover {
-    background-color: pink;
+    background-color: var(--color-orange);
     color: #fff;
   }
 
-  #shopping_list:hover {
+  /* #shopping_list:hover {
     background-color: #7239ea;
     color: #fff;
   }
@@ -70,7 +83,7 @@ export const Links = styled.div`
   #profile:hover {
     background-color: #FFC700;
     color: #fff;
-  }
+  } */
 `;
 
 export const SigninSignup = styled.div`
@@ -85,7 +98,7 @@ export const SigninSignup = styled.div`
     padding: 0.5rem 1rem;
     text-align: center;
     cursor: pointer;
-    background-color: #efefef;
+    background-color: var(--color-orange);
   }
 
   #logout,
@@ -96,13 +109,14 @@ export const SigninSignup = styled.div`
     padding: 0.5rem 1rem;
     text-align: center;
     cursor: pointer;
-    background-color: #efefef;
+    background-color: var(--color-orange);
+;
   }
 
   #signup:hover,
   #logout:hover,
   #login:hover {
-    background-color: #7e8299;
+    background-color: var(--color-purple);
     color: #fff;
   }
 
