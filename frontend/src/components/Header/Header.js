@@ -7,12 +7,14 @@ import {clearAuth, setAuth} from "../../features/slices/authSlice";
 import logo_purple from "../../assets/logo_purple.png"
 import { NavBar, Links, SigninSignup } from "./Header.styled";
 import {cleanUserData} from "../../features/slices/userSlice";
+import EditUserProfile from "../EditUserProfile/EditUserProfile";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const authData = localStorage.getItem('access');
+  const [inEditUserProfile, setInEditUserProfile] = useState(false);
 
     useEffect(() => {
       if(authData) setIsLoggedIn(true);
@@ -28,49 +30,58 @@ const Header = () => {
       navigate("/login")
     };
 
+    const toggleEditProfile = e => {
+      e.preventDefault();
+      setInEditUserProfile(!inEditUserProfile)
+    }
+
 
   return (
     <>
-      <NavBar>
+      {inEditUserProfile && <EditUserProfile toggleEditProfile={toggleEditProfile}/>}
+          <NavBar>
         <div id="logo">
           <NavLink to="/">
-            <img src={logo_purple} />
+            <img src={logo_purple}/>
           </NavLink>
         </div>
 
         <Links className="text">
           <NavLink id="shared_expenses"
-          to="/expenses">Shared Expenses</NavLink>
+                   to="/expenses">Shared Expenses</NavLink>
 
-          <NavLink id="shopping_list" 
-          to="/shoppinglist">Shopping List</NavLink>
+          <NavLink id="shopping_list"
+                   to="/shoppinglist">Shopping List</NavLink>
 
           <NavLink id="to_do"
-          to="/to-do">To Do</NavLink>
+                   to="/to-do">To Do</NavLink>
 
           <NavLink id="calendar"
-          to="/calendar">Calendar</NavLink>
+                   to="/calendar">Calendar</NavLink>
 
-          <NavLink id="profile"
-          to="/profile">Profile</NavLink>
+          {/*<NavLink id="profile"*/}
+          {/*to="/profile">Profile</NavLink>*/}
+
+          <NavLink id="profile" to=""
+                   onClick={e => toggleEditProfile(e)}>Profile</NavLink>
         </Links>
 
         <SigninSignup>
           <button
-            type="button"
-            id="signup"
-            onClick={() => navigate("/sign-up")}
+              type="button"
+              id="signup"
+              onClick={() => navigate("/sign-up")}
           >
             SIGN UP
           </button>
           {isLoggedIn ? (
-            <button type="button" id="logout" onClick={handleLogout}>
-              LOG OUT
-            </button>
+              <button type="button" id="logout" onClick={handleLogout}>
+                LOG OUT
+              </button>
           ) : (
-            <button type="button" id="login" onClick={() => navigate("/login")}>
-              LOG IN
-            </button>
+              <button type="button" id="login" onClick={() => navigate("/login")}>
+                LOG IN
+              </button>
           )}
         </SigninSignup>
       </NavBar>

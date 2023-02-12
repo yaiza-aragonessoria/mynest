@@ -39,8 +39,6 @@ export const PopupWrapper = styled.div`
       margin-right: 15px;
       width: 150px;
     }
-
-
   }
 
 `
