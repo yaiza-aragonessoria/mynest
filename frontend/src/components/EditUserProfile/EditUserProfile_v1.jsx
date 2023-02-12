@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {Avatar, PopupBg, PopupWrapper, Buttons} from "./EditUserProfile.styles";
+import {Avatar, FormFields, PopupBg, PopupWrapper, Buttons, ButtonsHome} from "./EditUserProfile.styles";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {setAuth} from "../../features/slices/authSlice";
@@ -130,30 +130,27 @@ const EditUserProfile = (props) => {
                                 />
                         <label onClick={e => handleUploadAvatar(e)}> <FontAwesomeIcon icon={faTrash} /></label>
                    </div>
+
+                {userHomeDetails &&
+                            <div className='member-of'>You are a member of {userHomeDetails.name}</div>}
+                <ButtonsHome>
+                    <button className="btn_grey" onClick={e => e.preventDefault()}>Invite to your Nest</button>
+                    <button className="btn_grey" onClick={e => e.preventDefault()}>Leave Nest</button>
+                </ButtonsHome>
                 </Avatar>
-                    <div className='form-field'>
+                <div>
+                    <FormFields>
                         <label htmlFor='first_name'>First name</label>
-                        <input name="first_name" type="text" placeholder="First name" value={modifiedUserData.first_name} onChange={handleChange}/>
-                    </div>
-                    <div className='form-field'>
+                        <input className="text" name="first_name" type="text" placeholder="First name" value={modifiedUserData.first_name} onChange={handleChange}/>
+                    </FormFields>
+                    <FormFields>
                         <label htmlFor='last_name'>Last name</label>
                         <input name="last_name" type="text" placeholder="Last name" value={modifiedUserData.last_name} onChange={handleChange}/>
-                    </div>
-                <div className='spanned form-field'>
-                    <label htmlFor='email'>Email</label>
-                    <input name="email" type="email" placeholder="Email" value={modifiedUserData.email} onChange={handleChange}/>
-                </div>
-                <div className='form-field translated'>
-                    <label>Your Nest</label>
-                    {userHomeDetails ? <p>{userHomeDetails.name}</p> : <p>You haven't joined any Nest</p>}
-                </div>
-                <div className='home-buttons'>
-                {userHomeDetails ? <> <button className="btn_grey" onClick={e => e.preventDefault()}>Invite</button>
-                                      <button className="btn_grey" onClick={e => e.preventDefault()}>Leave</button>
-                                   </> :
-                                   <button className="btn_grey" onClick={e => e.preventDefault()}>Join a Nest</button>
-
-                }
+                    </FormFields>
+                    <FormFields>
+                        <label htmlFor='email'>Email</label>
+                        <input name="email" type="email" placeholder="Email" value={modifiedUserData.email} onChange={handleChange}/>
+                    </FormFields>
                 </div>
                 <Buttons>
                     <button className="btn_purple" type="submit">Save</button>

@@ -16,7 +16,7 @@ align-items: center;
 export const PopupWrapper = styled.div`
   z-index: 3;
   position: fixed;
-  width: 80%;
+  width: 70%;
   background-color: #fff;
   border: 2px solid #7239EA;
   border-radius: 15px;
@@ -31,7 +31,7 @@ export const PopupWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    column-gap: 10px;
+    
 
     button {
       margin: 0 7px;
@@ -49,72 +49,77 @@ export const PopupWrapper = styled.div`
         margin: 10px;
     }
     
-    .form-field{
-      display: flex;
-      flex-direction: column;
       
-        input, p {
-            margin: 0 0 15px;
-            padding: 10px;
-            border: 1px solid #b5b5c3;
-            border-radius: 15px;
-            font-size: 14px;
-          
-        }
-        
-        label {
-            padding-left: 5px;
-            padding-bottom: 5px;
-            font-family: 'Inter';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 13.975px;
-            line-height: 21px;
-            color: #7E8299;
-        }
+    .member-of {
+      padding: 10px;
+      text-align: center;
     }
-    
-    .spanned {
-      grid-column: 2/span 2;
-    }
-    
-    .translated {
-      grid-column: 2/3;
-    }
-    
-    .home-buttons {
-      grid-column: 3/3;
-      //grid-column: 2 / span 2;
-      display: flex;
-      //flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 0 0;
-    }
-    
-    .home-details {
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-    }
-    
   }
 `;
+
+export const FormFields = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #b5b5c3;
+    border-radius: 15px;
+  }
+
+  label {
+    padding-left: 5px;
+    padding-bottom: 5px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13.975px;
+    line-height: 21px;
+    color: #7E8299;
+  }
+
+  select {
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #b5b5c3;
+    border-radius: 15px;
+    margin-bottom: 15px;
+
+    option {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 13.975px;
+      line-height: 21px;
+      color: #7E8299;
+      background: white;
+    }
+  }
+`
 
 
 export const Buttons = styled.div`
   padding-top: 25px;
-  grid-column: span 3;
+  grid-column: span 2;
   justify-self: center;
 
+`
+
+export const ButtonsHome = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  
 `
 
 
 export const Avatar = styled.div`
     display: flex;
     flex-direction: column;
-    grid-row: span 2;
     border: none;
     border-radius: 1ex;
     cursor: pointer;
@@ -151,7 +156,7 @@ export const Avatar = styled.div`
   
   .buttons-avatar {
     display: flex;
-    gap: 10px;
+    gap: 30px;
     margin: 10px;
   }
 `
