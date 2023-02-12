@@ -2,11 +2,12 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Sticker from "../../components/Sticker/Sticker";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
-import MustLogIn from "../../components/MustLogIn/MustLogIn";
+import { HomeWrapper, HomeDetails, StickersContainer } from "./Home.styled";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchUser} from "../../features/slices/userSlice";
 import Loading from "../../components/Loading/Loading";
 import {useNavigate} from "react-router-dom";
+import {MainWrapper} from "../ShoppingList/ShoppingList.styled";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -103,32 +104,36 @@ const Home = () => {
     };
 
     return (
-      <>
-      {userLoaded? userData?.home ?
-                    <div>
-                        <div>{homeName}</div>
-                        <div>{homeAddress}</div>
-                        <ul>
-                            {homeUsers.map(u => <li key={u.id}>
-                                {u.first_name}
+        <>
+            {userLoaded? userData?.home ?
+                <HomeWrapper>
+                    <HomeDetails>
+                        <h1>{homeName}</h1>
+                        <h2>{homeAddress}</h2>
+                        <div className="home-members">
+                            {homeUsers.map(u => <div className="member" key={u.id}>
                                 <img src={u.avatar}/>
-                            </li>)}
-                        </ul>
+                                <span>{u.first_name}</span>
+                            </div>)}
+                        </div>
+                    </HomeDetails>
+                    <StickersContainer>
                         <form>
-                            <input style={{width: "80%", margin: "20px"}} type="text" placeholder="new sticker..." value={newStickerContent} onChange={handleNewStickerContentChange} />
-                            <button type="submit" onClick={handleCreateNewSticker}>Add Sticker</button>
+                            <input style={{width: "80%", margin: "20px"}} type="text" placeholder="Leave a message..." value={newStickerContent} onChange={handleNewStickerContentChange} />
+                            <button className="btn_purple" type="submit" onClick={handleCreateNewSticker}>Add Sticker</button>
                         </form>
                         <div>
                             {warning}
                         </div>
-                        <div>
+                        <div className="sticker-board">
                             {homeStickers.sort(compareStickers).map(s => <Sticker key={s.id} sticker={s} toggleSticker={toggleSticker} deleteSticker={deleteSticker} />)}
                         </div>
-                    </div>
-             : <MustHaveHome/> : <Loading/>
-      }
-      </>
-  );
+                    </StickersContainer>
+                </HomeWrapper>
+                : <MustHaveHome/> : <Loading/>
+            }
+        </>
+    );
 };
 
 
