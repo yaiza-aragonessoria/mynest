@@ -1,6 +1,10 @@
 import React, {useState} from "react";
-import {ItemWrapper} from "../ShoppingList_item/ShoppingList_item.styled";
 import axios from "axios";
+import { StickerBox } from "./Sticker.styled";
+
+import { Textfit } from 'react-textfit';
+import { AiFillPushpin, AiOutlinePushpin } from 'react-icons/ai';
+import { MdDeleteForever } from 'react-icons/md';
 
 const Sticker = ({sticker, toggleSticker, deleteSticker}) => {
 
@@ -67,16 +71,24 @@ const Sticker = ({sticker, toggleSticker, deleteSticker}) => {
             });
     }
 
+    //                 <img src={"https://mynest.propulsion-learn.ch" + sticker.author.avatar} />
+
     return (
-        <div style={{width: "80%", margin: "20px"}}>
-            <div>
-                {sticker.content}
-                <img src={sticker.author.avatar}/>
-                {calculateTime(sticker.created)}
+        <StickerBox>
+            <div className="sticker-top">
+                <img src={sticker.author.avatar} />
+                <span>{sticker.author.first_name}</span>
+                <div className="space"></div>
+                <button className="btn_purple" onClick={handlePinToggle}>{sticker.pinned ? <AiFillPushpin/> : <AiOutlinePushpin/>}</button>
             </div>
-            <button onClick={handlePinToggle}>{sticker.pinned ? "unpin" : "pin"}</button>
-            <button onClick={handleDelete}>X</button>
-        </div>
+            <div className="content">
+                <Textfit style={{height: '100%'}} mode="multi">{sticker.content}</Textfit>
+            </div>
+             <div className="sticker-bottom">
+                 <span>{calculateTime(sticker.created)}</span>
+                 <button className="btn_grey" onClick={handleDelete}><MdDeleteForever/></button>
+             </div>
+        </StickerBox>
     );
 };
 
