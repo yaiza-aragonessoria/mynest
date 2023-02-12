@@ -4,7 +4,7 @@ import {fetchExpenses} from "../../features/slices/expensesSlice";
 import ExpensesComponent from "../../components/Expenses/ExpensesComponent";
 import AddExpenses from "../../components/AddExpenses/AddExpenses";
 import {fetchUser} from '../../features/slices/userSlice'
-import {Wraper} from "./Expenses.styled";
+import {Vjosa, Wrapper} from "./Expenses.styled";
 import api from "../../api/myNest";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
@@ -69,10 +69,12 @@ const Expenses = () => {
             <>
                 {isLoggedIn ? userData?.home ?
                     <>
-                        <Wraper>
-                            <button className='btn_purple' onClick={handleOpenModal}>Add Expense</button>
-                            {showModal && <AddExpenses/>}
-                            <button className='btn_purple' onClick={handleSettleUp}>Settle up</button>
+<Wrapper>
+                        <Vjosa>
+                        <button className='btn_purple' onClick={handleOpenModal}>Add Expense</button>
+                        {showModal && <AddExpenses/>}
+                        <button className='btn_purple' onClick={handleSettleUp}>Settle up</button>
+</Vjosa>
                             {!showModal && expensesData?.map((expense) => {
                                 return (
                                     <>
@@ -85,7 +87,7 @@ const Expenses = () => {
                                 )
                             })
                             }
-                        </Wraper>
+                        </Wrapper>
                     </>
                     : <MustHaveHome/> : <MustLogIn/>
                 }

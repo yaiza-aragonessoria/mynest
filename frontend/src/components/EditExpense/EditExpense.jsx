@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {categories} from "../../constants/categories";
 import api from "../../api/myNest";
-import {ExpensesComponentStyled, PopupWrapper, FormFields, Buttons, SharedCheckbox} from "./EditExpense.styled";
+import {ExpensesComponentStyled, PopupWrapper, PopupBg, FormFields, Buttons, SharedCheckbox} from "./EditExpense.styled";
 
 
 const EditExpense = (props) => {
@@ -73,87 +73,89 @@ const EditExpense = (props) => {
             props.setEditModal(false);
         }
         return (
-            <ExpensesComponentStyled>
-                <PopupWrapper>
-                    <h3 className="header">Edit Expense</h3>
-                    {props.showEditModal && (
-                        <form onSubmit={handleSave}>
-                            <FormFields>
-                                <label>Expense name</label>
-                                <input
-                                    name={'name'}
-                                    type="text"
-                                    value={inputValue.name}
-                                    // defaultValue={inputValue.name}
-                                    onChange={handleChange}
-                                />
-                            </FormFields>
-                            <FormFields>
-                                <label htmlFor=''>Payer </label>
-                                <select onChange={handleChange}
-                                        name={'payer'}>
-                                    <option value="">Select a payer</option>
+            <PopupBg>
+                <ExpensesComponentStyled>
+                    <PopupWrapper>
+                        <h3 className="header">Edit Expense</h3>
+                        {props.showEditModal && (
+                            <form onSubmit={handleSave}>
+                                <FormFields>
+                                    <label>Expense name</label>
+                                    <input
+                                        name={'name'}
+                                        type="text"
+                                        value={inputValue.name}
+                                        // defaultValue={inputValue.name}
+                                        onChange={handleChange}
+                                    />
+                                </FormFields>
+                                <FormFields>
+                                    <label htmlFor=''>Payer </label>
+                                    <select onChange={handleChange}
+                                            name={'payer'}>
+                                        <option value="">Select a payer</option>
+                                        {homeMembers.map((member, index) => {
+                                            return (
+                                                <option value={member?.id}
+                                                        key={index}
+                                                        selected={member.id === inputValue.payer}>{member?.first_name}</option>
+                                            );
+                                        })
+                                        }
+                                    </select>
+                                </FormFields>
+                                <FormFields>
+                                    <label htmlFor=''>Category </label>
+                                    <select onChange={handleChange}
+                                            name={'category'}>
+
+                                        {categories.map((category, index) => {
+                                            return (
+                                                <>
+                                                    <option
+                                                        selected={Number(category.value) === inputValue.category}
+                                                        key={index} value={category.value}>{category.label}</option>
+
+                                                </>
+                                            )
+                                        })}
+                                    </select>
+
+                                </FormFields>
+                                <FormFields>
+                                    <label htmlFor=''>Amount</label>
+                                    <input id='' name='amount' defaultValue={inputValue.amount} onChange={handleChange}/>
+                                </FormFields>
+                                <FormFields>
+                                    <label htmlFor=''>Date</label>
+                                    <input id='' name='created' type={'date'} value={inputValue.created}
+                                           defaultValue={inputValue.created} onChange={handleChange}
+                                    />
+                                </FormFields>
+
+                                <SharedCheckbox>
+                                    <label>Shared with:</label>
                                     {homeMembers.map((member, index) => {
-                                        return (
-                                            <option value={member?.id}
-                                                    key={index}
-                                                    selected={member.id === inputValue.payer}>{member?.first_name}</option>
-                                        );
-                                    })
-                                    }
-                                </select>
-                            </FormFields>
-                            <FormFields>
-                                <label htmlFor=''>Category </label>
-                                <select onChange={handleChange}
-                                        name={'category'}>
-
-                                    {categories.map((category, index) => {
-                                        return (
-                                            <>
-                                                <option
-                                                    selected={Number(category.value) === inputValue.category}
-                                                    key={index} value={category.value}>{category.label}</option>
-
-                                            </>
-                                        )
+                                        let memberName = member?.first_name ? member.first_name : member.email;
+                                        return (<>
+                                            <label id={index} htmlFor={memberName}>
+                                                <input type={"checkbox"}
+                                                       name={'shared_with'}
+                                                       value={member?.id}
+                                                       key={index}
+                                                       onChange={handleCheck}/>{memberName}
+                                            </label></>)
                                     })}
-                                </select>
-
-                            </FormFields>
-                            <FormFields>
-                                <label htmlFor=''>Amount</label>
-                                <input id='' name='amount' defaultValue={inputValue.amount} onChange={handleChange}/>
-                            </FormFields>
-                            <FormFields>
-                                <label htmlFor=''>Date</label>
-                                <input id='' name='created' type={'date'} value={inputValue.created}
-                                       defaultValue={inputValue.created} onChange={handleChange}
-                                />
-                            </FormFields>
-
-                            <SharedCheckbox>
-                                <label>Shared with:</label>
-                                {homeMembers.map((member, index) => {
-                                    let memberName = member?.first_name ? member.first_name : member.email;
-                                    return (<>
-                                        <label id={index} htmlFor={memberName}>
-                                            <input type={"checkbox"}
-                                                   name={'shared_with'}
-                                                   value={member?.id}
-                                                   key={index}
-                                                   onChange={handleCheck}/>{memberName}
-                                        </label></>)
-                                })}
-                            </SharedCheckbox>
-                            <Buttons>
-                                <button className="btn_purple" type="submit">Save</button>
-                                <button className="btn_purple" onClick={() => props.setEditModal(false)}>Cancel</button>
-                            </Buttons>
-                        </form>
-                    )}
-                </PopupWrapper>
-            </ExpensesComponentStyled>
+                                </SharedCheckbox>
+                                <Buttons>
+                                    <button className="btn_purple" type="submit">Save</button>
+                                    <button className="btn_purple" onClick={() => props.setEditModal(false)}>Cancel</button>
+                                </Buttons>
+                            </form>
+                        )}
+                    </PopupWrapper>
+                </ExpensesComponentStyled>
+            </PopupBg>
         );
     }
 ;

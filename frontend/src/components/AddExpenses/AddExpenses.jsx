@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import api from '../../api/myNest';
-import {Buttons, ExpensesComponentStyled, FormFields, PopupWrapper, SharedCheckbox} from "./AddExpense.styled";
+import {Buttons, ExpensesComponentStyled, FormFields, PopupBg, PopupWrapper, SharedCheckbox} from "./AddExpense.styled";
 import {categories} from "../../constants/categories";
 
 const AddExpenses = () => {
@@ -73,6 +73,7 @@ const AddExpenses = () => {
 
 
     return (<>
+        <PopupBg>
         <ExpensesComponentStyled>
             <PopupWrapper>
                 <h3 className="header">Add Expense</h3>
@@ -132,6 +133,7 @@ const AddExpenses = () => {
                 </form>
             </PopupWrapper>
         </ExpensesComponentStyled>
+            </PopupBg>
     </>);
 };
 export default AddExpenses;

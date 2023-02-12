@@ -15,7 +15,7 @@ export const ExpensesComponentStyled = styled.section`
 
 export const PopupWrapper = styled.div`
   z-index: 3;
-  height: 50%;
+  //height: 50%;
   position: fixed;
   width: 35%;
   background-color: #fff;
@@ -83,9 +83,26 @@ export const FormFields = styled.div`
 `
 
 
-export const Buttons = styled.div`
+export const PopupBg = styled.div`
+  width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  position: fixed;
+  //background: rgb(248,245,255);
+  background: red;
+  background: linear-gradient(328deg, rgba(248, 245, 255, 0.6208858543417367) 0%, rgba(114, 57, 234, 0.36318277310924374) 59%);
   display: flex;
   justify-content: center;
+  align-items: center;
+
+
+`
+
+export const Buttons = styled.div`
+  display: flex;
+  justify-content: space-around;
   padding-top: 25px;
 `
 
@@ -100,11 +117,11 @@ export const SharedCheckbox = styled.div`
   color: #7E8299;
   background: white;
 
-  
+
   label {
     padding: 15px;
   }
-  
+
   input[type="checkbox"]::before {
     box-shadow: inset 1em 1em var(--form-control-color);
   }

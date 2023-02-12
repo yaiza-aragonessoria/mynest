@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {ExpensesComponentStyled} from "./ExpensesComponent.styled";
+import {ExpensesComponentStyled, TaskContainer} from "./ExpensesComponent.styled";
 import api from "../../api/myNest";
 import EditExpense from "../EditExpense/EditExpense";
 import {useSelector} from "react-redux";
@@ -26,7 +26,6 @@ const ExpensesComponent = (props) => {
 
     const handleModalEdit = (event) => {
         setEditModal(!showEditModal);
-        // setIsEdit(true)
     };
 
 
@@ -53,7 +52,7 @@ const ExpensesComponent = (props) => {
         <>   {showEditModal &&
                 <EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={props.expenses}
                              expenseId={props.expenses.id}/>}
-            <ExpensesComponentStyled>
+            <TaskContainer>
                 <span>{props.expenses.created}</span>
                 <span>{text}</span>
                 <span>{props.expenses.name}</span>
@@ -62,7 +61,7 @@ const ExpensesComponent = (props) => {
                 {/*<span> Payer {props.expenses?.payer?.first_name ? props.expenses.payer.first_name : props.expenses.payer.email} </span>*/}
                 <button className="button" onClick={handleModalEdit}>{showEditModal ? <FontAwesomeIcon icon={faXmark} /> : <>Edit</>}</button>
                 <button className="button" onClick={handleDelete}>Delete</button>
-            </ExpensesComponentStyled>
+            </TaskContainer>
 
         </>);
 };
