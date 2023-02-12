@@ -7,7 +7,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchUser} from "../../features/slices/userSlice";
 import Loading from "../../components/Loading/Loading";
 import {useNavigate} from "react-router-dom";
-import {MainWrapper} from "../ShoppingList/ShoppingList.styled";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -108,18 +107,18 @@ const Home = () => {
             {userLoaded? userData?.home ?
                 <HomeWrapper>
                     <HomeDetails>
-                        <h1>{homeName}</h1>
-                        <h2>{homeAddress}</h2>
+                        <h1 className="header">{homeName}</h1>
+                        <h2 className="subheader">{homeAddress}</h2>
                         <div className="home-members">
                             {homeUsers.map(u => <div className="member" key={u.id}>
                                 <img src={u.avatar}/>
-                                <span>{u.first_name}</span>
+                                <span className="text">{u.first_name}</span>
                             </div>)}
                         </div>
                     </HomeDetails>
                     <StickersContainer>
-                        <form>
-                            <input style={{width: "80%", margin: "20px"}} type="text" placeholder="Leave a message..." value={newStickerContent} onChange={handleNewStickerContentChange} />
+                        <form className="sticker-bar">
+                            <input type="text" placeholder="Leave a message..." value={newStickerContent} onChange={handleNewStickerContentChange} />
                             <button className="btn_purple" type="submit" onClick={handleCreateNewSticker}>Add Sticker</button>
                         </form>
                         <div>
