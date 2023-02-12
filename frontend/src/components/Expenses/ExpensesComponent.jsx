@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {ExpensesComponentStyled, TaskContainer} from "./ExpensesComponent.styled";
+import {Column, Wrapper, MainContainer, Buttons} from "./ExpensesComponent.styled";
 import api from "../../api/myNest";
 import EditExpense from "../EditExpense/EditExpense";
 import {useSelector} from "react-redux";
@@ -49,20 +49,40 @@ const ExpensesComponent = (props) => {
     }
 
     return (
-        <>   {showEditModal &&
-                <EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={props.expenses}
-                             expenseId={props.expenses.id}/>}
-            <TaskContainer>
-                <span>{props.expenses.created}</span>
-                <span>{text}</span>
-                <span>{props.expenses.name}</span>
-                <span> Amount {props.expenses?.amount} CHF</span>
-                <span> {whoPaid(props.expenses.payer)} </span>
-                {/*<span> Payer {props.expenses?.payer?.first_name ? props.expenses.payer.first_name : props.expenses.payer.email} </span>*/}
-                <button className="button" onClick={handleModalEdit}>{showEditModal ? <FontAwesomeIcon icon={faXmark} /> : <>Edit</>}</button>
-                <button className="button" onClick={handleDelete}>Delete</button>
-            </TaskContainer>
+        <>
+            <Wrapper>
 
+                <MainContainer>
+                    {showEditModal &&
+                        <EditExpense showEditModal={showEditModal} setEditModal={setEditModal} expense={props.expenses}
+                                     expenseId={props.expenses.id}/>}
+                    <Column>
+                        <span>{props.expenses.created}</span>
+                    </Column>
+                    <Column>
+                        <span>{text}</span>
+                    </Column>
+                    <Column>
+                        <span>{props.expenses.name}</span>
+                    </Column>
+                    <Column>
+                        <span> Amount {props.expenses?.amount} CHF</span>
+                    </Column>
+                    <Column>
+                        <span> {whoPaid(props.expenses.payer)} </span>
+                    </Column>
+                    {/*<span> Payer {props.expenses?.payer?.first_name ? props.expenses.payer.first_name : props.expenses.payer.email} </span>*/}
+                    <Column>
+                        <Buttons>
+                            <button className="btn_purple" onClick={handleModalEdit}>{showEditModal ?
+                                <FontAwesomeIcon icon={faXmark}/> : <>Edit</>}</button>
+                        </Buttons>
+                        <Buttons>
+                            <button className="btn_purple" onClick={handleDelete}>Delete</button>
+                        </Buttons>
+                    </Column>
+                </MainContainer>
+            </Wrapper>
         </>);
 };
 export default ExpensesComponent;
