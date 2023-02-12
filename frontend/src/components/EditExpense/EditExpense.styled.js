@@ -39,7 +39,12 @@ export const PopupWrapper = styled.div`
   //    width: 150px;
   //  }
 
-
+  //  button {
+  //    margin-right: 15px;
+  //    width: 150px;
+  //  }
+  //
+  //
   //}
 
 `

@@ -13,10 +13,13 @@ import {
   CalendarFormWrapper,
   CalendarWrapper,
 } from "./Calendar.styled";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import MustLogIn from "../../components/MustLogIn/MustLogIn";
-import {fetchUser} from "../../features/slices/userSlice";
+import { fetchUser } from "../../features/slices/userSlice";
+import Loading from "../../components/Loading/Loading";
+import { useNavigate } from "react-router-dom";
+import { PopupLayout } from "./CalendarPopup.styled";
 
 /* sources:
 https://www.youtube.com/watch?v=lyRP_D0qCfk
@@ -29,15 +32,15 @@ const localizer = momentLocalizer(moment); // or globalizeLocalizer
 
 const HomeCalendar = (props) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const access = localStorage.getItem("access");
   const headers = {
     headers: {
       Authorization: `Bearer ${access}`,
     },
   };
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const userData = useSelector(store => store.userProfile.userProfileSlice);
+  const userData = useSelector((store) => store.userProfile.userProfileSlice);
+  const userLoaded = useSelector((state) => state.userProfile.loaded);
   const [homeMembers, setHomeMembers] = useState([]);
   const [checked, setChecked] = useState([]);
   const [updatedChecked, setUpdatedChecked] = useState([]);
@@ -58,11 +61,10 @@ const HomeCalendar = (props) => {
   };
 
   useEffect(() => {
-    if (access) setIsLoggedIn(true);
-    else setIsLoggedIn(false);
+    if (!access) navigate("/login");
 
     dispatch(fetchUser());
-    }, []);
+  }, []);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [myEventsList, setMyEventsList] = useState([]);
@@ -393,7 +395,7 @@ const HomeCalendar = (props) => {
   const eventStyleGetter = (event, start, end, isSelected) => {
     let current_time = moment().format("YYYY MM DD");
     let event_time = moment(event.start).format("YYYY MM DD");
-    let background = current_time > event_time ? "#DE6987" : "#8CBD4C"; // Colours for events in calendar: past events and comming events (I think)
+    let background = current_time > event_time ? "#7239EA" : "#f4bf04"; // Colours for events in calendar: past events and comming events (I think)
     return {
       style: {
         backgroundColor: background,
@@ -406,106 +408,118 @@ const HomeCalendar = (props) => {
   };
 
   return (
-      <>
-      {isLoggedIn ? userData?.home ?
-            <>
-              {isLoggedIn ? (
-                <CalendarPageWrapper className="text">
-                  <CalendarFormWrapper>
-                    <input
-                      className="add_event_input"
-                      type="text"
-                      placeholder="Add title"
-                      name="title"
-                      value={newEvent.title}
-                      onChange={handleChange}
-                    />
+    <>
+      {userLoaded ? (
+        userData?.home ? (
+          <>
+          <PopupLayout>
+                <Popup />
+              </PopupLayout>
+            <CalendarPageWrapper className="text">
+              <CalendarFormWrapper>
+                <div className="form_content">
+                  <p className="header">Add new event</p>
+                  <input
+                    className="add_event_input"
+                    type="text"
+                    placeholder="Add title"
+                    name="title"
+                    value={newEvent.title}
+                    onChange={handleChange}
+                  />
 
-                    <div className="date_input">
-                      <div className="date_input_from">
-                        <p>from</p>
-                        <input
-                          type="date"
-                          name="start"
-                          value={newEvent.start}
-                          onChange={handleChange}
-                        />
-                      </div>
-
-                      <div className="date_input_until">
-                        <p>until</p>
-                        <input
-                          type="date"
-                          name="end"
-                          value={newEvent.end}
-                          onChange={handleChange}
-                        />
-                      </div>
+                  <div className="date_input">
+                    <div className="date_input_from">
+                      <p>from</p>
+                      <input
+                        type="date"
+                        name="start"
+                        value={newEvent.start}
+                        onChange={handleChange}
+                      />
                     </div>
 
-                    <div className="participants text">
-                      {homeMembers.length !== 0 &&
-                        homeMembers.map((member, index) => {
-                          let memberName = member.first_name
-                            ? member.first_name
-                            : member.email;
-                          return (
-                            <div key={member.id} className="participant">
-                              <label id={index.toString()} htmlFor={memberName}>
-                                <input
-                                  type="checkbox"
-                                  id={uuid()}
-                                  name={"participants " + member.id}
-                                  checked={checked.includes(member.id)}
-                                  onChange={(event) => handleCheck(event, member.id)}
-                                />
-                                {memberName}
-                              </label>
-                            </div>
-                          );
-                        })}
+                    <div className="date_input_until">
+                      <p>until</p>
+                      <input
+                        type="date"
+                        name="end"
+                        value={newEvent.end}
+                        onChange={handleChange}
+                      />
                     </div>
+                  </div>
 
-                    <input
-                      className="add_event_input"
-                      type="text"
-                      name="notes"
-                      placeholder={"Add a description"}
-                      value={newEvent.notes}
-                      onChange={handleChange}
-                    />
-                    <button className="btn_blue" type="submit" onClick={handleAddEvent}>
-                      Add Event
-                    </button>
-                  </CalendarFormWrapper>
+                  <div className="participants text">
+                    {homeMembers.length !== 0 &&
+                      homeMembers.map((member, index) => {
+                        let memberName = member.first_name
+                          ? member.first_name
+                          : member.email;
+                        return (
+                          <div key={member.id} className="participant">
+                            <label id={index.toString()} htmlFor={memberName}>
+                              <input
+                                type="checkbox"
+                                id={uuid()}
+                                name={"participants " + member.id}
+                                checked={checked.includes(member.id)}
+                                onChange={(event) =>
+                                  handleCheck(event, member.id)
+                                }
+                              />
+                              {memberName}
+                            </label>
+                          </div>
+                        );
+                      })}
+                  </div>
 
-                  <CalendarWrapper>
-                    <Calendar
-                      popup
-                      selectable
-                      localizer={localizer}
-                      events={myEventsList}
-                      views={["month", "agenda"]}
-                      startAccessor="start"
-                      endAccessor="end"
-                      eventPropGetter={eventStyleGetter}
-                      onSelectEvent={(slotInfo) => onSelectEventHandler(slotInfo)}
-                      onSelectSlot={(slotInfo) => onSelectEventSlotHandler(slotInfo)}
-                      style={{ height: 500, margin: "50px" }}
-                    />
-                  </CalendarWrapper>
-
-                  <Popup />
-                </CalendarPageWrapper>
-              ) : (
-                <div>
-                  <p className="header">You must be logged in first</p>
+                  <input
+                    className="add_event_input"
+                    type="text"
+                    name="notes"
+                    placeholder={"Add a description"}
+                    value={newEvent.notes}
+                    onChange={handleChange}
+                  />
+                  <button
+                    className="btn_purple"
+                    type="submit"
+                    onClick={handleAddEvent}
+                  >
+                    Add Event
+                  </button>
                 </div>
-              )}
-            </>
-          : <MustHaveHome/> : <MustLogIn/>
-      }
-      </>
+              </CalendarFormWrapper>
+
+              <CalendarWrapper>
+                <Calendar
+                  popup
+                  selectable
+                  localizer={localizer}
+                  events={myEventsList}
+                  views={["month", "agenda"]}
+                  startAccessor="start"
+                  endAccessor="end"
+                  eventPropGetter={eventStyleGetter}
+                  onSelectEvent={(slotInfo) => onSelectEventHandler(slotInfo)}
+                  onSelectSlot={(slotInfo) =>
+                    onSelectEventSlotHandler(slotInfo)
+                  }
+                  className="text"
+                />
+              </CalendarWrapper>
+              
+            </CalendarPageWrapper>
+          </>
+        ) : (
+          <MustHaveHome />
+        )
+      ) : (
+        <Loading />
+      )}
+    </>
   );
 };
 

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react"
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {setAuth} from "../../features/slices/authSlice";
-import {ErrorMessage, FormFields, LoginForm, LoginTitle, LoginWrapper, Wrapper} from "./Login.styled";
+import {ErrorMessage, FormFields, LoginTitle, LoginWrapper, SignIn, Wrapper} from "./Login.styled";
 
 
 const Login = () => {
@@ -85,6 +85,9 @@ const Login = () => {
                   </FormFields>
                   <button className="btn_purple" type="submit">Login</button>
                   </form>
+                  <SignIn>
+                    New user? <Link to="/sign-up">Sign up </Link>
+                  </SignIn>
               </LoginWrapper>
       }
     </Wrapper>

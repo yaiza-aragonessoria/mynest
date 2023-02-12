@@ -1,7 +1,16 @@
 .App {
   height: 100%;
+  width: 100%;
   --navheight: 4rem;
-  --footerheight: 3rem;
+  --footerheight: 2rem;
   --maincontainer: calc(100vh - var(--navheight) - var(--footerheight));
 
+
+    /* GLOBAL COLORS */
+    --color-purple: #7239EA;
+    --color-purple-light: #F8F5FF;
+    --color-orange: #f4bf04;
+    --color-orange-light: #FFF8DD;
+    --color-grey: #7E8299;
+    --color-grey-light: #B5B5C3;
 }

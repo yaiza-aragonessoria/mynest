@@ -16,23 +16,23 @@ import {
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGears, faSort } from '@fortawesome/free-solid-svg-icons'
-import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import {useDispatch, useSelector} from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
 import {fetchUser} from "../../features/slices/userSlice";
+import {useNavigate} from "react-router-dom";
+import Loading from "../../components/Loading/Loading";
 
 
 
 const Shoppinglist = () => {
- 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem("access");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const userData = useSelector(store => store.userProfile.userProfileSlice)
+  const userData = useSelector(store => store.userProfile.userProfileSlice);
+  const userLoaded = useSelector(state => state.userProfile.loaded);
 
   useEffect(() => {
-    if (token) setIsLoggedIn(true);
-    else setIsLoggedIn(false);
+    if (!token) navigate("/login");
 
     dispatch(fetchUser());
 
@@ -143,7 +143,7 @@ const Shoppinglist = () => {
 
   return (
       <>
-      {isLoggedIn ? userData?.home ?
+      {userLoaded? userData?.home ?
               <MainWrapper>
                 <FavouriteItems_popup
                     showPopup={showPopup}
@@ -233,7 +233,7 @@ const Shoppinglist = () => {
                   </div>
                 </div>
               </MainWrapper>
-             : <MustHaveHome/> : <MustLogIn/>
+             : <MustHaveHome/> : <Loading/>
       }
       </>
   );
