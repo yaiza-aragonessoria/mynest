@@ -11,8 +11,12 @@ line-height: 19px;
 color: #fff;
 display: flex;
 flex-direction: row;
+gap: 0.5rem;
 justify-content: flex-start;
-padding-left: 2rem;
 align-items: center;
+
+.footer_content {
+    margin-left: 2rem;
+}
 
 `
