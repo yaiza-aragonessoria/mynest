@@ -12,8 +12,9 @@ export const HomeWrapper = styled.div`
 export const HomeDetails = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 20px;
   
-   h1, h2 {
+  h1, h2 {
     text-align: center;
     margin: 0;
   }
@@ -22,6 +23,7 @@ export const HomeDetails = styled.div`
   }
   h2 {
     font-size: 16px;
+    padding: 20px;
   }
   
   div.home-members {
@@ -46,12 +48,20 @@ export const HomeDetails = styled.div`
 `;
 
 export const StickersContainer = styled.div`
-  input {
-    width: 70%;
+  form.sticker-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+    padding: 20px;
+    
+    input {
+    width: 40%;
     padding: 10px;
     border: 1px solid #b5b5c3;
     border-radius: 15px;
     outline:none;
+    }
   }
   
   div.sticker-board {

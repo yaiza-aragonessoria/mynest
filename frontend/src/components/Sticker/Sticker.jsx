@@ -74,7 +74,7 @@ const Sticker = ({sticker, toggleSticker, deleteSticker}) => {
     //                 <img src={"https://mynest.propulsion-learn.ch" + sticker.author.avatar} />
 
     return (
-        <StickerBox>
+        <StickerBox style={{backgroundColor: sticker.pinned ? "#f4bf04" : "white" }}>
             <div className="sticker-top">
                 <img src={sticker.author.avatar} />
                 <span>{sticker.author.first_name}</span>
