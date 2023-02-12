@@ -4,7 +4,7 @@ width: 100%;
 min-height: 100%;
 top: 0;
 left: 0;
-z-index: 3;
+z-index: 90;
 position: fixed;
 background: rgb(248,245,255);
 background: linear-gradient(328deg, rgba(248,245,255,0.6208858543417367) 0%, rgba(114,57,234,0.36318277310924374) 59%);
@@ -29,7 +29,7 @@ export const PopupWrapper = styled.div`
 
   form {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 21% 38% 38%;
     align-items: center;
     column-gap: 10px;
 
@@ -54,12 +54,13 @@ export const PopupWrapper = styled.div`
       flex-direction: column;
       
         input, p {
-            margin: 0 0 15px;
+            margin: 0 0 0px;
             padding: 10px;
             border: 1px solid #b5b5c3;
             border-radius: 15px;
             font-size: 14px;
-          
+            height: 21px;
+            vertical-align: middle;
         }
         
         label {
@@ -74,6 +75,7 @@ export const PopupWrapper = styled.div`
         }
     }
     
+    
     .spanned {
       grid-column: 2/span 2;
     }
@@ -84,13 +86,11 @@ export const PopupWrapper = styled.div`
     
     .home-buttons {
       grid-column: 3/3;
-      //grid-column: 2 / span 2;
       display: flex;
-      //flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 10px;
-      padding: 10px 0 0;
+      padding: 26px 0 0;
     }
     
     .home-details {
@@ -118,10 +118,10 @@ export const Avatar = styled.div`
     border: none;
     border-radius: 1ex;
     cursor: pointer;
-    width: 100%;
-    height: 100%;
+    //width: 100%;
+    height: 180px;
     align-items: center;
-    justify-content: center;
+    //justify-content: center;
     padding: 2px;
     
     label {
@@ -153,5 +153,6 @@ export const Avatar = styled.div`
     display: flex;
     gap: 10px;
     margin: 10px;
+    color: #b5b5c3
   }
 `

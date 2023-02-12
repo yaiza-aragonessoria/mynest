@@ -32,8 +32,7 @@ const Header = () => {
 
     const toggleEditProfile = e => {
       e.preventDefault();
-      if (!authData) navigate('/login')
-      else setInEditUserProfile(!inEditUserProfile)
+      setInEditUserProfile(!inEditUserProfile)
     }
 
 

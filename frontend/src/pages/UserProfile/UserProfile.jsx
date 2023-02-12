@@ -10,6 +10,7 @@ import {faEdit, faTrash, faUpload} from '@fortawesome/free-solid-svg-icons'
 
 
 const EditUserProfile = (props) => {
+  const navigate = useNavigate();
   const userData = useSelector(state => state.userProfile.userProfileSlice);
   const [userHomeDetails, setUserHomeDetails] = useState({});
   const [modifiedUserData, setModifiedUserData] = useState({
@@ -24,7 +25,6 @@ const EditUserProfile = (props) => {
           Authorization: `Bearer ${access}`,
       },
   }
-  const [isEditting, setIsEditting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const getUserHomeDetails = async () => {
@@ -44,11 +44,6 @@ const EditUserProfile = (props) => {
       } )
 
   }, [userData?.home])
-
-  const toggleEdit = e => {
-      e.preventDefault();
-      setIsEditting(!isEditting);
-  }
 
   const handleChange = (e) => {
       console.log("modifiedUserData in handle on change =", modifiedUserData);
@@ -107,9 +102,8 @@ const EditUserProfile = (props) => {
         setErrorMessage(error.message);
     }
 
-    toggleEdit(event);
-    // props.toggleEditProfile(event);
-    // window.location.reload();
+    props.toggleEditProfile(event);
+    window.location.reload();
   }
 
   const makeURL = (src) => {
@@ -122,56 +116,47 @@ const EditUserProfile = (props) => {
   return (
     <PopupBg>
       <PopupWrapper>
-        <h3 className="header">User Profile</h3>
+        <h3 className="header">Edit Profile</h3>
         <form onSubmit={handleSubmit}>
                 <Avatar>
                     {modifiedUserData?.avatar ? <img src={makeURL(modifiedUserData.avatar)}/> : <div className='no-avatar'>{modifiedUserData?.first_name ? modifiedUserData?.first_name[0] : modifiedUserData?.email[0]}</div>}
-                    {isEditting && <div className='buttons-avatar'>
-                                    <label htmlFor="avatar"><FontAwesomeIcon icon={faEdit}/></label>
-                                    <input type="file"
-                                           name="avatar"
-                                           id="avatar"
-                                           onChange={e => handleUploadAvatar(e)}
-                                           accept="image/*"
-                                    />
-                                    <label onClick={e => handleUploadAvatar(e)}> <FontAwesomeIcon icon={faTrash}/></label>
-                                </div> }
+                   <div className='buttons-avatar'>
+                        <label htmlFor="avatar"><FontAwesomeIcon icon={faEdit} /></label>
+                        <input type="file"
+                                name="avatar"
+                                id="avatar"
+                                onChange={e => handleUploadAvatar(e)}
+                                accept="image/*"
+                                />
+                        <label onClick={e => handleUploadAvatar(e)}> <FontAwesomeIcon icon={faTrash} /></label>
+                   </div>
                 </Avatar>
                     <div className='form-field'>
                         <label htmlFor='first_name'>First name</label>
-                        {isEditting ? <input name="first_name" type="text" placeholder="First name"
-                                             value={modifiedUserData.first_name} onChange={handleChange}/> :
-                                        <input value={modifiedUserData?.first_name} disabled/>
-                        }
+                        <input name="first_name" type="text" placeholder="First name" value={modifiedUserData.first_name} onChange={handleChange}/>
                     </div>
                     <div className='form-field'>
                         <label htmlFor='last_name'>Last name</label>
-                        {isEditting ? <input name="last_name" type="text" placeholder="Last name" value={modifiedUserData.last_name} onChange={handleChange}/> :
-                            <input value={modifiedUserData?.last_name} disabled/>
-                        }
+                        <input name="last_name" type="text" placeholder="Last name" value={modifiedUserData.last_name} onChange={handleChange}/>
                     </div>
                 <div className='spanned form-field'>
                     <label htmlFor='email'>Email</label>
-                    {isEditting ? <input name="email" type="email" placeholder="Email" value={modifiedUserData.email} onChange={handleChange}/> :
-                                    <input value={modifiedUserData.email} type="email" disabled/>
-                    }
+                    <input name="email" type="email" placeholder="Email" value={modifiedUserData.email} onChange={handleChange}/>
                 </div>
                 <div className='form-field translated'>
                     <label>Your Nest</label>
-                    {userHomeDetails ? <input value={userHomeDetails.name} disabled /> : <input value={"You haven't joined any Nest"} disabled />}
+                    {userHomeDetails ? <p>{userHomeDetails.name}</p> : <p>You haven't joined any Nest</p>}
                 </div>
                 <div className='home-buttons'>
                 {userHomeDetails ? <> <button className="btn_grey" onClick={e => e.preventDefault()}>Invite</button>
                                       <button className="btn_grey" onClick={e => e.preventDefault()}>Leave</button>
                                    </> :
-                                    <> <button className="btn_grey" onClick={e => e.preventDefault()}>Join</button>
-                                        <button className="btn_grey" onClick={e => e.preventDefault()}>Create</button>
-                                    </>
+                                   <button className="btn_grey" onClick={e => e.preventDefault()}>Join a Nest</button>
 
                 }
                 </div>
                 <Buttons>
-                    {isEditting ? <button className="btn_purple" type="submit">Save</button> : <button className="btn_purple" onClick={e => toggleEdit(e)}>Edit</button>}
+                    <button className="btn_purple" type="submit">Save</button>
                     <button className="btn_purple" onClick={props.toggleEditProfile}>Close</button>
                 </Buttons>
         </form>
