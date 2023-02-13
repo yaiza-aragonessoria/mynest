@@ -1,22 +1,29 @@
 import styled from "styled-components";
 
 export const HomeWrapper = styled.div`
-  justify-content: center;
+  justify-content: flex-start;
+  min-height: var(--maincontainer);
   display: flex;
   flex-direction: column;
   align-items: center;
+
   width: 100%;
 
   background-color: var(--color-orange-light);
+
+  .content_wrapper {
+    width: 80%;
+    margin-bottom: 2rem;
+  }
+
 `;
 
 export const HomeDetails = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   gap: 5rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  padding: 2rem;
 
   background-color: #f8f5ff;
   border-radius: 15px;
@@ -27,6 +34,7 @@ export const HomeDetails = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin: 2rem;
   }
 
   .home_header_container {
@@ -50,6 +58,7 @@ export const HomeDetails = styled.div`
     width: 50%;
     display: flex;
     flex-direction: column;
+    margin: 2rem;
   }
 
   .home-members-icons {
@@ -73,26 +82,55 @@ export const HomeDetails = styled.div`
 `;
 
 export const StickersContainer = styled.div`
-  form.sticker-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 
-    padding: 20px;
-
-    input {
-      width: 40%;
-      padding: 10px;
-      border: 1px solid #b5b5c3;
-      border-radius: 15px;
-      outline: none;
-    }
+  .input_form {
+    width: 100%;
   }
 
-  div.sticker-board {
+  form {
+    width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
   }
+
+  textarea {
+    margin-top: 1rem;
+    width: 90%;
+    height: 4rem;
+    border: none;
+    outline: none;
+
+    background-color: #f9f9f9;
+
+    font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #181C32;
+  font-family: "Inter";
+  resize: none;
+  }
+
+  .add_sticker {
+    margin-bottom: 1rem;
+  }
+
+  .row_1,
+  .row_2,
+  .row_3 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  } 
 `;

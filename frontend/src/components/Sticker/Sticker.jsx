@@ -74,19 +74,26 @@ const Sticker = ({sticker, toggleSticker, deleteSticker}) => {
     //                 <img src={"https://mynest.propulsion-learn.ch" + sticker.author.avatar} />
 
     return (
-        <StickerBox style={{backgroundColor: sticker.pinned ? "#f4bf04" : "white" }}>
+        <StickerBox 
+        style={{backgroundColor: sticker.pinned ? "#ffd84f" : "white" }} >
+            
             <div className="sticker-top">
+                <div className="user_name_icon">
                 <img src={sticker.author.avatar} />
-                <span>{sticker.author.first_name}</span>
-                <div className="space"></div>
-                <button className="btn_purple" onClick={handlePinToggle}>{sticker.pinned ? <AiFillPushpin/> : <AiOutlinePushpin/>}</button>
+                <span className="subheader">{sticker.author.first_name}</span></div>
+
+                <button className="btn_purple" id="pin_btn" onClick={handlePinToggle}>{sticker.pinned ? <AiFillPushpin/> : <AiOutlinePushpin/>}</button>
             </div>
-            <div className="content">
-                <Textfit style={{height: '100%'}} mode="multi">{sticker.content}</Textfit>
+
+            <div className="content text">
+                {/* <Textfit style={{height: '100%'}} mode="multi"> */}
+                    {sticker.content}
+                    {/* </Textfit> */}
             </div>
+
              <div className="sticker-bottom">
-                 <span>{calculateTime(sticker.created)}</span>
-                 <button className="btn_grey" onClick={handleDelete}><MdDeleteForever/></button>
+                 <span className="text">{calculateTime(sticker.created)}</span>
+                 <button className="btn_grey" id="delete_sticker_btn" onClick={handleDelete}><MdDeleteForever/></button>
              </div>
         </StickerBox>
     );

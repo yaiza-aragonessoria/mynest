@@ -115,60 +115,137 @@ const Home = () => {
       {userLoaded ? (
         userData?.home ? (
           <HomeWrapper>
-            <HomeDetails>
-              <div className="home_header">
-                <div className="home_header_container">
-                  <i id="home_house_icon">{<FontAwesomeIcon icon={faHouse} />}</i>
-                  <h1 className="header">{homeName}</h1>
+            <div className="content_wrapper">
+              <HomeDetails>
+                <div className="home_header">
+                  <div className="home_header_container">
+                    <i id="home_house_icon">
+                      {<FontAwesomeIcon icon={faHouse} />}
+                    </i>
+                    <h1 className="header">{homeName}</h1>
+                  </div>
+
+                  <div className="home_header_container home_address">
+                    <i>{<FontAwesomeIcon icon={faMapPin} />}</i>
+                    <p>{homeAddress}</p>
+                  </div>
                 </div>
 
-                <div className="home_header_container home_address">
-                  <i>{<FontAwesomeIcon icon={faMapPin} />}</i>
-                  <p>{homeAddress}</p>
+                <div className="home-members">
+                  <h2 className="subheader">Nest's participants</h2>
+
+                  <div className="home-members-icons">
+                    {homeUsers.map((u) => (
+                      <div className="member" key={u.id}>
+                        <img src={u.avatar} />
+                        <span className="text">{u.first_name}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </HomeDetails>
 
-              <div className="home-members">
-                <h2 className="subheader">Nest's participants</h2>
+              <StickersContainer>
+                <div className="row_1">
+                  <div className="input_form">
+                    <form className="sticker-bar">
+                      <textarea
+                        type="text"
+                        placeholder="Leave a message..."
+                        value={newStickerContent}
+                        onChange={handleNewStickerContentChange}
+                      />
+                      <button
+                        className="btn_purple add_sticker"
+                        type="submit"
+                        onClick={handleCreateNewSticker}
+                      >
+                        Add Sticker
+                      </button>
+                    </form>
+                    <div>{warning}</div>
+                  </div>
 
-                <div className="home-members-icons">
-                  {homeUsers.map((u) => (
-                    <div className="member" key={u.id}>
-                      <img src={u.avatar} />
-                      <span className="text">{u.first_name}</span>
-                    </div>
+
+
+{/* rendering post in two divs depending on its index */}
+                {/* {postData.map((post, index) => {
+                return (index % 2 == 0) && <Post key={post.id} post={post} />;
+                })}
+
+                {postData.map((post, index) => {
+                return (index % 2 != 0) && <Post key={post.id} post={post} />;
+                })} */}
+
+                  {/* RENDERING STICKERS ROW 1 HERE     */}
+
+                  {homeStickers.sort(compareStickers).map((s, id) => {
+                    return (id % 3 === 0) && 
+                    <Sticker
+                      key={s.id}
+                      sticker={s}
+                      toggleSticker={toggleSticker}
+                      deleteSticker={deleteSticker}
+                    />})}
+
+
+                </div>
+
+
+
+                <div className="row_2">
+                  {/* RENDERING STICKERS ROW 2 HERE     */}
+
+                  {/* {homeStickers.sort(compareStickers).map((s) => (
+                    <Sticker
+                      key={s.id}
+                      sticker={s}
+                      toggleSticker={toggleSticker}
+                      deleteSticker={deleteSticker}
+                    />
+                  ))} */}
+                  {homeStickers.sort(compareStickers).map((s, id) => {
+                    return (id % 3 === 1) && 
+                    <Sticker
+                      key={s.id}
+                      sticker={s}
+                      toggleSticker={toggleSticker}
+                      deleteSticker={deleteSticker}
+                    />})}
+                </div>
+
+
+
+                <div className="row_3">
+                  {/* RENDERING STICKERS ROW 3 HERE     */}
+
+                  {homeStickers.sort(compareStickers).map((s, id) => {
+                    return (id % 3 === 2) && 
+                    <Sticker
+                      key={s.id}
+                      sticker={s}
+                      toggleSticker={toggleSticker}
+                      deleteSticker={deleteSticker}
+                    />})}
+
+
+
+                </div>
+
+                
+
+                {/* <div className="sticker-board">
+                  {homeStickers.sort(compareStickers).map((s) => (
+                    <Sticker
+                      key={s.id}
+                      sticker={s}
+                      toggleSticker={toggleSticker}
+                      deleteSticker={deleteSticker}
+                    />
                   ))}
-                </div>
-              </div>
-            </HomeDetails>
-            <StickersContainer>
-              <form className="sticker-bar">
-                <input
-                  type="text"
-                  placeholder="Leave a message..."
-                  value={newStickerContent}
-                  onChange={handleNewStickerContentChange}
-                />
-                <button
-                  className="btn_purple"
-                  type="submit"
-                  onClick={handleCreateNewSticker}
-                >
-                  Add Sticker
-                </button>
-              </form>
-              <div>{warning}</div>
-              <div className="sticker-board">
-                {homeStickers.sort(compareStickers).map((s) => (
-                  <Sticker
-                    key={s.id}
-                    sticker={s}
-                    toggleSticker={toggleSticker}
-                    deleteSticker={deleteSticker}
-                  />
-                ))}
-              </div>
-            </StickersContainer>
+                </div> */}
+              </StickersContainer>
+            </div>
           </HomeWrapper>
         ) : (
           <MustHaveHome />
