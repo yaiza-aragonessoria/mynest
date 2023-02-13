@@ -14,7 +14,7 @@ const Signup = () => {
           <h1 className="header">Sign up</h1>
 
           <form>
-            <input type="email"></input>
+            <input type="email" placeholder="Enter your email"></input>
             <button className="btn_purple">Sign up</button>
           </form>
 
