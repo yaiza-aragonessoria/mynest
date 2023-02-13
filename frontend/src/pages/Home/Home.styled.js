@@ -74,6 +74,7 @@ export const HomeDetails = styled.div`
       width: 60px;
       border-radius: 50%;
       vertical-align: middle;
+      object-fit: cover;
     }
 
     span {
