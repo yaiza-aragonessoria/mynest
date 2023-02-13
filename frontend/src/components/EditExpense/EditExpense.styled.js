@@ -19,7 +19,6 @@ export const ExpensesComponentStyled = styled.section`
 export const PopupWrapper = styled.div`
 
   z-index: 3;
-  height: 50%;
   position: fixed;
   width: 35%;
   background-color: #fff;
@@ -32,15 +31,15 @@ export const PopupWrapper = styled.div`
   padding: 1rem;
   box-shadow: 0 3px 7px rgb(0 0 0 / 0.15);
 
-  form {
+  @media only screen and (min-width: 500px) and (max-width: 1040px) {
     width: 55%;
-
-    button {
-      margin-right: 15px;
-      width: 150px;
-    }
   }
 
+  @media only screen and (max-width: 500px) {
+    form {
+      width: 80%;
+    }
+  }
 `
 
 export const FormFields = styled.div`
@@ -84,10 +83,26 @@ export const FormFields = styled.div`
   }
 `
 
+export const PopupBg = styled.div`
+  width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  position: fixed;
+  background: rgb(248, 245, 255);
+  background: linear-gradient(328deg, rgba(248, 245, 255, 0.6208858543417367) 0%, rgba(114, 57, 234, 0.36318277310924374) 59%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+`
+
 
 export const Buttons = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   padding-top: 25px;
 
 `
