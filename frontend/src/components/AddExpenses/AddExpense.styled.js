@@ -38,6 +38,16 @@ export const PopupWrapper = styled.div`
 
 
   }
+  
+  @media only screen and (min-width: 500px) and (max-width: 1040px) {
+    width: 55%;
+  }
+  
+  @media only screen and (max-width: 500px) {
+    form {
+      width: 80%;
+    }
+  }
 
 `
 

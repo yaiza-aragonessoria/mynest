@@ -3,7 +3,7 @@ import {Column, Wrapper, MainContainer, Buttons} from "./ExpensesComponent.style
 import api from "../../api/myNest";
 import EditExpense from "../EditExpense/EditExpense";
 import {useSelector} from "react-redux";
-import {faXmark} from "@fortawesome/free-solid-svg-icons";
+import {faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const ExpensesComponent = (props) => {
@@ -74,12 +74,25 @@ const ExpensesComponent = (props) => {
                     {/*<span> Payer {props.expenses?.payer?.first_name ? props.expenses.payer.first_name : props.expenses.payer.email} </span>*/}
                     <Column>
                         <Buttons>
-                            <button className="btn_purple" onClick={handleModalEdit}>{showEditModal ?
-                                <FontAwesomeIcon icon={faXmark}/> : <>Edit</>}</button>
+                            {/*<button className="btn_purple" onClick={handleModalEdit}>{showEditModal ?*/}
+                            {/*    <FontAwesomeIcon icon={faXmark}/> : <>Edit</>}</button>*/}
+                             <i
+                                className="delete_item"
+                                onClick={handleModalEdit}
+                            >
+                                {<FontAwesomeIcon icon={faEdit}/>}
+                            </i>
                         </Buttons>
                         <Buttons>
-                            <button className="btn_purple" onClick={handleDelete}>Delete</button>
+                            {/*<button className="btn_purple" onClick={handleDelete}>Delete</button>*/}
+                            <i
+                                className="delete_item"
+                                onClick={handleDelete}
+                            >
+                                {<FontAwesomeIcon icon={faTrash}/>}
+                            </i>
                         </Buttons>
+
                     </Column>
                 </MainContainer>
             </Wrapper>

@@ -30,23 +30,16 @@ export const PopupWrapper = styled.div`
   align-items: center;
   padding: 1rem;
   box-shadow: 0 3px 7px rgb(0 0 0 / 0.15);
-
-  //form {
-  //  width: 55%;
-  //
-  //  button {
-  //    margin-right: 15px;
-  //    width: 150px;
-  //  }
-
-  //  button {
-  //    margin-right: 15px;
-  //    width: 150px;
-  //  }
-  //
-  //
-  //}
-
+  
+   @media only screen and (min-width: 500px) and (max-width: 1040px) {
+    width: 55%;
+  }
+  
+  @media only screen and (max-width: 500px) {
+    form {
+      width: 80%;
+    }
+  }
 `
 
 export const FormFields = styled.div`
