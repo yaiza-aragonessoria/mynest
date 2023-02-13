@@ -36,9 +36,11 @@ export const StickerBox = styled.div`
 
     img {
       width: 2.5rem;
-  height: 2.5rem;
+    height: 2.5rem;
       border-radius: 50%;
       vertical-align: middle;
+      object-fit: cover;
+
     }
 
     span {
