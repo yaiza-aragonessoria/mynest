@@ -6,13 +6,17 @@ export const MainContainer = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
+  background-color: #fff;
+  padding-bottom: 1rem;
 `;
 
 export const Description = styled.div`
 display: flex;
-justify-content: space-between;
-width: 65%;
-margin-left: 9rem;
+justify-content: space-around;
+width: 69%;
+padding-left: 9rem;
+gap: 15rem;
+
 
 h3 {
   font-style: normal;
@@ -28,41 +32,25 @@ h3 {
 
 export const StatusHeader = styled.div`
 position: relative;
-left: 7rem;
+left: 8rem;
+
+`
+export const AssigneeHeader = styled.div`
+position: relative;
+right: 3rem;
 
 `
 export const TopPage = styled.div`
 height: 32vh;
-/* border: 1px solid black; */
-
-
-
-
-/* input {
-    width: 40%;
-    justify-content: center;
-    padding: 10px;
-    border: 1px solid #b5b5c3;
-    border-radius: 15px;
-    justify-content: center;
-    margin-left: 25rem;
-    margin-top: 2rem;
-  }
-
-  input:focus {
-    background-color: #f8f5ff;
-  } */
-
-
 
 `
+
 export const TasksContainer = styled.div`
 display: flex;
 flex-direction: column;
 gap: 15px;
 align-items: center;
 width: 100vw;
-margin-right: 50px;
 
 `
 
@@ -72,7 +60,7 @@ align-items: center;
 width: 100vw;
 height: 7vh;
 margin-top: 1.5rem;
-margin-left: 7.5rem;
+padding-left: 7.5rem;
 
 h1 {
   font-size: 27px;
@@ -93,11 +81,10 @@ h1 {
 
 export const SearchBar = styled.div`
 display: flex;
-/* border: 1px solid black; */
 height: 20vh;
 align-items: center;
-margin-left: 7.5rem;
-width: 100vw;
+padding-left: 7.5rem;
+width: 100%;
 
 input {
     width: 40vw;
@@ -115,7 +102,28 @@ input {
   }
 
 button {
-  /* width: 170px; */
+  background-color: #f4bf04;
+  color: #fff;
+  min-height: 40px;
+  border-radius: 8px;  
+  padding: 7px 25px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  border: none;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.9;
+
+}
+
+button:hover {
+  background-color: #7239EA;
+  color: #fff;
+  border: 1px solid #7239EA;
+  background-image: none;
 }
 
 

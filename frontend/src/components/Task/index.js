@@ -1,14 +1,14 @@
-import { TaskContainer, Buttons, IconStatus, IconEdit, IconDelete } from "./Task.styled";
+import { TaskContainer, Buttons, IconStatus, IconEdit, IconDelete, StatusColor } from "./Task.styled";
 import React, { useState } from "react";
 import api from "../../api/myNest";
 import { useNavigate } from "react-router-dom"
 import EditTask from "../EditTask";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilePen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faFilePen, faTrash, faCheck, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 
 const Task = ({ task, onTaskDelete, onTaskEdit }) => {
-  const[showEdit, setShowEdit] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [currentStatus, setCurrentStatus] = useState(task.status);
   const access = localStorage.getItem("access");
   const config = {
@@ -21,10 +21,10 @@ const Task = ({ task, onTaskDelete, onTaskEdit }) => {
   const handleClick = async () => {
     if (currentStatus === "TD") {
       setCurrentStatus("IP");
-      await api.patch(`/tasks/${task.id}/`,  { status: "IP"}, config);
+      await api.patch(`/tasks/${task.id}/`, { status: "IP" }, config);
     } else if (currentStatus === "IP") {
       setCurrentStatus("DO");
-      await api.patch(`/tasks/${task.id}/`, { status: "DO"}, config);
+      await api.patch(`/tasks/${task.id}/`, { status: "DO" }, config);
     }
   };
 
@@ -49,26 +49,28 @@ const Task = ({ task, onTaskDelete, onTaskEdit }) => {
   }
 
   return (
-    <TaskContainer taskstatus={currentStatus}>
+    <TaskContainer>
       <p>{task.name}</p>
+      <StatusColor taskstatus={currentStatus}>
       <p>{statusLabel[currentStatus]}</p>
-      <p>{task.assignee.first_name} <img src={task.assignee.avatar}/></p>
+      </StatusColor>
+      <p>{task.assignee.first_name} <img src={task.assignee.avatar} /></p>
       <Buttons>
         <IconStatus>
-        {currentStatus !== "DO" && (
-          <button type="submit" onClick={handleClick}>
-            {currentStatus === "TD" ? "START" : "DONE"}
-          </button>
-        )}  
+          {currentStatus !== "DO" && (
+            <i type="submit" onClick={handleClick}>
+              {currentStatus === "TD" ? <FontAwesomeIcon icon={faPlay} /> : <FontAwesomeIcon icon={faCheck} />}
+            </i>
+          )}
         </IconStatus>
         <IconEdit>
-        <i onClick={toggleEdit}>{<FontAwesomeIcon icon={faFilePen}/>}</i>
+          <i onClick={toggleEdit}>{<FontAwesomeIcon icon={faFilePen} />}</i>
         </IconEdit>
         <IconDelete>
-        <i onClick={handleDelete}>{<FontAwesomeIcon icon={faTrash}/>}</i>
+          <i onClick={handleDelete}>{<FontAwesomeIcon icon={faTrash} />}</i>
         </IconDelete>
       </Buttons>
-        {showEdit && <EditTask task={task} toggleEdit={toggleEdit} onTaskEdit={onTaskEdit} /> }
+      {showEdit && <EditTask task={task} toggleEdit={toggleEdit} onTaskEdit={onTaskEdit} />}
     </TaskContainer>
   );
 };

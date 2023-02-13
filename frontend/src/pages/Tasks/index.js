@@ -1,7 +1,7 @@
 import api from "../../api/myNest";
 import React, { useState, useEffect } from "react"
 import Task from "../../components/Task"
-import { MainContainer, TasksContainer, TopPage, Description, Header, StatusHeader, SearchBar } from "./Tasks.styled";
+import { MainContainer, TasksContainer, TopPage, Description, Header, StatusHeader, SearchBar, AssigneeHeader } from "./Tasks.styled";
 import { useNavigate } from "react-router-dom"
 import CreateTask from "../../components/CreateTask";
 import {useDispatch, useSelector} from "react-redux";
@@ -117,7 +117,7 @@ const Tasks = () => {
           <MainContainer>
             <TopPage>
             <Header>
-              <h1>TASK BOARD OF {currentMonth}</h1>
+              <h1>Task Bord of {currentMonth}</h1>
               <button className="btn_purple" onClick={toggleEdit}>+ Add Task</button>
             </Header>
             <SearchBar>
@@ -129,7 +129,7 @@ const Tasks = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </form>
-              <button className="btn_grey" onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
+              <button onClick={() => { searchMode == "month" ? setSearchMode("all") : setSearchMode("month")}}>
                 {searchMode == "month" ? "show all tasks " : "just this month" }
               </button>
             </SearchBar>
@@ -139,7 +139,9 @@ const Tasks = () => {
             <StatusHeader>
               <h3>Status</h3>
             </StatusHeader>
+            <AssigneeHeader>
             <h3>Assignee</h3>
+            </AssigneeHeader>
         </Description>
             <TasksContainer>
               {sortTasks(tasks).map(task => (

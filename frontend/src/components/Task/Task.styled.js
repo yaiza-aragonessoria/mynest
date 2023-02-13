@@ -11,7 +11,14 @@ padding-right: 1rem;
 background-color: #f8f5ff;
 box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
 border-radius: 15px;
-/* background-color: ${props => props.taskstatus === 'DO'? 'green' : 'red'}; */
+
+img {
+      height: 50px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+
+
 
 
 p {
@@ -31,11 +38,16 @@ align-items: center;
 justify-content: flex-end;
 width: 100%;
 height: 100%;
-gap: 7px;
-/* border: 1px solid black; */
-/* position: relative;
-left: 2rem; */
+gap: 20px;
 
+i {
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.4;
+  color: #7E8299;
+  opacity: 0.7;
+
+}
 
 `
 
@@ -59,7 +71,28 @@ button {
   cursor: pointer;
   }
 `
+export const StatusColor = styled.div`
+justify-content: center;
 
+p {
+  border-radius: 8px;
+  background-color: ${props => props.taskstatus === 'TD'? 'rgb(193,165,255)': props.taskstatus ==='IP'? '#B5B5C3' : '#DCFDFD'};
+ 
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 12px;
+  border: 1px dashed grey;
+  padding: 0.7rem;
+  width: 114px;
+  text-align: center;
+
+  
+
+}
+
+`
 
 
 

@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { CreateTaskPage, FormField, PopPage } from './CreateTask.styled';
+import { CreateTaskPage, FormField, PopPage, Buttons } from './CreateTask.styled';
 
 
-const CreateTask = ({toggleEdit, onCreateTask}) => {
+const CreateTask = ({ toggleEdit, onCreateTask }) => {
   const access = localStorage.getItem("access");
   const config = {
     method: "POST",
@@ -39,41 +39,44 @@ const CreateTask = ({toggleEdit, onCreateTask}) => {
   }
   return (
     <PopPage>
-    <CreateTaskPage>
-      <form onSubmit={handleSubmit}>
-        <FormField>
-          <label for=''>Task name</label>
-          <input
-            type="text"
-            name="name"
-            value={task.name}
-            onChange={handleChange}
-          />
-        </FormField>
-        <FormField>
-          <label for=''>Frequency</label>
-          <input
-            type="text"
-            name="frequency"
-            value={task.frequency}
-            onChange={handleChange}
-          />
-        </FormField>
-        <FormField>
-          <label for=''>Planned for</label>
-          <input
-            type="date"
-            name="planned_for"
-            value={task.planned_for}
-            onChange={handleChange}
-          />
-        </FormField>
-        <button type="submit">Create Task</button>
-      </form>
-      <button onClick={toggleEdit} >Cancel</button>
-    </CreateTaskPage>
+      <CreateTaskPage>
+        <h3 className="header">Add Task</h3>
+        <form onSubmit={handleSubmit}>
+          <FormField>
+            <label for=''>Task name</label>
+            <input
+              type="text"
+              name="name"
+              value={task.name}
+              onChange={handleChange}
+            />
+          </FormField>
+          <FormField>
+            <label for=''>Frequency</label>
+            <input
+              type="text"
+              name="frequency"
+              value={task.frequency}
+              onChange={handleChange}
+            />
+          </FormField>
+          <FormField>
+            <label for=''>Planned for</label>
+            <input
+              type="date"
+              name="planned_for"
+              value={task.planned_for}
+              onChange={handleChange}
+            />
+          </FormField>
+          <Buttons>
+            <button className="btn_purple" type="submit">Create</button>
+            <button className="btn_purple" onClick={toggleEdit} >Cancel</button>
+          </Buttons>
+        </form>
+      </CreateTaskPage>
     </PopPage>
-    
+
   );
 };
 
