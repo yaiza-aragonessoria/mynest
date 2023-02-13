@@ -146,7 +146,7 @@ const Home = () => {
               </HomeDetails>
 
               <StickersContainer>
-                <div className="row_1">
+                <div className="column_1">
                   <div className="input_form">
                     <form className="sticker-bar">
                       <textarea
@@ -166,34 +166,24 @@ const Home = () => {
                     <div>{warning}</div>
                   </div>
 
-
-
-{/* rendering post in two divs depending on its index */}
-                {/* {postData.map((post, index) => {
-                return (index % 2 == 0) && <Post key={post.id} post={post} />;
-                })}
-
-                {postData.map((post, index) => {
-                return (index % 2 != 0) && <Post key={post.id} post={post} />;
-                })} */}
-
                   {/* RENDERING STICKERS ROW 1 HERE     */}
 
-                  {homeStickers.sort(compareStickers).map((s, id) => {
-                    return (id % 3 === 0) && 
-                    <Sticker
-                      key={s.id}
-                      sticker={s}
-                      toggleSticker={toggleSticker}
-                      deleteSticker={deleteSticker}
-                    />})}
-
-
+                  {homeStickers
+                    .filter((s, id) => id % 3 === 0)
+                    .sort(compareStickers)
+                    .map((s, id) => {
+                      return (
+                        <Sticker
+                          key={s.id}
+                          sticker={s}
+                          toggleSticker={toggleSticker}
+                          deleteSticker={deleteSticker}
+                        />
+                      );
+                    })}
                 </div>
 
-
-
-                <div className="row_2">
+                <div className="column_2">
                   {/* RENDERING STICKERS ROW 2 HERE     */}
 
                   {/* {homeStickers.sort(compareStickers).map((s) => (
@@ -204,35 +194,38 @@ const Home = () => {
                       deleteSticker={deleteSticker}
                     />
                   ))} */}
-                  {homeStickers.sort(compareStickers).map((s, id) => {
-                    return (id % 3 === 1) && 
-                    <Sticker
-                      key={s.id}
-                      sticker={s}
-                      toggleSticker={toggleSticker}
-                      deleteSticker={deleteSticker}
-                    />})}
+                   {homeStickers
+                    .filter((s, id) => id % 3 === 1)
+                    .sort(compareStickers)
+                    .map((s, id) => {
+                      return (
+                        <Sticker
+                          key={s.id}
+                          sticker={s}
+                          toggleSticker={toggleSticker}
+                          deleteSticker={deleteSticker}
+                        />
+                      );
+                    })}
                 </div>
 
-
-
-                <div className="row_3">
+                <div className="column_3">
                   {/* RENDERING STICKERS ROW 3 HERE     */}
 
-                  {homeStickers.sort(compareStickers).map((s, id) => {
-                    return (id % 3 === 2) && 
-                    <Sticker
-                      key={s.id}
-                      sticker={s}
-                      toggleSticker={toggleSticker}
-                      deleteSticker={deleteSticker}
-                    />})}
-
-
-
+                  {homeStickers
+                    .filter((s, id) => id % 3 === 2)
+                    .sort(compareStickers)
+                    .map((s, id) => {
+                      return (
+                        <Sticker
+                          key={s.id}
+                          sticker={s}
+                          toggleSticker={toggleSticker}
+                          deleteSticker={deleteSticker}
+                        />
+                      );
+                    })}
                 </div>
-
-                
 
                 {/* <div className="sticker-board">
                   {homeStickers.sort(compareStickers).map((s) => (

@@ -30,11 +30,12 @@ export const HomeDetails = styled.div`
   box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
 
   .home_header {
-    width: 50%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin: 2rem;
+
   }
 
   .home_header_container {
@@ -55,7 +56,7 @@ export const HomeDetails = styled.div`
   }
 
   .home-members {
-    width: 50%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     margin: 2rem;
@@ -125,9 +126,9 @@ export const StickersContainer = styled.div`
     margin-bottom: 1rem;
   }
 
-  .row_1,
-  .row_2,
-  .row_3 {
+  .column_1,
+  .column_2,
+  .column_3 {
     width: 100%;
     display: flex;
     flex-direction: column;
