@@ -4,10 +4,16 @@ import {fetchExpenses} from "../../features/slices/expensesSlice";
 import ExpensesComponent from "../../components/Expenses/ExpensesComponent";
 import AddExpenses from "../../components/AddExpenses/AddExpenses";
 import {fetchUser} from '../../features/slices/userSlice'
-import {Parent, Wrapper, Vjosa, MainContainer, Nina, Julia, Sara, Nila, Risa} from "./Expenses.styled";
+import {
+    Parent,
+    Wrapper,
+    MainContainer,
+    Buttons,
+    SearchBar,
+    ExpensesContainer, ExpensesList, ExpensesHeader, ComponentWrapper
+} from "./Expenses.styled";
 import api from "../../api/myNest";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
-import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import {useNavigate} from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
 import {Column,} from "../../components/Expenses/ExpensesComponent.styled";
@@ -23,7 +29,6 @@ const Expenses = () => {
     const [showModal, setShowModal] = useState(false)
     const [showEditModal, setEditModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-    const [hasUserHome, setHasUserHome] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
     const headers = {
@@ -33,23 +38,6 @@ const Expenses = () => {
         },
     }
 
-    const config = {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${access}`,
-        },
-        params: {q: searchTerm}
-    };
-
-    const fetchAllTasks = async () => {
-        try {
-            const response = await api.get(`expenses/home/`, config);
-            setExpenses(response.data);
-            console.log("Vjosa", expenses);
-        } catch (error) {
-            console.log(error.response);
-        }
-    };
 
     const handleEdit = (event) => {
         setEditModal(!showEditModal);
@@ -76,11 +64,10 @@ const Expenses = () => {
     }, []);
 
     useEffect(() => {
-        fetchAllTasks();
+        dispatch(fetchExpenses(searchTerm))
     }, [searchTerm]);
 
     useEffect(() => {
-        dispatch(fetchExpenses())
         dispatch(fetchUser())
     }, [showModal])
 
@@ -98,11 +85,10 @@ const Expenses = () => {
         <>
             {userLoaded ? userData?.home ?
                 <>
-
                     <Wrapper>
-                        <Vjosa>
+                        <ComponentWrapper>
                             <Parent>
-                                <Nila>
+                                <SearchBar>
                                     <h3 className="header">Shared Expenses</h3>
                                     <form>
                                         <input
@@ -113,53 +99,51 @@ const Expenses = () => {
                                             onChange={handleSearch}
                                         />
                                     </form>
-                                </Nila>
-                                <Risa>
+                                </SearchBar>
+                                <Buttons>
                                     <button className='btn_purple' onClick={handleOpenModal}>Add Expense</button>
 
                                     {showModal && <AddExpenses/>}
                                     <button className='btn_purple' onClick={handleSettleUp}>Settle up</button>
-                                </Risa>
+                                </Buttons>
                             </Parent>
                             <MainContainer>
-                                <Sara>
-                                <Nina>
-                                    <Column>
-                                        <span>Date</span>
-                                    </Column>
-                                    <Column>
-                                        <span>Category</span>
-                                    </Column>
-                                    <Column>
-                                        <span>Expense name</span>
-                                    </Column>
-                                    <Column>
-                                        <span> Amount</span>
-                                    </Column>
-                                    <Column>
-                                        <span> Payer </span>
-                                    </Column>
-                                    {/*<span> Payer {props.expenses?.payer?.first_name ? props.expenses.payer.first_name : props.expenses.payer.email} </span>*/}
-                                    <Column></Column>
-                                </Nina>
+                                <ExpensesContainer>
+                                    <ExpensesHeader>
+                                        <Column>
+                                            <span>Date</span>
+                                        </Column>
+                                        <Column>
+                                            <span>Category</span>
+                                        </Column>
+                                        <Column>
+                                            <span>Expense name</span>
+                                        </Column>
+                                        <Column>
+                                            <span> Amount</span>
+                                        </Column>
+                                        <Column>
+                                            <span> Payer </span>
+                                        </Column>
+                                        <Column></Column>
+                                    </ExpensesHeader>
 
-                                <Julia>
-                                {expensesData?.map((expense) => {
-                                    return (
-                                        <>
-                                            {<ExpensesComponent key={expense?.id} expenses={expense}
-                                                                name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
-                                                                onEdit={handleEdit}
-                                                                onExpenseDelete={handleExpenseDelete}/>}
-
-                                        </>
-                                    )
-                                })
-                                }
-                                </Julia>
-                                </Sara>
+                                    <ExpensesList>
+                                        {expensesData?.map((expense) => {
+                                            return (
+                                                <>
+                                                    {<ExpensesComponent key={expense?.id} expenses={expense}
+                                                                        name_payer={userData.id === expense.payer.id ? "You" : expense.payer.first_name}
+                                                                        onEdit={handleEdit}
+                                                                        onExpenseDelete={handleExpenseDelete}/>}
+                                                </>
+                                            )
+                                        })
+                                        }
+                                    </ExpensesList>
+                                </ExpensesContainer>
                             </MainContainer>
-                        </Vjosa>
+                        </ComponentWrapper>
                     </Wrapper>
                 </>
                 : <MustHaveHome/> : <Loading/>

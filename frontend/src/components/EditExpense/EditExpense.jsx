@@ -1,7 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {categories} from "../../constants/categories";
 import api from "../../api/myNest";
-import {ExpensesComponentStyled, PopupWrapper, PopupBg, FormFields, Buttons, SharedCheckbox} from "./EditExpense.styled";
+import {
+    ExpensesComponentStyled,
+    PopupWrapper,
+    PopupBg,
+    FormFields,
+    Buttons,
+    SharedCheckbox
+} from "./EditExpense.styled";
 
 
 const EditExpense = (props) => {

@@ -4,12 +4,13 @@ import axios from "axios";
 
 export const fetchExpenses = createAsyncThunk(
     "fetchExpenses",
-    async () => {
+    async (searchTerm) => {
         const access = localStorage.getItem('access')
         const config = {
             headers: {
                 'Authorization': `Bearer ${access}`,
-            }
+            },
+             params: {search: searchTerm}
         }
 
         try {

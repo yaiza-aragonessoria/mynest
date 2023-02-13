@@ -15,7 +15,6 @@ export const ExpensesComponentStyled = styled.section`
 
 export const PopupWrapper = styled.div`
   z-index: 3;
-  //height: 50%;
   position: fixed;
   width: 35%;
   background-color: #fff;
@@ -100,8 +99,7 @@ export const PopupBg = styled.div`
   left: 0;
   z-index: 3;
   position: fixed;
-  //background: rgb(248,245,255);
-  background: red;
+  background: rgb(248, 245, 255);
   background: linear-gradient(328deg, rgba(248, 245, 255, 0.6208858543417367) 0%, rgba(114, 57, 234, 0.36318277310924374) 59%);
   display: flex;
   justify-content: center;
