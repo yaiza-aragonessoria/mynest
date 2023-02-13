@@ -30,16 +30,12 @@ const Header = () => {
       navigate("/login")
     };
 
-    const toggleEditProfile = e => {
-      e.preventDefault();
-      if (!authData) navigate('/login')
-      else setInEditUserProfile(!inEditUserProfile)
-    }
+
 
 
   return (
     <>
-      {inEditUserProfile && <EditUserProfile toggleEditProfile={toggleEditProfile}/>}
+      {/*{inEditUserProfile && <EditUserProfile toggleEditProfile={toggleEditProfile}/>}*/}
           <NavBar>
         <div id="logo">
           <NavLink to="/">
@@ -60,11 +56,10 @@ const Header = () => {
           <NavLink id="calendar"
                    to="/calendar">Calendar</NavLink>
 
-          {/*<NavLink id="profile"*/}
-          {/*to="/profile">Profile</NavLink>*/}
+          <NavLink id="user-profile" to="/user-profile">Profile</NavLink>
 
-          <NavLink id="profile" to=""
-                   onClick={e => toggleEditProfile(e)}>Profile</NavLink>
+          {/*<NavLink id="profile" to=""*/}
+          {/*         onClick={e => toggleEditProfile(e)}>Profile</NavLink>*/}
         </Links>
 
         <SigninSignup>

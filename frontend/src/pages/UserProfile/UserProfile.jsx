@@ -1,17 +1,22 @@
-import { useNavigate } from "react-router-dom";
-import {Avatar, PopupBg, PopupWrapper, Buttons} from "./EditUserProfile.styles";
+import {Avatar, Wrapper, Buttons} from "./UserProfile.styles";
 import React, {useEffect, useState} from "react";
-import axios from "axios";
-import {setAuth} from "../../features/slices/authSlice";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import api from "../../api/myNest";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEdit, faTrash, faUpload} from '@fortawesome/free-solid-svg-icons'
+import {faEdit, faTrash, faCheck, faXmark} from '@fortawesome/free-solid-svg-icons'
+import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
+import Loading from "../../components/Loading/Loading";
+import {fetchUser} from "../../features/slices/userSlice";
+import {useNavigate} from "react-router-dom";
 
 
-const EditUserProfile = (props) => {
+const UserProfile = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userData = useSelector(state => state.userProfile.userProfileSlice);
+  const userLoaded = useSelector(state => state.userProfile.loaded);
+  console.log("userData ", userData)
+  console.log("userLoaded ", userLoaded)
   const [userHomeDetails, setUserHomeDetails] = useState({});
   const [modifiedUserData, setModifiedUserData] = useState({
       first_name: userData?.first_name,
@@ -19,12 +24,15 @@ const EditUserProfile = (props) => {
       avatar: userData?.avatar,
       email: userData?.email,
   });
+  console.log("modifiedUserData ", modifiedUserData)
+
   const access = localStorage.getItem("access");
   const headers = {
       headers: {
           Authorization: `Bearer ${access}`,
       },
   }
+  const [isEditting, setIsEditting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const getUserHomeDetails = async () => {
@@ -36,14 +44,40 @@ const EditUserProfile = (props) => {
     }
   }
 
+    useEffect(() => {
+        if (!access) navigate("/login");
+
+        dispatch(fetchUser());
+        console.log("fetched sent")
+
+        setModifiedUserData({
+            first_name: userData?.first_name,
+            last_name: userData?.last_name,
+            avatar: userData?.avatar,
+            email: userData?.email,
+          });
+    }, []);
+
   useEffect( () => {
       /*Getting user's home details*/
       getUserHomeDetails().then(dataResponse => {
           setUserHomeDetails(dataResponse);
-          console.log(userHomeDetails);
+          console.log("userHomeDetails =", userHomeDetails);
       } )
 
   }, [userData?.home])
+
+  const toggleEdit = e => {
+      e.preventDefault();
+      if(isEditting === false) setModifiedUserData({
+                                  first_name: userData?.first_name,
+                                  last_name: userData?.last_name,
+                                  avatar: userData?.avatar,
+                                  email: userData?.email,
+                              });
+      setIsEditting(!isEditting);
+
+  }
 
   const handleChange = (e) => {
       console.log("modifiedUserData in handle on change =", modifiedUserData);
@@ -57,6 +91,7 @@ const EditUserProfile = (props) => {
     console.log("e.target.files !== undefined =", e.target.files !== undefined);
 
     if (e.target.files !== undefined) {
+        console.log("true")
 
         console.log("modifiedUserData  in handle avatar=", modifiedUserData);
         setModifiedUserData(prevValue => {
@@ -65,13 +100,21 @@ const EditUserProfile = (props) => {
                 [e.target.name]: e.target.files[0],
             };
         });
+        console.log("modifiedUserData ", modifiedUserData)
+
     } else {
+        console.log("false")
+        console.log("modifiedUserData ", modifiedUserData)
+
         setModifiedUserData(prevValue => {
             return {
                 ...prevValue,
                 avatar: undefined,
             };
         });
+
+      console.log("modifiedUserData ", modifiedUserData)
+
     }
     console.log("modifiedUserData  in handle avatar=", modifiedUserData);
     }
@@ -88,8 +131,12 @@ const EditUserProfile = (props) => {
 
     for (const userField in modifiedUserData) {
         /*We change the undefined value of the avatar to a null value because of backend*/
-        if (userField === 'avatar' && modifiedUserData[userField] === undefined || modifiedUserData[userField] === null) formData.append('avatar', '')
-        else formData.append(userField, modifiedUserData[userField]);
+        // if (userField === 'avatar' && modifiedUserData[userField] === undefined || modifiedUserData[userField] === null) formData.append('avatar', '')
+        console.log("typeof modifiedUserData[userField] === 'File'", modifiedUserData[userField] instanceof File)
+        if (userField === 'avatar' && !(modifiedUserData[userField] instanceof File)) {
+            if (modifiedUserData[userField] === undefined || modifiedUserData[userField] === null) formData.append('avatar', '');
+            else continue;
+        } else formData.append(userField, modifiedUserData[userField]);
     }
 
     console.log("formData =", Object.fromEntries(formData))
@@ -102,7 +149,8 @@ const EditUserProfile = (props) => {
         setErrorMessage(error.message);
     }
 
-    props.toggleEditProfile(event);
+    toggleEdit(event);
+    // toggleEditProfile(event);
     window.location.reload();
   }
 
@@ -114,56 +162,76 @@ const EditUserProfile = (props) => {
 
 
   return (
-    <PopupBg>
-      <PopupWrapper>
-        <h3 className="header">Edit Profile</h3>
-        <form onSubmit={handleSubmit}>
+      <>
+          {userLoaded? userData?.home ?
+              <Wrapper>
+                <form onSubmit={handleSubmit}>
+                    <h3 className="header">User Profile</h3>
+                    {isEditting ?
+                        <div className='save-edit-cancel'>
+                            <button className='icon-button' onClick={e => toggleEdit(e)} htmlFor="avatar"><FontAwesomeIcon icon={faXmark}/></button>
+                            <button className='icon-button' type="submit" htmlFor="avatar"><FontAwesomeIcon icon={faCheck}/></button>
+                        </div>
+                         : <button className='icon-button' onClick={e => toggleEdit(e)} htmlFor="avatar"><FontAwesomeIcon icon={faEdit}/></button>}
                 <Avatar>
-                    {modifiedUserData?.avatar ? <img src={makeURL(modifiedUserData.avatar)}/> : <div className='no-avatar'>{modifiedUserData?.first_name ? modifiedUserData?.first_name[0] : modifiedUserData?.email[0]}</div>}
-                   <div className='buttons-avatar'>
-                        <label htmlFor="avatar"><FontAwesomeIcon icon={faEdit} /></label>
-                        <input type="file"
-                                name="avatar"
-                                id="avatar"
-                                onChange={e => handleUploadAvatar(e)}
-                                accept="image/*"
-                                />
-                        <label onClick={e => handleUploadAvatar(e)}> <FontAwesomeIcon icon={faTrash} /></label>
-                   </div>
+                    {isEditting ? (modifiedUserData.avatar ? <img src={makeURL(modifiedUserData.avatar)}/> :
+                                                            <div className='no-avatar'>{modifiedUserData?.first_name ? modifiedUserData?.first_name[0] : modifiedUserData?.email[0]}</div>) :
+                                  (userData.avatar ? <img src={makeURL(userData.avatar)}/> :
+                                                            <div className='no-avatar'>{userData?.first_name ? userData?.first_name[0] : userData?.email[0]}</div>)}
+
+                    {isEditting && <div className='buttons-avatar'>
+                                    <label htmlFor="avatar"><FontAwesomeIcon icon={faEdit}/></label>
+                                    <input type="file"
+                                           name="avatar"
+                                           id="avatar"
+                                           onChange={e => handleUploadAvatar(e)}
+                                           accept="image/*"
+                                    />
+                                    <label onClick={e => handleUploadAvatar(e)}> <FontAwesomeIcon icon={faTrash}/></label>
+                                </div> }
                 </Avatar>
                     <div className='form-field'>
                         <label htmlFor='first_name'>First name</label>
-                        <input name="first_name" type="text" placeholder="First name" value={modifiedUserData.first_name} onChange={handleChange}/>
+                        {isEditting ? <input name="first_name" type="text" placeholder="First name"
+                                             value={modifiedUserData.first_name} onChange={handleChange}/> :
+                                        <input value={userData?.first_name} disabled/>
+                        }
                     </div>
                     <div className='form-field'>
                         <label htmlFor='last_name'>Last name</label>
-                        <input name="last_name" type="text" placeholder="Last name" value={modifiedUserData.last_name} onChange={handleChange}/>
+                        {isEditting ? <input name="last_name" type="text" placeholder="Last name" value={modifiedUserData.last_name} onChange={handleChange}/> :
+                            <input value={userData?.last_name} disabled/>
+                        }
                     </div>
                 <div className='spanned form-field'>
                     <label htmlFor='email'>Email</label>
-                    <input name="email" type="email" placeholder="Email" value={modifiedUserData.email} onChange={handleChange}/>
+                    {isEditting ? <input name="email" type="email" placeholder="Email" value={modifiedUserData.email} onChange={handleChange}/> :
+                                    <input value={userData.email} type="email" disabled/>
+                    }
                 </div>
                 <div className='form-field translated'>
                     <label>Your Nest</label>
-                    {userHomeDetails ? <p>{userHomeDetails.name}</p> : <p>You haven't joined any Nest</p>}
+                    {userHomeDetails ? <input value={userHomeDetails.name} disabled /> : <input value={"You haven't joined any Nest"} disabled />}
                 </div>
                 <div className='home-buttons'>
                 {userHomeDetails ? <> <button className="btn_grey" onClick={e => e.preventDefault()}>Invite</button>
                                       <button className="btn_grey" onClick={e => e.preventDefault()}>Leave</button>
                                    </> :
-                                   <button className="btn_grey" onClick={e => e.preventDefault()}>Join a Nest</button>
+                                    <> <button className="btn_grey" onClick={e => e.preventDefault()}>Join</button>
+                                        <button className="btn_grey" onClick={e => e.preventDefault()}>Create</button>
+                                    </>
 
                 }
                 </div>
-                <Buttons>
-                    <button className="btn_purple" type="submit">Save</button>
-                    <button className="btn_purple" onClick={props.toggleEditProfile}>Close</button>
-                </Buttons>
-        </form>
-        </PopupWrapper>
-    </PopupBg>
+                {/*<Buttons>*/}
+                {/*    {isEditting && <button className="btn_purple" type="submit">Save</button>}*/}
+                {/*</Buttons>*/}
+                </form>
+              </Wrapper>
+              : <MustHaveHome/> : <Loading/>
+            }
+        </>
+    );
+};
 
-  );
-}
-
-export default EditUserProfile
+export default UserProfile
