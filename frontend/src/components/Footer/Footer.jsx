@@ -7,7 +7,7 @@ import { FooterLayout } from './Footer.styled'
 const Footer = () => {
   return (
     <FooterLayout className='text'>
-        <div>2023, All rights reserved.</div>
+        <div className='footer_content'>2023, All rights reserved.</div>
         <div>Made with <i>{<FontAwesomeIcon icon={faHeart} />}</i> by MyNest team.</div>
     </FooterLayout>
   )
