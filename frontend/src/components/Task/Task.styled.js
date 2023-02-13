@@ -1,45 +1,98 @@
 import styled from "styled-components";
 
 export const TaskContainer = styled.div`
-display: flex;
-justify-content: space-around;
-width: 80%;
+display: grid;
+height: 10vh;
 align-items: center;
-height: 100px;
-margin-right: 35px;
+grid-template-columns: 2fr 1fr 1fr 7rem;
+width: 80%;
+padding-left: 2rem;
+padding-right: 1rem;
 background-color: #f8f5ff;
-border-radius: 15px;
-gap: 14rem;
-padding: 0 10px 0 10px;
 box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
+border-radius: 15px;
+
+img {
+      height: 50px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+
+
 
 
 p {
   font-style: normal;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 20px;
   color: #181C32;
 }
 
 `
 
-export const Button = styled.div`
+export const Buttons = styled.div`
+
 display: flex;
-flex-direction: column;
-justify-content: space-around;
-width: 60px;
-height: 20px;
-color: white;
-border: none;
-cursor: pointer;
-gap: 15px;
-        
-       
-       
-       
+align-items: center;
+justify-content: flex-end;
+width: 100%;
+height: 100%;
+gap: 20px;
+
+i {
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.4;
+  color: #7E8299;
+  opacity: 0.7;
+
+}
+
 `
 
+export const IconStatus = styled.div`
+button {
+  border: none;
+  cursor: pointer;
+  }
+`
+
+export const IconEdit = styled.div`
+button {
+  border: none;
+  cursor: pointer;
+  }
+`
+
+export const IconDelete = styled.div`
+button {
+  border: none;
+  cursor: pointer;
+  }
+`
+export const StatusColor = styled.div`
+justify-content: center;
+
+p {
+  border-radius: 8px;
+  background-color: ${props => props.taskstatus === 'TD'? 'rgb(193,165,255)': props.taskstatus ==='IP'? '#B5B5C3' : '#DCFDFD'};
+ 
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 12px;
+  border: 1px dashed grey;
+  padding: 0.7rem;
+  width: 114px;
+  text-align: center;
+
+  
+
+}
+
+`
 
 
 

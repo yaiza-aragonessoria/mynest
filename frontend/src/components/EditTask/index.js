@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect } from "react"
-import { EditTaskPage, FormField, PopUp } from './EditTask.styled';
+import { EditTaskPage, FormField, PopUp, Buttons } from './EditTask.styled';
 
-const EditTask = ({task, toggleEdit, onTaskEdit}) => {
+const EditTask = ({ task, toggleEdit, onTaskEdit }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [homeMembers, setHomeMembers] = useState([]);
     const access = localStorage.getItem("access");
@@ -29,7 +29,7 @@ const EditTask = ({task, toggleEdit, onTaskEdit}) => {
     }
 
     console.log(chore);
-   
+
     const handleSubmit = event => {
         event.preventDefault();
         let data = {
@@ -55,12 +55,12 @@ const EditTask = ({task, toggleEdit, onTaskEdit}) => {
         setChore({ ...chore, [event.target.name]: value });
     };
     return (
-        <>
-            <PopUp>
+        <PopUp>
             <EditTaskPage>
+                <h3 className="header">Edit Task</h3>
                 <form onSubmit={handleSubmit}>
                     <FormField>
-                        <label htmlFor=''>Task name</label>
+                        <label for=''>Task name</label>
                         <input
                             type="text"
                             name="name"
@@ -69,18 +69,19 @@ const EditTask = ({task, toggleEdit, onTaskEdit}) => {
                         />
                     </FormField>
                     <FormField>
-                    <label htmlFor=''>Assignee </label>
-                    <select onChange={handleChange}
+                        <label for=''>Assignee</label>
+                        <select onChange={handleChange}
                             name={'assignee'}>
-                        <option value="" className={'select-option'}>Select a value...</option>
-                        {homeMembers.map((member) => (
-                            <option key={member.id} value={member.id}>{member.first_name}</option>
-                        ))}
-                    </select>
+                            <option value="" className={'select-option'}>Select a value...</option>
+                            {homeMembers.map((member) => (
+                                <option key={member.id} value={member.id}>{member.first_name}</option>
+                            ))}
+                        </select>
+
 
                     </FormField>
                     <FormField>
-                        <label htmlFor=''>Planned for</label>
+                        <label for=''>Planned for</label>
                         <input
                             type="date"
                             name="planned_for"
@@ -89,12 +90,13 @@ const EditTask = ({task, toggleEdit, onTaskEdit}) => {
                         />
                     </FormField>
                     <div>{errorMessage}</div>
-                    <button type="submit">Save Task</button>
+                    <Buttons>
+                        <button className="btn_purple" type="submit">Save</button>
+                        <button className="btn_purple" onClick={toggleEdit} >Cancel</button>
+                    </Buttons>
                 </form>
-                <button onClick={toggleEdit} >Cancel</button>
             </EditTaskPage>
-            </PopUp>
-        </>
+        </PopUp>
     );
 };
 
