@@ -12,6 +12,7 @@ import Tasks from './pages/Tasks';
 import EditTask from './components/EditTask'
 import Expenses from './pages/Expenses/Expenses';
 import Footer from './components/Footer/Footer';
+import Signup from './pages/Signup/Signup';
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/editshoppinglist" element={<FavouriteItems_popup/>}/>
                 <Route path="/calendar" element={<Calendar/>}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/sign-up" element={<Signup/>}/>
                 <Route path="/to-do" element={<Tasks/>}/>
                 <Route path="/add-task" element={<CreateTask/>}/>
                 <Route path="/edit-task" element={<EditTask/>}/>
