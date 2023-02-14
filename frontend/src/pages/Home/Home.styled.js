@@ -1,29 +1,30 @@
 import styled from "styled-components";
 
 export const HomeWrapper = styled.div`
-  justify-content: flex-start;
   min-height: var(--maincontainer);
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  justify-content: flex-start;
+  
   width: 100%;
-
   background-color: var(--color-orange-light);
 
   .content_wrapper {
-    width: 80%;
-    margin-bottom: 2rem;
-  }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
 
+    width: 80%;
+    margin: 1rem 0;
+  }
 `;
 
 export const HomeDetails = styled.div`
   width: 100%;
   display: flex;
-  gap: 5rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
 
   background-color: #f8f5ff;
   border-radius: 15px;
@@ -34,8 +35,7 @@ export const HomeDetails = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 2rem;
-
+    margin: 1rem 2rem 1.5rem 3rem;
   }
 
   .home_header_container {
@@ -59,7 +59,7 @@ export const HomeDetails = styled.div`
     width: 70%;
     display: flex;
     flex-direction: column;
-    margin: 2rem;
+    margin: 1rem 2rem 1.5rem 2rem;
   }
 
   .home-members-icons {
@@ -82,12 +82,8 @@ export const HomeDetails = styled.div`
     }
   }
 `;
-
-export const StickersContainer = styled.div`
+export const StickerBar = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
 
   .input_form {
     width: 100%;
@@ -96,7 +92,7 @@ export const StickersContainer = styled.div`
   form {
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
     align-items: center;
     justify-content: space-between;
@@ -104,35 +100,51 @@ export const StickersContainer = styled.div`
     border-radius: 15px;
     box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
   }
-
+  
   textarea {
-    margin-top: 1rem;
-    width: 90%;
-    height: 4rem;
+    margin: 0.5rem 1rem;
+    flex: 1;
+    height: 2.5rem;
     border: none;
     outline: none;
 
     background-color: #f9f9f9;
 
     font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: #181C32;
-  font-family: "Inter";
-  resize: none;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #181C32;
+    font-family: "Inter";
+    resize: none;
   }
 
   .add_sticker {
-    margin-bottom: 1rem;
+    margin: 1rem;
+  }
+`;
+
+export const StickersContainer = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // 5
+  grid-template-rows: repeat(1, 1fr);
+  grid-gap: 1rem;
+  grid-auto-flow: row;
+  
+  .small {
+    grid-row: span 1;
+    grid-column: span 1;
   }
 
-  .column_1,
-  .column_2,
-  .column_3 {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  } 
+  .medium {
+    grid-row: span 2;
+    grid-column: span 1; // 2
+  }
+
+  .large {
+    grid-row: span 3;
+    grid-column: span 1; // 2
+  }
+
 `;
