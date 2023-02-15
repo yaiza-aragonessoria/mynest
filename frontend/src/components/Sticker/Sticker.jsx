@@ -43,13 +43,29 @@ const Sticker = ({sticker, toggleSticker, deleteSticker}) => {
 
         let s = ""
         if (months > 0) {
-            s += months + " months "
+            if (months > 1) {
+                s += months + " months "
+            } else {
+                s += "1 month "
+            }
         } else if (days > 0) {
-            s += days + " days "
+            if (days > 1) {
+                s += days + " days "
+            } else {
+                s += "1 day "
+            }
         } else if (hours > 0) {
-            s += hours + " hours "
+            if (hours > 1) {
+                s += hours + " hours "
+            } else {
+                s += "1 hour "
+            }
         } else if (minutes > 0) {
-            s += minutes + " minutes "
+            if (minutes > 1) {
+                s += minutes + " minutes "
+            } else {
+                s += "1 minute "
+            }
         }
         s += "ago"
 
@@ -71,15 +87,26 @@ const Sticker = ({sticker, toggleSticker, deleteSticker}) => {
             });
     }
 
-    //                 <img src={"https://mynest.propulsion-learn.ch" + sticker.author.avatar} />
+    let size = "small";
+    if (sticker.content.length > 200) {
+        size = "medium";
+     }
+    if (sticker.content.length > 400) {
+        size = "large";
+    }
+    if (sticker.content.length > 600) {
+        size = "xlarge";
+    }
+    if (sticker.content.length > 800) {
+        size = "xxlarge";
+    }
 
     return (
-        <StickerBox 
-        style={{backgroundColor: sticker.pinned ? "#ffd84f" : "white" }} >
-            
+        <StickerBox
+            className={size} style={{backgroundColor: sticker.pinned ? "#ffd74f" : "white" }} >
             <div className="sticker-top">
                 <div className="user_name_icon">
-                <img src={sticker.author.avatar} />
+                <img src={"https://mynest.propulsion-learn.ch" + sticker.author.avatar} />
                 <span className="subheader">{sticker.author.first_name}</span></div>
 
                 <button className="btn_purple" id="pin_btn" onClick={handlePinToggle}>{sticker.pinned ? <AiFillPushpin/> : <AiOutlinePushpin/>}</button>

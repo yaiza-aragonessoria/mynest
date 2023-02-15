@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Sticker from "../../components/Sticker/Sticker";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
-import { HomeWrapper, HomeDetails, StickersContainer } from "./Home.styled";
+import { HomeWrapper, HomeDetails, StickerBar, StickersContainer } from "./Home.styled";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "../../features/slices/userSlice";
 import Loading from "../../components/Loading/Loading";
@@ -144,32 +144,26 @@ const Home = () => {
                   </div>
                 </div>
               </HomeDetails>
-
+              <StickerBar>
+                <form className="sticker-bar">
+                  <textarea
+                    type="text"
+                    placeholder="Leave a message..."
+                    value={newStickerContent}
+                    onChange={handleNewStickerContentChange}
+                  />
+                  <button
+                    className="btn_purple add_sticker"
+                    type="submit"
+                    onClick={handleCreateNewSticker}
+                  >
+                    Add Sticker
+                  </button>
+                </form>
+                <div>{warning}</div>
+              </StickerBar>
               <StickersContainer>
-                <div className="column_1">
-                  <div className="input_form">
-                    <form className="sticker-bar">
-                      <textarea
-                        type="text"
-                        placeholder="Leave a message..."
-                        value={newStickerContent}
-                        onChange={handleNewStickerContentChange}
-                      />
-                      <button
-                        className="btn_purple add_sticker"
-                        type="submit"
-                        onClick={handleCreateNewSticker}
-                      >
-                        Add Sticker
-                      </button>
-                    </form>
-                    <div>{warning}</div>
-                  </div>
-
-                  {/* RENDERING STICKERS ROW 1 HERE     */}
-
                   {homeStickers
-                    .filter((s, id) => id % 3 === 0)
                     .sort(compareStickers)
                     .map((s, id) => {
                       return (
@@ -181,62 +175,6 @@ const Home = () => {
                         />
                       );
                     })}
-                </div>
-
-                <div className="column_2">
-                  {/* RENDERING STICKERS ROW 2 HERE     */}
-
-                  {/* {homeStickers.sort(compareStickers).map((s) => (
-                    <Sticker
-                      key={s.id}
-                      sticker={s}
-                      toggleSticker={toggleSticker}
-                      deleteSticker={deleteSticker}
-                    />
-                  ))} */}
-                   {homeStickers
-                    .filter((s, id) => id % 3 === 1)
-                    .sort(compareStickers)
-                    .map((s, id) => {
-                      return (
-                        <Sticker
-                          key={s.id}
-                          sticker={s}
-                          toggleSticker={toggleSticker}
-                          deleteSticker={deleteSticker}
-                        />
-                      );
-                    })}
-                </div>
-
-                <div className="column_3">
-                  {/* RENDERING STICKERS ROW 3 HERE     */}
-
-                  {homeStickers
-                    .filter((s, id) => id % 3 === 2)
-                    .sort(compareStickers)
-                    .map((s, id) => {
-                      return (
-                        <Sticker
-                          key={s.id}
-                          sticker={s}
-                          toggleSticker={toggleSticker}
-                          deleteSticker={deleteSticker}
-                        />
-                      );
-                    })}
-                </div>
-
-                {/* <div className="sticker-board">
-                  {homeStickers.sort(compareStickers).map((s) => (
-                    <Sticker
-                      key={s.id}
-                      sticker={s}
-                      toggleSticker={toggleSticker}
-                      deleteSticker={deleteSticker}
-                    />
-                  ))}
-                </div> */}
               </StickersContainer>
             </div>
           </HomeWrapper>

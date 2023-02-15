@@ -49,8 +49,8 @@ const EditTask = ({ task, toggleEdit, onTaskEdit }) => {
     }
     const handleChange = (event) => {
         let value = event.target.value;
-        if (event.target.name === "assignee") {
-            value = homeMembers.find(m => m.id === value);
+        if (event.target.name == "assignee") {
+            value = homeMembers.find(m => m.id == value);
         }
         setChore({ ...chore, [event.target.name]: value });
     };
