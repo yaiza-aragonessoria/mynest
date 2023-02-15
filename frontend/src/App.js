@@ -15,13 +15,13 @@ import Footer from './components/Footer/Footer';
 import Signup from './pages/Signup/Signup';
 import UserProfile from "./pages/UserProfile/UserProfile";
 import Landing from "./pages/Landing/Landing";
+import HeaderOutside from "./components/HeaderOutside/HeaderOutside";
 
 function App() {
     return (
         <div className="App">
-            {window.location.pathname !== "/" ? (<Header />) : null}
-            {/*If we want sign-up and login not to have header, change the line above for the line below*/}
-            {/*{window.location.pathname !== "/" ? window.location.pathname !== "/sign-up" ? window.location.pathname !== "/login" ?(<Header />) : null : null : null}*/}
+            {/*{window.location.pathname !== "/" ? (<Header />) : null}*/}
+            {window.location.pathname !== "/" ? window.location.pathname !== "/sign-up" ? window.location.pathname !== "/login" ? (<Header />) : <HeaderOutside/> : <HeaderOutside/> : <HeaderOutside/>}
 
             <Routes>
                 <Route path='/' element={<Landing/>}/>

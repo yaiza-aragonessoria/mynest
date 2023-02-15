@@ -46,12 +46,12 @@ const HeaderOutside = () => {
         </div>
 
         <Links className="text">
-          <NavLink id="why" to="/#why">
+          <Link to="/#why">
               Why?
-          </NavLink>
-          <NavLink id="how" to="/#how">
+          </Link>
+          <Link to="/#how">
             How?
-          </NavLink>
+          </Link>
        </Links>
 
       <SigninSignup>

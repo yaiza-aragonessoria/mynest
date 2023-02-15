@@ -53,7 +53,8 @@ const Login = () => {
 
         dispatch(setAuth(authData));
 
-        navigate("/");
+        navigate("/dashboard");
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
