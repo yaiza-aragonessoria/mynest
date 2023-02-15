@@ -23,7 +23,7 @@ const EditExpense = (props) => {
             payer: props.expense.payer.id
         });
         const access = localStorage.getItem("access");
-        const [checked, setChecked] = useState([]);
+        const [checked, setChecked] = useState(props.expense.shared_with.map(m => m.id));
         const [errorMessage, setErrorMessage] = useState("");
         const [homeMembers, setHomeMembers] = useState([]);
 
@@ -38,16 +38,15 @@ const EditExpense = (props) => {
             },
         }
 
-        const handleCheck = (event) => {
+        const handleCheck = (event, id) => {
             let updatedList = [...checked];
             if (event.target.checked) {
-                updatedList = [...checked, event.target.value];
+                updatedList = [...checked, id];
             } else {
-                updatedList.splice(checked.indexOf(event.target.value), 1);
+                updatedList.splice(checked.indexOf(id), 1);
             }
             setChecked(updatedList);
             setInputValue({...inputValue, shared_with: updatedList})
-
         };
 
 
@@ -150,7 +149,7 @@ const EditExpense = (props) => {
                                                        name={'shared_with'}
                                                        checked={inputValue.shared_with.find(m => m.id === member?.id)}
                                                        key={index}
-                                                       onChange={handleCheck}/>{memberName}
+                                                       onChange={(e, id) => handleCheck(e, member?.id)}/>{memberName}
                                             </label></>)
                                     })}
                                 </SharedCheckbox>
