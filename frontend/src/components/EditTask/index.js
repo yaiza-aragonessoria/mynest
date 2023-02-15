@@ -46,6 +46,8 @@ const EditTask = ({ task, toggleEdit, onTaskEdit }) => {
             .catch(error => {
                 console.log(error);
             });
+
+        window.location.reload();
     }
     const handleChange = (event) => {
         let value = event.target.value;
