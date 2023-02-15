@@ -33,15 +33,10 @@ const Header = () => {
     navigate("/login");
   };
 
-  const toggleEditProfile = (e) => {
-    e.preventDefault();
-    if (!authData) navigate("/login");
-    else setInEditUserProfile(!inEditUserProfile);
-  };
 
   return (
     <>
-      {inEditUserProfile && <EditUserProfile toggleEditProfile={toggleEditProfile} />}
+      {/*{inEditUserProfile && <EditUserProfile toggleEditProfile={toggleEditProfile} />}*/}
       <NavBar>
         <div id="logo">
           <NavLink to="/">
@@ -50,7 +45,7 @@ const Header = () => {
         </div>
 
         <Links className="text">
-          <NavLink id="shopping_list" to="/shoppinglist">
+        <NavLink id="shopping_list" to="/shoppinglist">
             Shopping List
           </NavLink>
           <NavLink id="shared_expenses" to="/expenses">
@@ -63,40 +58,40 @@ const Header = () => {
             Calendar
           </NavLink>
           {!isLoggedIn && (
-            <NavLink id="profile" to="" onClick={(e) => toggleEditProfile(e)}>
+            <NavLink id="user-profile" to="/user-profile">
               Profile
             </NavLink>
           )}
-          {isLoggedIn && (
+         {isLoggedIn && (
           
-            <AvatarUser onClick={(e) => toggleEditProfile(e)} src={userData.avatar}  />
-          )}
-         </Links>
+          <AvatarUser onClick={() => navigate("/user-profile") } src={userData.avatar}  />
+        )}
+       </Links>
 
-        <SigninSignup>
-          {!isLoggedIn && (
-            <button type="button" id="signup" onClick={() => navigate("/sign-up")}>
-              SIGN UP
-            </button>
-          )}
-          {isLoggedIn ? (
-            <button
-              type="button"
-              id="logout"
-              className="logout"
-              onClick={handleLogout}
-            >
-              LOG OUT
-            </button>
-          ) : (
-            <button type="button" id="login" onClick={() => navigate("/login")}>
-              LOG IN
-            </button>
-          )}
-        </SigninSignup>
-      </NavBar>
-    </>
-  );
+      <SigninSignup>
+        {!isLoggedIn && (
+          <button type="button" id="signup" onClick={() => navigate("/sign-up")}>
+            SIGN UP
+          </button>
+        )}
+        {isLoggedIn ? (
+          <button
+            type="button"
+            id="logout"
+            className="logout"
+            onClick={handleLogout}
+          >
+            LOG OUT
+          </button>
+        ) : (
+          <button type="button" id="login" onClick={() => navigate("/login")}>
+            LOG IN
+          </button>
+        )}
+      </SigninSignup>
+    </NavBar>
+  </>
+);
 };
 
 export default Header;

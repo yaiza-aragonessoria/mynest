@@ -13,6 +13,7 @@ import EditTask from './components/EditTask'
 import Expenses from './pages/Expenses/Expenses';
 import Footer from './components/Footer/Footer';
 import Signup from './pages/Signup/Signup';
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 function App() {
     return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/add-task" element={<CreateTask/>}/>
                 <Route path="/edit-task" element={<EditTask/>}/>
                 <Route path="/expenses" element={<Expenses/>}/>
+                <Route path="/user-profile" element={<UserProfile/>}/>
             </Routes>
             <Footer />
 

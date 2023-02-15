@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const CalendarPageWrapper = styled.div`
   width: 100%;
+  min-height: var(--maincontainer);
   height: var(--maincontainer);
   display: flex;
   justify-content: center;
