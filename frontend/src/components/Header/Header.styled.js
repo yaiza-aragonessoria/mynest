@@ -6,17 +6,12 @@ export const NavBar = styled.nav`
   /* position: fixed; */
   z-index: 4;
 
-
-  /* background-color: #e1e3ea; */
-  /* background: linear-gradient(
-      70deg,
-      rgba(193, 165, 255, 1) 0%,
-      rgba(114, 57, 234, 1) 72%
-    ); */
-
-    background: rgb(255,199,0);
-background: linear-gradient(108deg, rgba(255,199,0,1) 0%, rgba(114,57,234,1) 100%);
-
+  background: rgb(255, 199, 0);
+  background: linear-gradient(
+    108deg,
+    rgba(255, 199, 0, 1) 0%,
+    rgba(114, 57, 234, 1) 100%
+  );
 
   border-bottom: 1px solid #d4d4d4;
   display: flex;
@@ -43,6 +38,7 @@ export const Links = styled.div`
   align-items: center;
   height: 100%;
 
+
   a {
     height: 100%;
     display: flex;
@@ -60,30 +56,7 @@ export const Links = styled.div`
     color: #fff;
   }
 
-  /* #shopping_list:hover {
-    background-color: #7239ea;
-    color: #fff;
-  }
-
-  #shared_expenses:hover {
-    background-color: #00D9D9;
-    color: #fff;
-  }
-  
-  #to_do:hover {
-    background-color: #F1416C;
-    color: #fff;
-  }
-
-  #calendar:hover {
-    background-color: #03A9F4;
-    color: #fff;
-  }
-
-  #profile:hover {
-    background-color: #FFC700;
-    color: #fff;
-  } */
+   
 `;
 
 export const SigninSignup = styled.div`
@@ -101,6 +74,20 @@ export const SigninSignup = styled.div`
     background-color: var(--color-orange);
   }
 
+  button.logout {
+    border-top-left-radius: 28px;
+    border-bottom-left-radius: 28px;
+    background-color: #7e8299 !important;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+  }
+
+  button.logout:hover {
+   background-color: #f4bf04 !important;
+  }
+
   #logout,
   #login {
     border: none;
@@ -110,7 +97,6 @@ export const SigninSignup = styled.div`
     text-align: center;
     cursor: pointer;
     background-color: var(--color-orange);
-;
   }
 
   #signup:hover,
@@ -126,4 +112,21 @@ export const SigninSignup = styled.div`
     color: #000;
     background-color: #efefef;
   }
+`;
+
+export const AvatarUser = styled.img`
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  left: 14.5rem;
+  opacity: 0.80;
+
+
+  &:hover {
+    background-color: var(--color-orange);
+    opacity: 0.99;
+    
+   }
 `;

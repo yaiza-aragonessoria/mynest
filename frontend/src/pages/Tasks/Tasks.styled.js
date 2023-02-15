@@ -115,7 +115,6 @@ button {
   text-align: center;
   text-transform: uppercase;
   cursor: pointer;
-  opacity: 0.9;
 
 }
 
