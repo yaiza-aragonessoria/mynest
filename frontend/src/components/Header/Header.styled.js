@@ -3,15 +3,9 @@ import styled from "styled-components";
 export const NavBar = styled.nav`
   width: 100%;
   height: var(--navheight);
-  /* position: fixed; */
   z-index: 4;
 
-  /* background: rgb(255, 199, 0);
-  background: linear-gradient(
-    108deg,
-    rgba(255, 199, 0, 1) 0%,
-    rgba(114, 57, 234, 1) 100%
-  ) */
+
   background: rgb(255,199,0);
 background: linear-gradient(108deg, rgba(255,199,0,1) 10%, rgba(210,123,123,1) 37%, rgba(187,112,185,1) 49%, rgba(114,57,234,1) 80%, rgba(100,57,234,1) 100%);
   ;
