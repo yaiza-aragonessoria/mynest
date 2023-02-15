@@ -11,7 +11,6 @@ import { cleanUserData } from "../../features/slices/userSlice";
 
 const Header = () => {
   const userData = useSelector(state => state.userProfile.userProfileSlice);
-  console.log(userData.avatar);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);

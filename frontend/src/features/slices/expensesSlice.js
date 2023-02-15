@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {fetchUser} from "./userSlice";
 
 
 export const fetchExpenses = createAsyncThunk(
@@ -13,24 +14,39 @@ export const fetchExpenses = createAsyncThunk(
              params: {search: searchTerm}
         }
 
-        try {
-            const response = await axios.get('https://mynest.propulsion-learn.ch/backend/api/expenses/home/', config)
-            return response.data;
-        } catch (error) {
-        }
+        const response = await axios.get('https://mynest.propulsion-learn.ch/backend/api/expenses/home/', config)
+        return response.data;
     }
 )
 export const expensesSlice = createSlice({
     name: "expensesSlice",
     initialState: {
-        expensesSlice: []
+        expensesSlice: [],
+        isLoading: false,
+        loaded: false,
+        rejected: false
     },
     reducers: {},
     extraReducers: {
-        [fetchExpenses.fulfilled]: (state, action) => {
-
-            state.expensesSlice = action.payload
+        [fetchExpenses.pending]: (state, action) => {
+          console.log("Loading expenses...");
+          state.isLoading = true;
+          state.loaded = false;
+          state.rejected = false;
         },
+        [fetchExpenses.fulfilled]: (state, action) => {
+            console.log("Expenses fetched.")
+            state.expensesSlice = action.payload;
+            state.isLoading = false;
+            state.loaded = true;
+            state.rejected = false;
+        },
+        [fetchExpenses.rejected]: (state) => {
+          console.log("Request rejected.")
+          state.isLoading = false;
+          state.loaded = false;
+          state.rejected = true;
+        }
 
     }
 })

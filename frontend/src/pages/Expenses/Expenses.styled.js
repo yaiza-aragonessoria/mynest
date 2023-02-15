@@ -26,6 +26,18 @@ export const ComponentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 5rem;
+  
+  .loading {
+    display: flex;
+    justify-content: center;
+    
+    img {
+      width: 50px;
+      height: 50px;
+      margin-top: 100px;
+    }
+
+  }
 
 
 `

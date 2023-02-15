@@ -30,6 +30,11 @@ const Expenses = () => {
     const [showEditModal, setEditModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [searchTerm, setSearchTerm] = useState("");
+    const isLoading = useSelector( state => state.expenses.isLoading);
+    const loaded = useSelector( state => state.expenses.loaded);
+    console.log("isLoading ", isLoading);
+    console.log("loaded ", loaded);
+    console.log(expensesData);
 
     const headers = {
         headers: {
@@ -64,7 +69,7 @@ const Expenses = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(fetchExpenses(searchTerm))
+        dispatch(fetchExpenses(searchTerm));
     }, [searchTerm]);
 
     useEffect(() => {
@@ -129,6 +134,10 @@ const Expenses = () => {
                                     </ExpensesHeader>
 
                                     <ExpensesList>
+                                        {isLoading && expensesData.length == 0 &&
+                                            <div className='loading'>
+                                            <img className='' src='assets/loading.gif'/>
+                                            </div>}
                                         {expensesData?.map((expense) => {
                                             return (
                                                 <>
