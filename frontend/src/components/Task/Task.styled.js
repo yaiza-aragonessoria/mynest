@@ -18,6 +18,8 @@ img {
     border-radius: 50%;
     vertical-align: middle;
     height: 2.5rem;
+    object-fit: cover;
+    
     }
 
 
