@@ -1,7 +1,6 @@
 import { TaskContainer, Buttons, IconStatus, IconEdit, IconDelete, StatusColor } from "./Task.styled";
 import React, { useState } from "react";
 import api from "../../api/myNest";
-import { useNavigate } from "react-router-dom"
 import EditTask from "../EditTask";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilePen, faTrash, faCheck, faPlay } from '@fortawesome/free-solid-svg-icons'

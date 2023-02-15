@@ -15,7 +15,6 @@ import {
 } from "./Calendar.styled";
 import { useDispatch, useSelector } from "react-redux";
 import MustHaveHome from "../../components/MustHaveHome/MustHaveHome";
-import MustLogIn from "../../components/MustLogIn/MustLogIn";
 import { fetchUser } from "../../features/slices/userSlice";
 import Loading from "../../components/Loading/Loading";
 import { useNavigate } from "react-router-dom";

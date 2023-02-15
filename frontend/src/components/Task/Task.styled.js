@@ -13,9 +13,10 @@ box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
 border-radius: 15px;
 
 img {
-      height: 50px;
-      border-radius: 50%;
-      vertical-align: middle;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    vertical-align: middle;
     }
 
 
@@ -27,6 +28,7 @@ p {
   font-size: 17px;
   line-height: 20px;
   color: #181C32;
+  
 }
 
 `
@@ -41,12 +43,17 @@ height: 100%;
 gap: 20px;
 
 i {
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   opacity: 0.4;
   color: #7E8299;
   opacity: 0.7;
 
+}
+
+i:hover{
+  color: #7239EA;
+  font-size: 20px;
 }
 
 `
@@ -87,7 +94,6 @@ p {
   padding: 0.7rem;
   width: 114px;
   text-align: center;
-
   
 
 }
