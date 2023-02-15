@@ -3,15 +3,16 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { clearAuth, setAuth } from "../../features/slices/authSlice";
 import {useSelector} from "react-redux";
+import { HashLink as Link } from 'react-router-hash-link';
 
 // STYLES
 import logo_purple from "../../assets/logo_purple.png";
-import { NavBar, Links, SigninSignup, AvatarUser } from "./Header.styled";
+import { NavBar, Links, SigninSignup, AvatarUser } from "./HeaderOutside.styled";
 import { cleanUserData } from "../../features/slices/userSlice";
+import EditUserProfile from "../EditUserProfile/EditUserProfile";
 
-const Header = () => {
+const HeaderOutside = () => {
   const userData = useSelector(state => state.userProfile.userProfileSlice);
-  console.log(userData.avatar);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +24,7 @@ const Header = () => {
     else setIsLoggedIn(false);
   }, [authData]);
 
+
   const handleLogout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("email");
@@ -30,41 +32,26 @@ const Header = () => {
     dispatch(cleanUserData());
     setIsLoggedIn(false);
     navigate("/login");
-    window.location.reload();
   };
 
 
   return (
     <>
+      {/*{inEditUserProfile && <EditUserProfile toggleEditProfile={toggleEditProfile} />}*/}
       <NavBar>
         <div id="logo">
-          <NavLink to="/dashboard">
+          <NavLink to="/">
             <img src={logo_purple} />
           </NavLink>
         </div>
 
         <Links className="text">
-        <NavLink id="shopping_list" to="/shoppinglist">
-            Shopping List
-          </NavLink>
-          <NavLink id="shared_expenses" to="/expenses">
-            Shared Expenses
-          </NavLink>
-          <NavLink id="to_do" to="/to-do">
-            TASKS
-          </NavLink>
-          <NavLink id="calendar" to="/calendar">
-            Calendar
-          </NavLink>
-          {!isLoggedIn && (
-            <NavLink id="user-profile" to="/user-profile">
-              Profile
-            </NavLink>
-          )}
-         {isLoggedIn && (
-          
-          <AvatarUser onClick={() => navigate("/user-profile") } src={userData.avatar}  />
-        )}
+          <Link to="/#why">
+              Why?
+          </Link>
+          <Link to="/#how">
+            How?
+          </Link>
        </Links>
 
       <SigninSignup>
@@ -93,4 +80,4 @@ const Header = () => {
 );
 };
 
-export default Header;
+export default HeaderOutside;
