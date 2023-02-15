@@ -1,26 +1,14 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  min-height: calc(100vh - var(--footerheight));
+  min-height: var(--maincontainer);
   width: 100%;
   display: flex;
   flex-direction: column;
   background-color: var(--color-orange-light);
   //gap: 10px;
   
-  .top {
-    width: 100vw;
-    margin-bottom: 100px;
-    
-    img {
-      width: 200px;
-      padding: 10px;
-      margin-top: 30px;
-      margin-left: 100px
-    }
-  }
-  
-  .down {
+  .info-laptop {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -52,6 +40,23 @@ export const Wrapper = styled.div`
       width: 800px;
     }
   }
+  
+  .why, .how {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 25px;
+    margin: 50px;
+    
+    h3 {
+      width: 100%;
+    }
+    
+    .feature {
+      width: 400px;
+    }
+  }
+  
+  
   
 
 `;
