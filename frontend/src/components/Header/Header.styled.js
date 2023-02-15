@@ -122,6 +122,7 @@ export const AvatarUser = styled.img`
   position: relative;
   left: 14.5rem;
   opacity: 0.80;
+  object-fit: cover;
 
 
   &:hover {
