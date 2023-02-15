@@ -1,36 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import { setAuth } from "../../features/slices/authSlice";
-import logo_purple from "../../assets/logo_purple.png"
+import React, {useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import homepage_laptop from "../../assets/homepage_laptop.png"
 
 
 import {
-  ErrorMessage,
-  FormFields,
-  LoginTitle,
-  LoginWrapper,
-  SignIn,
   Wrapper,
 } from "./Landing.styled";
-import HeaderOutside from "../../components/HeaderOutside/HeaderOutside";
-
 
 const Landing = () => {
   const navigate = useNavigate();
+  const access = localStorage.getItem("access");
+
+
+    useEffect(() => {
+    if (access) {
+        navigate("/dashboard");
+        window.location.reload();
+      }
+    }, []);
 
 
   return (
     <Wrapper>
       <div className='info-laptop'>
         <div className="left_container">
-          <h1 className="">The easy way to  organise your shared space</h1>
-          {/*<h1 className="">The <br/> easy way <br/> to  organise <br/> your shared <br/> space</h1>*/}
+          <h1 className="">The easiest way to  organise your shared space</h1>
           <h2>
-            Shared shopping list, task list, calendar, board and expense manager in one single place.
+            Shared shopping list, to-do list, calendar, dashboard and expense manager in one single place.
           </h2>
           <button className='btn_purple' onClick={() => navigate('/sign-up')}>Sign up now</button>
         </div>
@@ -48,9 +44,8 @@ const Landing = () => {
             logo shopping list
           </div>
           <div>
-            Tired of forgetting the shopping list at home?
-            Planning shared groceries becomes simpler with My Nest.
-            At the very moment that a Nest member adds a new item to the shopping list, you have it in your pocket.
+            Tired of forgetting your grocery list at home? Planning shared shopping is easier with My Nest.
+            As soon as a Nest member adds a new item to the shopping list, it's in your pocket.
           </div>
         </div>
         <div className='feature'>
@@ -58,8 +53,7 @@ const Landing = () => {
             logo shared expenses
           </div>
           <div>
-            Get rid of the unhandy spreadsheet or pocket calculator.
-            My Nest keeps track of all shared expenses and computes for you the personal balance at any time.
+            Get rid of the cumbersome spreadsheet or pocket calculator. My Nest keeps track of all shared expenses and calculates your personal balance for you at any time.
           </div>
         </div>
         <div className='feature'>
@@ -67,8 +61,8 @@ const Landing = () => {
             logo board
           </div>
           <div>
-            "Spoken words fly away, written words remain".
-            Write down your message in the common board.
+            "Spoken words fly, written words remain".
+            Write your message on the common board.
             And don't forget to pin it when it is important!
           </div>
         </div>
@@ -78,8 +72,8 @@ const Landing = () => {
           </div>
           <div>
             No one remembers to water the plants?
-            Using My Nest you can easily coordinate with your Nest members to distribute tasks.
-            Keep track of what has been done and which tasks remain to do.
+            With My Nest you can easily coordinate with your Nest members to distribute tasks.
+            Keep track of what has been done and what tasks remain to do.
           </div>
         </div>
         <div className='feature'>
@@ -87,8 +81,8 @@ const Landing = () => {
             logo calendar
           </div>
           <div>
-            Never forget a birthday or get surprised by a party at your place. //
-            The shared calendar of My Nest keeps you informed of everything that happens in your Nest.
+            Never forget a birthday or get surprised by a party at your place.
+            My Nest's shared calendar keeps you informed of everything going on in your Nest.
           </div>
         </div>
       </div>
@@ -102,8 +96,8 @@ const Landing = () => {
             Shared living
           </div>
           <div>
-            Living together can be messy and disorganised, but not with My Nest.
-            Wiht My Nest splitting bills is easy, sharing tasks is fair and communication is clear.
+            Living together can be messy and disorganized, but not with My Nest.
+            With My Nest splitting bills is easy, sharing tasks is fair and communication is clear.
           </div>
         </div>
         <div>
@@ -112,7 +106,7 @@ const Landing = () => {
           </div>
           <div>
             Your working environment becomes more organized and coordinated with My Nest.
-            Keeping track of who is at office, meeting-room bookings, and shared expenses is now easy.
+            Now it is easy to keep track of who is at office, meeting-room bookings, and shared expenses.
           </div>
         </div>
         <div>
@@ -120,9 +114,9 @@ const Landing = () => {
             Group activities
           </div>
           <div>
-            Do you share a rehearsal room with your band? Do you meet your chess club every Wednesday?
-            Managing shared spaces in a simple manner is now possible with My Nest.
-            Have an overview of who is attending the meeting, distribute easily expenses and keep track of tasks to be done.
+            Do you share a rehearsal space with your music band? Do you meet with your chess club every Wednesday?
+            Managing shared spaces easily is now possible with My Nest.
+            Have an overview of who is attending the meeting, easily distribute expenses and keep track of to-dos.
           </div>
         </div>
       </div>
