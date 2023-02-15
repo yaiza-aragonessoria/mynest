@@ -87,22 +87,26 @@ const Sticker = ({sticker, toggleSticker, deleteSticker}) => {
             });
     }
 
-    // <img src={"https://mynest.propulsion-learn.ch" + sticker.author.avatar} />
-    // <img src={sticker.author.avatar} />
-
     let size = "small";
-    if (sticker.content.length > 200)  {
+    if (sticker.content.length > 200) {
         size = "medium";
      }
     if (sticker.content.length > 400) {
         size = "large";
     }
+    if (sticker.content.length > 600) {
+        size = "xlarge";
+    }
+    if (sticker.content.length > 800) {
+        size = "xxlarge";
+    }
+
     return (
         <StickerBox
-            className={size} style={{backgroundColor: sticker.pinned ? "#ffea9b" : "white" }} >
+            className={size} style={{backgroundColor: sticker.pinned ? "#ffd74f" : "white" }} >
             <div className="sticker-top">
                 <div className="user_name_icon">
-                <img src={sticker.author.avatar} />
+                <img src={"https://mynest.propulsion-learn.ch" + sticker.author.avatar} />
                 <span className="subheader">{sticker.author.first_name}</span></div>
 
                 <button className="btn_purple" id="pin_btn" onClick={handlePinToggle}>{sticker.pinned ? <AiFillPushpin/> : <AiOutlinePushpin/>}</button>

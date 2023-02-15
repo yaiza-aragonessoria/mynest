@@ -133,8 +133,8 @@ export const StickersContainer = styled.div`
   grid-auto-flow: row;
   
   .small {
-    grid-row: span 1;
-    grid-column: span 1;
+    grid-row: span 1;  // height
+    grid-column: span 1;  // width
   }
 
   .medium {
@@ -145,6 +145,16 @@ export const StickersContainer = styled.div`
   .large {
     grid-row: span 3;
     grid-column: span 1; // 2
+  }
+  
+  .xlarge {
+    grid-row: span 4;
+    grid-column: span 1; 
+  }
+  
+  .xxlarge {
+    grid-row: span 5;
+    grid-column: span 1; 
   }
 
 `;
