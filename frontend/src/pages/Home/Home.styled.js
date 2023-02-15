@@ -26,7 +26,7 @@ export const HomeDetails = styled.div`
   width: 100%;
   display: flex;
 
-  background-color: #f8f5ff;
+  background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
 
@@ -96,7 +96,7 @@ export const StickerBar = styled.div`
     gap: 1rem;
     align-items: center;
     justify-content: space-between;
-    background-color: #f9f9f9;
+    background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
   }
@@ -108,7 +108,7 @@ export const StickerBar = styled.div`
     border: none;
     outline: none;
 
-    background-color: #f9f9f9;
+    background-color: #fff;
 
     font-style: normal;
     font-weight: 400;

@@ -8,7 +8,7 @@ grid-template-columns: 2fr 1fr 1fr 7rem;
 width: 80%;
 padding-left: 2rem;
 padding-right: 1rem;
-background-color: #f8f5ff;
+background-color: #fff;
 box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
 border-radius: 15px;
 
@@ -28,7 +28,9 @@ img {
 p {
   font-style: normal;
   font-weight: 400;
-  font-size: 17px;
+  /* font-size: 17px; */
+  font-size: 14px;
+  line-height: 20px;
   line-height: 20px;
   color: #181C32;
   
