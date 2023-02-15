@@ -148,7 +148,7 @@ const EditExpense = (props) => {
                                             <label id={index} htmlFor={memberName}>
                                                 <input type={"checkbox"}
                                                        name={'shared_with'}
-                                                       value={member?.id}
+                                                       checked={inputValue.shared_with.find(m => m.id === member?.id)}
                                                        key={index}
                                                        onChange={handleCheck}/>{memberName}
                                             </label></>)
