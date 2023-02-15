@@ -13,13 +13,18 @@ import EditTask from './components/EditTask'
 import Expenses from './pages/Expenses/Expenses';
 import Footer from './components/Footer/Footer';
 import Signup from './pages/Signup/Signup';
+import Landing from "./pages/Landing/Landing";
 
 function App() {
     return (
         <div className="App">
-            <Header/>
+            {window.location.pathname !== "/" ? (<Header />) : null}
+            {/*If we want sign-up and login not to have header, change the line above for the line below*/}
+            {/*{window.location.pathname !== "/" ? window.location.pathname !== "/sign-up" ? window.location.pathname !== "/login" ?(<Header />) : null : null : null}*/}
+
             <Routes>
-                <Route path='/' element={<Home/>}/>
+                <Route path='/' element={<Landing/>}/>
+                <Route path='/dashboard' element={<Home/>}/>
                 <Route path="/shoppinglist" element={<Shoppinglist/>}/>
                 <Route path="/editshoppinglist" element={<FavouriteItems_popup/>}/>
                 <Route path="/calendar" element={<Calendar/>}/>
