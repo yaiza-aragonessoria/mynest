@@ -47,6 +47,7 @@ const HeaderResponsive = () => {
         dispatch(cleanUserData());
         setIsLoggedIn(false);
         navigate("/login");
+        window.location.reload();
     };
 
 
