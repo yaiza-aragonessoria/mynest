@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import homepage_laptop from "../../assets/homepage_laptop.png";
+import landing_how_1 from "../../assets/landing_how_1.jpg";
+import landing_how_2 from "../../assets/landing_how_2.jpg";
+import landing_how_3 from "../../assets/landing_how_3.jpg";
 import demo from "../../assets/demo.gif";
+
 
 import { Wrapper } from "./Landing.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -90,33 +94,41 @@ const Landing = () => {
         </div>
       </div>
 
+
       <div id="how" className="how">
         <div className="how_header">
-          <h3>How will you use My Nest?</h3>
-          <button className="btn_purple" onClick={() => navigate("/sign-up")}>
+          <h3 id="how_header_title">How will you use My Nest?</h3>
+          <button id="landing_btn" onClick={() => navigate("/sign-up")}>
             Sign up now
           </button>
         </div>
 
-        <div>
+        <div className="how_card">
+          <div className="how_card_content">
           <h4>Shared living</h4>
           <span>
             Living together can be messy and disorganized, but not with My Nest.
             With My Nest splitting bills is easy, sharing tasks is fair and
             communication is clear.
-          </span>
+          </span></div>
+          <img src={landing_how_1} className="img_how"/>
         </div>
 
-        <div>
-          <h4>Coworking spaces</h4>
+        <div className="how_card">
+        <img src={landing_how_2} className="img_how"/>
+        <div className="how_card_content">
+        <h4>Coworking spaces</h4>
           <span>
             Your working environment becomes more organized and coordinated with
             My Nest. Now it is easy to keep track of who is at office,
             meeting-room bookings, and shared expenses.
           </span>
         </div>
+          
+        </div>
 
-        <div>
+        <div className="how_card">
+          <div className="how_card_content">
           <h4>Group activities</h4>
           <span>
             Do you share a rehearsal space with your music band? Do you meet
@@ -124,6 +136,10 @@ const Landing = () => {
             is now possible with My Nest. Have an overview of who is attending
             the meeting, easily distribute expenses and keep track of to-dos.
           </span>
+          </div>
+         
+          <img src={landing_how_3} className="img_how"/>
+
         </div>
       </div>
     </Wrapper>
