@@ -13,11 +13,10 @@ box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
 border-radius: 15px;
 
 img {
-    /* height: 2.5rem;
-    width: 2.5rem; */
+    height: 2.5rem;
+    width: 2.5rem;
     border-radius: 50%;
     vertical-align: middle;
-    height: 2.5rem;
     object-fit: cover;
     
     }
