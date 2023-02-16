@@ -3,7 +3,7 @@ import {Route, Routes} from 'react-router-dom';
 import './App.css';
 import Shoppinglist from './pages/ShoppingList/ShoppingList';
 import Login from "./pages/Login/Login";
-import Header from "./components/Header/Header";
+import HeaderResponsive from "./components/Header/HeaderResponsive";
 import Home from "./pages/Home/Home";
 import Calendar from "./pages/Calendar/Calendar";
 import FavouriteItems_popup from './components/FavouriteItems/FavouriteItems_popup';
@@ -18,7 +18,7 @@ import UserProfile from "./pages/UserProfile/UserProfile";
 function App() {
     return (
         <div className="App">
-            <Header/>
+            <HeaderResponsive/>
             <Routes>
                 <Route path='/' element={<Home/>}/>
                 <Route path="/shoppinglist" element={<Shoppinglist/>}/>
