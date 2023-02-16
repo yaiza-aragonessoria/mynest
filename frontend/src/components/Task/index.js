@@ -53,7 +53,7 @@ const Task = ({ task, onTaskDelete, onTaskEdit }) => {
       <StatusColor taskstatus={currentStatus}>
       <p>{statusLabel[currentStatus]}</p>
       </StatusColor>
-      <p>{task.assignee.first_name} <img src={task.assignee.avatar} /></p>
+      {task?.assignee?.avatar && <p>{task.assignee.first_name} <img src={task.assignee.avatar}/></p>}
       <Buttons>
         <IconStatus>
           {currentStatus !== "DO" && (

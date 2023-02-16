@@ -38,7 +38,7 @@ p {
 `
 
 export const Buttons = styled.div`
-
+grid-column: 4/4;
 display: flex;
 align-items: center;
 justify-content: flex-end;
