@@ -4,6 +4,8 @@ import homepage_laptop from "../../assets/homepage_laptop.png";
 import landing_how_1 from "../../assets/landing_how_1.jpg";
 import landing_how_2 from "../../assets/landing_how_2.jpg";
 import landing_how_3 from "../../assets/landing_how_3.jpg";
+import demo from "../../assets/demo.gif";
+
 
 import { Wrapper } from "./Landing.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -38,7 +40,7 @@ const Landing = () => {
         </div>
 
         <div className="right_container">
-          <img src={homepage_laptop} alt="laptop with screenshot" id="laptop_picture" />
+          <img src={demo} alt="laptop with screenshot" id="laptop_picture" />
         </div>
       </div>
 
