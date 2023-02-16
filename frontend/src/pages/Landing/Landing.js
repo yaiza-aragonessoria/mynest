@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import homepage_laptop from "../../assets/homepage_laptop.png";
+import demo from "../../assets/demo.gif";
 
 import { Wrapper } from "./Landing.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,7 +36,7 @@ const Landing = () => {
         </div>
 
         <div className="right_container">
-          <img src={homepage_laptop} alt="laptop with screenshot" id="laptop_picture" />
+          <img src={demo} alt="laptop with screenshot" id="laptop_picture" />
         </div>
       </div>
 
