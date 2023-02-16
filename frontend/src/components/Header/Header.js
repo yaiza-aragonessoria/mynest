@@ -8,11 +8,9 @@ import {useSelector} from "react-redux";
 import logo_purple from "../../assets/logo_purple.png";
 import { NavBar, Links, SigninSignup, AvatarUser } from "./Header.styled";
 import { cleanUserData } from "../../features/slices/userSlice";
-import EditUserProfile from "../EditUserProfile/EditUserProfile";
 
 const Header = () => {
   const userData = useSelector(state => state.userProfile.userProfileSlice);
-  console.log(userData.avatar);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,15 +29,15 @@ const Header = () => {
     dispatch(cleanUserData());
     setIsLoggedIn(false);
     navigate("/login");
+    window.location.reload();
   };
 
 
   return (
     <>
-      {/*{inEditUserProfile && <EditUserProfile toggleEditProfile={toggleEditProfile} />}*/}
       <NavBar>
         <div id="logo">
-          <NavLink to="/">
+          <NavLink to="/dashboard">
             <img src={logo_purple} />
           </NavLink>
         </div>

@@ -14,13 +14,18 @@ import Expenses from './pages/Expenses/Expenses';
 import Footer from './components/Footer/Footer';
 import Signup from './pages/Signup/Signup';
 import UserProfile from "./pages/UserProfile/UserProfile";
+import Landing from "./pages/Landing/Landing";
+import HeaderOutside from "./components/HeaderOutside/HeaderOutside";
 
 function App() {
     return (
         <div className="App">
-            <HeaderResponsive/>
+            {/*{window.location.pathname !== "/" ? (<HeaderResponsive />) : null}*/}
+            {window.location.pathname !== "/" ? window.location.pathname !== "/sign-up" ? window.location.pathname !== "/login" ? (<HeaderResponsive />) : <HeaderOutside/> : <HeaderOutside/> : <HeaderOutside/>}
+
             <Routes>
-                <Route path='/' element={<Home/>}/>
+                <Route path='/' element={<Landing/>}/>
+                <Route path='/dashboard' element={<Home/>}/>
                 <Route path="/shoppinglist" element={<Shoppinglist/>}/>
                 <Route path="/editshoppinglist" element={<FavouriteItems_popup/>}/>
                 <Route path="/calendar" element={<Calendar/>}/>

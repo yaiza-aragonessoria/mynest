@@ -6,7 +6,7 @@ export const MainContainer = styled.div`
   justify-content: center;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: var(--color-orange-light);
   padding-bottom: 1rem;
 `;
 
@@ -21,7 +21,7 @@ gap: 15rem;
 h3 {
   font-style: normal;
   font-weight: 600;
-  font-size: 19px;
+  font-size: 16px;
   line-height: 21px;
   color: #181C32;
   opacity: 0.8;
@@ -63,7 +63,7 @@ margin-top: 1.5rem;
 padding-left: 7.5rem;
 
 h1 {
-  font-size: 27px;
+  font-size: 20px;
   line-height: 22px;
   color: #181C32;
   margin-right: 4rem;
