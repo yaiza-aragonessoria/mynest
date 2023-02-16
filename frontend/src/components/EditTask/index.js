@@ -6,7 +6,8 @@ const EditTask = ({ task, toggleEdit, onTaskEdit }) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [homeMembers, setHomeMembers] = useState([]);
     const access = localStorage.getItem("access");
-    console.log(task);
+    console.log("task from edit task", task);
+    console.log(task.assignee);
     const [chore, setChore] = useState(task);
 
     useEffect(() => {
@@ -55,7 +56,10 @@ const EditTask = ({ task, toggleEdit, onTaskEdit }) => {
             value = homeMembers.find(m => m.id == value);
         }
         setChore({ ...chore, [event.target.name]: value });
+        console.log("chore ", chore)
+        console.log("chore.assignee ", chore.assignee)
     };
+
     return (
         <PopUp>
             <EditTaskPage>
