@@ -116,7 +116,7 @@ const Tasks = () => {
           <MainContainer>
             <TopPage>
             <Header>
-              <h1>Task Bord of {currentMonth}</h1>
+              <h1>Task Board of {currentMonth}</h1>
               <button className="btn_purple" onClick={toggleEdit}>+ Add Task</button>
             </Header>
             <SearchBar>
