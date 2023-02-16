@@ -1,6 +1,6 @@
 import {NavLink, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {clearAuth, setAuth} from "../../features/slices/authSlice";
 import {useSelector} from "react-redux";
 
@@ -12,7 +12,7 @@ import {cleanUserData} from "../../features/slices/userSlice";
 
 const HeaderResponsive = () => {
     const userData = useSelector(state => state.userProfile.userProfileSlice);
-    console.log(userData.avatar);
+    const userLoaded = useSelector(state => state.userProfile.loaded);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -20,6 +20,7 @@ const HeaderResponsive = () => {
     const [windowSize, setWindowSize] = useState([
         window.innerWidth,
     ]);
+    console.log(userData);
 
     useEffect(() => {
         const handleWindowResize = () => {
@@ -73,10 +74,11 @@ const HeaderResponsive = () => {
                         <li><a className="active" href="/to-do">Tasks</a></li>
                         <li><a className="active " href="/calendar">Calendar</a></li>
 
-                        {isLoggedIn && <li id='avatar-profile'> {isLoggedIn && windowSize >= 841 ? (
+                        {isLoggedIn && <li id='avatar-profile'> {isLoggedIn && windowSize >= 841 ? userData?.avatar ? (
                             <div className='avatar-profile'>
                                 <AvatarUser onClick={() => navigate("/user-profile")} src={userData.avatar}/></div>
-                        ) : <a className="active" href="/user-profile">Profile</a>}</li>}
+                        ) : (userLoaded? <div className='no-avatar' onClick={() => navigate("/user-profile")}>{userData?.first_name ? userData?.first_name[0] : userData?.email[0]}</div> : null)
+                            : <a className="active" href="/user-profile">Profile</a>}</li>}
                         <li>
                             <SigninSignup className='log-buttons'>
                                 {!isLoggedIn && (

@@ -211,6 +211,22 @@ export const Wrapper = styled.nav`
         }
       }
     }
+  
+  .no-avatar {
+    font-size: 20px;
+    font-weight: 400;
+    height: 2.5rem;
+    width: 2.5rem;
+    cursor: pointer;
+  position: relative;
+    background-color:rgba(244, 191, 4, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color:rgba(114, 57, 234, 1);
+    margin: 10px;
+}
 `
 
 
@@ -285,4 +301,5 @@ export const AvatarUser = styled.img`
     opacity: 0.99;
 
    }
+  
 `;
