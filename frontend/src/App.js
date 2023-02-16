@@ -3,7 +3,7 @@ import {Route, Routes} from 'react-router-dom';
 import './App.css';
 import Shoppinglist from './pages/ShoppingList/ShoppingList';
 import Login from "./pages/Login/Login";
-import Header from "./components/Header/Header";
+import HeaderResponsive from "./components/Header/HeaderResponsive";
 import Home from "./pages/Home/Home";
 import Calendar from "./pages/Calendar/Calendar";
 import FavouriteItems_popup from './components/FavouriteItems/FavouriteItems_popup';
@@ -20,8 +20,8 @@ import HeaderOutside from "./components/HeaderOutside/HeaderOutside";
 function App() {
     return (
         <div className="App">
-            {/*{window.location.pathname !== "/" ? (<Header />) : null}*/}
-            {window.location.pathname !== "/" ? window.location.pathname !== "/sign-up" ? window.location.pathname !== "/login" ? (<Header />) : <HeaderOutside/> : <HeaderOutside/> : <HeaderOutside/>}
+            {/*{window.location.pathname !== "/" ? (<HeaderResponsive />) : null}*/}
+            {window.location.pathname !== "/" ? window.location.pathname !== "/sign-up" ? window.location.pathname !== "/login" ? (<HeaderResponsive />) : <HeaderOutside/> : <HeaderOutside/> : <HeaderOutside/>}
 
             <Routes>
                 <Route path='/' element={<Landing/>}/>
