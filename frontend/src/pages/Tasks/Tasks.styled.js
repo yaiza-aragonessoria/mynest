@@ -50,14 +50,14 @@ display: flex;
 flex-direction: column;
 gap: 15px;
 align-items: center;
-width: 100vw;
+//width: 100vw;
 
 `
 
 export const Header = styled.div`
 display: flex;
 align-items: center;
-width: 100vw;
+//width: 100vw;
 height: 7vh;
 margin-top: 1.5rem;
 padding-left: 7.5rem;
@@ -84,7 +84,7 @@ display: flex;
 height: 20vh;
 align-items: center;
 padding-left: 7.5rem;
-width: 100%;
+//width: 100%;
 
 input {
     width: 40vw;
