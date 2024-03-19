@@ -22,8 +22,7 @@ The project is deployed using Docker and GitLab Runner.
 
 ## Contributors
 
-This project was developed by a team of five developers during a fullstack bootcamp. 
-Contributors include:
+This project was developed by a team of five developers during a fullstack bootcamp. Contributors include:
 - [Yaiza Aragonés-Soria](https://www.linkedin.com/in/yaiza-aragonessoria/) (main backend developer + frontend developer)
 - [Laura Balestra](https://www.linkedin.com/in/laura-balestra/) (fullstack developer and devops)
 - [Andre Galfetti](https://www.linkedin.com/in/andre-galfetti-96473b266/) (frontend developer)
